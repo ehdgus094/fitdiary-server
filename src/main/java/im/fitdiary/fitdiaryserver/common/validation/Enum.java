@@ -1,6 +1,7 @@
 package im.fitdiary.fitdiaryserver.common.validation;
 
 import javax.validation.Constraint;
+import javax.validation.Payload;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -12,6 +13,8 @@ import java.lang.annotation.Target;
 public @interface Enum {
 
     String message() default "Invalid value. This is not permitted.";
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
     Class<? extends java.lang.Enum<?>> enumClass();
     boolean ignoreCase() default true;
     boolean nullable() default false;
