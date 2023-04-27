@@ -38,4 +38,3 @@ out/
 
 .DS_Store
 application*.yml
-/src/main/generated

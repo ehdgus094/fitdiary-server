@@ -1,18 +1,19 @@
 buildscript {
 	ext {
-		queryDslVersion = "5.0.0"
+		querydslVersion = "5.0.0"
 	}
 }
 
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.0.6'
-	id 'io.spring.dependency-management' version '1.1.0'
+	id 'org.springframework.boot' version '2.7.11'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
 }
 
 group = 'im.fitdiary'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+sourceCompatibility = '11'
 
 configurations {
 	compileOnly {
@@ -29,12 +30,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
+	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0'
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 	// querydsl start
-	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}:jakarta"
-	annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}:jakarta"
-	annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
-	annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
+	implementation "com.querydsl:querydsl-jpa:${querydslVersion}"
+	annotationProcessor "com.querydsl:querydsl-apt:${querydslVersion}"
 	// querydsl end
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
@@ -48,15 +48,18 @@ tasks.named('test') {
 }
 
 // querydsl start
-def querydslDir = 'src/main/generated'
-
+def querydslDir = "$buildDir/generated/querydsl"
+querydsl {
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
 sourceSets {
-	main.java.srcDirs += [ querydslDir ]
+	main.java.srcDir querydslDir
 }
-tasks.withType(JavaCompile) {
-	options.getGeneratedSourceOutputDirectory().set(file(querydslDir))
+configurations {
+	querydsl.extendsFrom compileClasspath
 }
-clean {
-	delete file(querydslDir)
+compileQuerydsl {
+	options.annotationProcessorPath = configurations.querydsl
 }
 // querydsl end
