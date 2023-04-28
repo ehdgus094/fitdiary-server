@@ -1,6 +1,7 @@
 package im.fitdiary.fitdiaryserver.user.controller;
 
 import im.fitdiary.fitdiaryserver.common.dto.Response;
+import im.fitdiary.fitdiaryserver.security.argumentresolver.UserId;
 import im.fitdiary.fitdiaryserver.user.dto.CreateEmailUserReq;
 import im.fitdiary.fitdiaryserver.user.dto.LoginUserReq;
 import im.fitdiary.fitdiaryserver.user.dto.LoginUserRes;
@@ -10,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.security.Principal;
 
 @RequiredArgsConstructor
 @RequestMapping("/user")
@@ -32,8 +32,8 @@ public class UserController {
     }
 
     @GetMapping
-    public Response find(Principal principal) {
-        UserRes user = userService.findById(Long.parseLong(principal.getName()));
+    public Response find(@UserId Long id) {
+        UserRes user = userService.findById(id);
         return Response.success(user);
     }
 }

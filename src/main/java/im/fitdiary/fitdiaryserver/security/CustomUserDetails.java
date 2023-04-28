@@ -1,14 +1,12 @@
 package im.fitdiary.fitdiaryserver.security;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Set;
 
-@Getter
 @AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
 

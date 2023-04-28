@@ -10,6 +10,7 @@ import im.fitdiary.fitdiaryserver.user.dto.LoginUserReq;
 import im.fitdiary.fitdiaryserver.user.dto.LoginUserRes;
 import im.fitdiary.fitdiaryserver.user.service.UserService;
 import im.fitdiary.fitdiaryserver.util.factory.user.UserFactory;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.security.Principal;
 
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -48,13 +48,14 @@ class UserControllerTest {
     @MockBean
     UserService userService;
     private final String BASE_URI = "/user";
-    private Principal mockPrincipal;
 
-    private void setMockPrincipal() {
-        final String id = "1";
-        CustomUserDetails userDetails = new CustomUserDetails(id, null);
-        this.mockPrincipal =
-                new CustomAuthenticationToken(userDetails.getAuthorities(), userDetails);
+    @BeforeAll
+    static void setAuthentication() {
+        // @UserId 사용을 위한 인증정보 추가
+        System.out.println("before all");
+        CustomUserDetails userDetails = new CustomUserDetails("1", null);
+        CustomAuthenticationToken auth = new CustomAuthenticationToken(userDetails.getAuthorities(), userDetails);
+        SecurityContextHolder.getContext().setAuthentication(auth);
     }
 
     @Test
@@ -96,11 +97,9 @@ class UserControllerTest {
     @DisplayName("조회")
     void find() throws Exception {
         // given
-        this.setMockPrincipal();
 
         // when - then
-        mvc.perform(get(BASE_URI)
-                        .principal(this.mockPrincipal))
+        mvc.perform(get(BASE_URI))
                 .andExpectAll(
                         status().isOk()
                 )
