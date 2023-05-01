@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("JwtService")
@@ -37,13 +37,15 @@ class JwtServiceImplTest {
         String userRefreshToken = jwtService.createToken(RoleType.ROLE_USER_REFRESH, subject);
 
         // then
-        assertNotNull(userAccessToken);
-        assertNotEquals("", userAccessToken);
-        assertTrue(userAccessToken.contains(jwtService.getType()));
+        assertThat(userAccessToken)
+                .isNotNull()
+                .isNotEqualTo("")
+                .contains(jwtService.getType());
 
-        assertNotNull(userRefreshToken);
-        assertNotEquals("", userRefreshToken);
-        assertTrue(userRefreshToken.contains(jwtService.getType()));
+        assertThat(userRefreshToken)
+                .isNotNull()
+                .isNotEqualTo("")
+                .contains(jwtService.getType());
     }
 
     @Test
@@ -68,23 +70,15 @@ class JwtServiceImplTest {
                 .orElseThrow(UnauthorizedException::new);
 
         // then
-        assertEquals(subject, userAccessClaims.getSubject());
-        assertEquals(RoleType.ROLE_USER_ACCESS.toString(), userAccessClaims.getAudience());
-        assertThrows(UnauthorizedException.class, () -> {
-            jwtService.extract(userAccessTokenExpired)
-                    .orElseThrow(UnauthorizedException::new);
-        });
-        assertThrows(UnauthorizedException.class, () -> {
-            jwtService.extract(wrongToken)
-                    .orElseThrow(UnauthorizedException::new);
-        });
-        assertThrows(UnauthorizedException.class, () -> {
-            properties.getJwt().getUser().getAccess().setSecret("wrongSecret");
-            jwtService.extract(userAccessToken)
-                    .orElseThrow(UnauthorizedException::new);
-        });
+        assertThat(userAccessClaims.getSubject()).isEqualTo(subject);
+        assertThat(userAccessClaims.getAudience()).isEqualTo(RoleType.ROLE_USER_ACCESS.toString());
+        assertThat(jwtService.extract(userAccessTokenExpired)).isNotPresent();
+        assertThat(jwtService.extract(wrongToken)).isNotPresent();
 
-        assertEquals(subject, userRefreshClaims.getSubject());
-        assertEquals(RoleType.ROLE_USER_REFRESH.toString(), userRefreshClaims.getAudience());
+        properties.getJwt().getUser().getAccess().setSecret("wrongSecret");
+        assertThat(jwtService.extract(userAccessToken)).isNotPresent();
+
+        assertThat(userRefreshClaims.getSubject()).isEqualTo(subject);
+        assertThat(userRefreshClaims.getAudience()).isEqualTo(RoleType.ROLE_USER_REFRESH.toString());
     }
 }

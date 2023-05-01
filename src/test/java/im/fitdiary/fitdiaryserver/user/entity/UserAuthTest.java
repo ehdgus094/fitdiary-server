@@ -4,7 +4,7 @@ import im.fitdiary.fitdiaryserver.util.factory.user.UserFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("UserAuth Entity")
 class UserAuthTest {
@@ -20,63 +20,63 @@ class UserAuthTest {
         auth.updateRefreshToken(newToken);
 
         // then
-        assertEquals(newToken, auth.getRefreshToken());
+        assertThat(auth.getRefreshToken()).isEqualTo(newToken);
     }
 
     @Test
     @DisplayName("loginType 누락")
     void withoutLoginType() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThatThrownBy(() ->
             UserAuth.builder()
                     .password("1234")
                     .loginId("1234")
-                    .build();
-        });
+                    .build()
+        ).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     @DisplayName("loginId 누락")
     void withoutLoginId() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThatThrownBy(() ->
             UserAuth.builder()
                     .loginType(LoginType.EMAIL)
                     .password("1234")
-                    .build();
-        });
+                    .build()
+        ).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     @DisplayName("loginId 공백")
     void emptyLoginId() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThatThrownBy(() ->
             UserAuth.builder()
                     .loginType(LoginType.EMAIL)
                     .password("1234")
                     .loginId("")
-                    .build();
-        });
+                    .build()
+        ).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     @DisplayName("password 누락(email)")
     void withoutPassword() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThatThrownBy(() ->
             UserAuth.builder()
                     .loginType(LoginType.EMAIL)
                     .loginId("1234")
-                    .build();
-        });
+                    .build()
+        ).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     @DisplayName("password 공백(email)")
     void emptyPassword() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThatThrownBy(() ->
             UserAuth.builder()
                     .loginType(LoginType.EMAIL)
                     .loginId("1234")
                     .password("")
-                    .build();
-        });
+                    .build()
+        ).isInstanceOf(IllegalArgumentException.class);
     }
 }

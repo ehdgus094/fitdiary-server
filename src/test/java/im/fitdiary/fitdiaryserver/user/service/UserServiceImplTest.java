@@ -19,7 +19,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -62,16 +62,16 @@ class UserServiceImplTest {
                 userService.login(user.getAuth().getLoginId(), password);
 
         // then
-        assertEquals(token, loginUser.getAccessToken());
-        assertEquals(token, loginUser.getRefreshToken());
-        assertEquals(user.getName(), loginUser.getUser().getName());
-        assertEquals(token, user.getAuth().getRefreshToken());
-        assertThrows(InvalidLoginInfoException.class, () -> {
-            userService.login(incorrectLoginId, user.getAuth().getPassword());
-        });
-        assertThrows(InvalidLoginInfoException.class, () -> {
-            userService.login(user.getAuth().getLoginId(), incorrectPassword);
-        });
+        assertThat(loginUser.getAccessToken()).isEqualTo(token);
+        assertThat(loginUser.getRefreshToken()).isEqualTo(token);
+        assertThat(loginUser.getUser().getName()).isEqualTo(user.getName());
+        assertThat(user.getAuth().getRefreshToken()).isEqualTo(token);
+        assertThatThrownBy(() ->
+            userService.login(incorrectLoginId, user.getAuth().getPassword())
+        ).isInstanceOf(InvalidLoginInfoException.class);
+        assertThatThrownBy(() ->
+                userService.login(user.getAuth().getLoginId(), incorrectPassword)
+        ).isInstanceOf(InvalidLoginInfoException.class);
     }
 
     @Test
@@ -92,9 +92,8 @@ class UserServiceImplTest {
         UserRes findUser = userService.findById(userId);
 
         // then
-        assertEquals(findUser.getName(), user.getName());
-        assertThrows(NotFoundException.class, () -> {
-           userService.findById(wrongUserId);
-        });
+        assertThat(user.getName()).isEqualTo(findUser.getName());
+        assertThatThrownBy(() -> userService.findById(wrongUserId))
+                .isInstanceOf(NotFoundException.class);
     }
 }
