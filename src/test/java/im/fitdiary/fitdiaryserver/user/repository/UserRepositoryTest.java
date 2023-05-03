@@ -36,8 +36,6 @@ class UserRepositoryTest {
         assertThat(savedUser.getName()).isEqualTo(user.getName());
         assertThat(savedUser.getBirthYmd()).isEqualTo(user.getBirthYmd());
         assertThat(savedUser.getGender()).isEqualTo(user.getGender());
-        assertThat(savedUser.getHeight()).isEqualTo(user.getHeight());
-        assertThat(savedUser.getWeight()).isEqualTo(user.getWeight());
 
         // 조회
         User findUser = userRepository.findById(user.getId()).orElseThrow();

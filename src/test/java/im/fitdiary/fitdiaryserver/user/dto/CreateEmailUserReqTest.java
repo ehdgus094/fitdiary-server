@@ -75,32 +75,4 @@ class CreateEmailUserReqTest {
                 setField(req, "gender", null)
         );
     }
-
-    @Test
-    @DisplayName("유효성 검사 Height")
-    void validateHeight() {
-        template.fail(99, req ->
-                setField(req, "height", 99)
-        );
-        template.fail(251, req ->
-                setField(req, "height", 251)
-        );
-        template.fail(null, req ->
-                setField(req, "height", null)
-        );
-    }
-
-    @Test
-    @DisplayName("유효성 검사 Weight")
-    void validateWeight() {
-        template.fail(19, req ->
-                setField(req, "weight", 19)
-        );
-        template.fail(601, req ->
-                setField(req, "weight", 601)
-        );
-        template.fail(null, req ->
-                setField(req, "weight", null)
-        );
-    }
 }

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@ToString(of = {"id", "name", "birthYmd", "gender", "height", "weight", "deletedAt"})
+@ToString(of = {"id", "name", "birthYmd", "gender", "deletedAt"})
 @Where(clause = "deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE user SET deleted_at = CURRENT_TIMESTAMP where id = ?")
 public class User extends BaseEntity {
@@ -33,24 +33,16 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private Gender gender;
 
-    @Column(nullable = false, columnDefinition = "SMALLINT UNSIGNED")
-    private Integer height;
-
-    @Column(nullable = false, columnDefinition = "SMALLINT UNSIGNED")
-    private Integer weight;
-
     private LocalDateTime deletedAt;
 
-    public static User create(UserAuth auth, String name, String birthYmd, Gender gender, Integer height, Integer weight) {
-        return new User(auth, name, birthYmd, gender, height, weight);
+    public static User create(UserAuth auth, String name, String birthYmd, Gender gender) {
+        return new User(auth, name, birthYmd, gender);
     }
 
-    private User(UserAuth auth, String name, String birthYmd, Gender gender, Integer height, Integer weight) {
+    private User(UserAuth auth, String name, String birthYmd, Gender gender) {
         this.auth = auth;
         this.name = name;
         this.birthYmd = birthYmd;
         this.gender = gender;
-        this.height = height;
-        this.weight = weight;
     }
 }

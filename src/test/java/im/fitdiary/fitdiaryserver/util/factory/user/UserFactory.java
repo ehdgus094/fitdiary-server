@@ -15,13 +15,11 @@ public class UserFactory {
     private static final String NAME = "user";
     private static final String BIRTH_YMD = "19901010";
     private static final Gender GENDER = Gender.MALE;
-    private static final Integer HEIGHT = 170;
-    private static final Integer WEIGHT = 70;
     private static final String LOGIN_ID = "test";
     private static final String PASSWORD = "1234";
 
     public static User emailUser() {
-        return User.create(emailUserAuth(), NAME, BIRTH_YMD, GENDER, HEIGHT, WEIGHT);
+        return User.create(emailUserAuth(), NAME, BIRTH_YMD, GENDER);
     }
 
     public static UserAuth emailUserAuth() {
@@ -35,8 +33,6 @@ public class UserFactory {
         setField(req, "name", NAME);
         setField(req, "birthYmd", BIRTH_YMD);
         setField(req, "gender", GENDER);
-        setField(req, "height", HEIGHT);
-        setField(req, "weight", WEIGHT);
         return req;
     }
 
