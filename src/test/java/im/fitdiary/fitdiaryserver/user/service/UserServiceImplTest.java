@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("UserService")
 class UserServiceImplTest {
 
     @Mock

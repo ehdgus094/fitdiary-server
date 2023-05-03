@@ -1,51 +1,54 @@
 package im.fitdiary.fitdiaryserver.util.factory.user;
 
 import im.fitdiary.fitdiaryserver.user.dto.CreateEmailUserReq;
-import im.fitdiary.fitdiaryserver.user.dto.LoginUserReq;
+import im.fitdiary.fitdiaryserver.user.dto.LoginEmailUserReq;
 import im.fitdiary.fitdiaryserver.user.dto.LoginUserRes;
+import im.fitdiary.fitdiaryserver.user.dto.UserRes;
 import im.fitdiary.fitdiaryserver.user.entity.Gender;
-import im.fitdiary.fitdiaryserver.user.entity.LoginType;
 import im.fitdiary.fitdiaryserver.user.entity.User;
 import im.fitdiary.fitdiaryserver.user.entity.UserAuth;
 
+import static org.springframework.test.util.ReflectionTestUtils.*;
+
 public class UserFactory {
 
+    private static final String NAME = "user";
+    private static final String BIRTH_YMD = "19901010";
+    private static final Gender GENDER = Gender.MALE;
+    private static final Integer HEIGHT = 170;
+    private static final Integer WEIGHT = 70;
+    private static final String LOGIN_ID = "test";
+    private static final String PASSWORD = "1234";
+
     public static User emailUser() {
-        return User.builder()
-                .birthYmd("19901010")
-                .name("user")
-                .gender(Gender.FEMALE)
-                .height(160)
-                .weight(50)
-                .auth(auth())
-                .build();
+        return User.create(emailUserAuth(), NAME, BIRTH_YMD, GENDER, HEIGHT, WEIGHT);
     }
 
-    public static UserAuth auth() {
-        return UserAuth.builder()
-                .loginType(LoginType.EMAIL)
-                .loginId("loginId")
-                .password("1234")
-                .build();
+    public static UserAuth emailUserAuth() {
+        return UserAuth.createEmailAuth(LOGIN_ID, PASSWORD);
     }
 
     public static CreateEmailUserReq createEmailUserReq() {
-        return CreateEmailUserReq.builder()
-                .birthYmd("19901010")
-                .loginId("test")
-                .password("test")
-                .gender(Gender.MALE)
-                .height(100)
-                .weight(100)
-                .name("user")
-                .build();
+        CreateEmailUserReq req = new CreateEmailUserReq();
+        setField(req, "loginId", LOGIN_ID);
+        setField(req, "password", PASSWORD);
+        setField(req, "name", NAME);
+        setField(req, "birthYmd", BIRTH_YMD);
+        setField(req, "gender", GENDER);
+        setField(req, "height", HEIGHT);
+        setField(req, "weight", WEIGHT);
+        return req;
     }
 
-    public static LoginUserReq loginUserReq() {
-        return LoginUserReq.builder()
-                .loginId("loginId")
-                .password("1234")
-                .build();
+    public static LoginEmailUserReq loginEmailUserReq() {
+        LoginEmailUserReq req = new LoginEmailUserReq();
+        setField(req, "loginId", LOGIN_ID);
+        setField(req, "password", PASSWORD);
+        return req;
+    }
+
+    public static UserRes userRes() {
+        return new UserRes(emailUser());
     }
 
     public static LoginUserRes loginUserRes() {

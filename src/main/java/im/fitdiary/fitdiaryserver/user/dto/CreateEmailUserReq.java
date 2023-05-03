@@ -2,20 +2,13 @@ package im.fitdiary.fitdiaryserver.user.dto;
 
 import im.fitdiary.fitdiaryserver.common.validation.Enum;
 import im.fitdiary.fitdiaryserver.user.entity.Gender;
-import im.fitdiary.fitdiaryserver.user.entity.LoginType;
 import im.fitdiary.fitdiaryserver.user.entity.User;
 import im.fitdiary.fitdiaryserver.user.entity.UserAuth;
-import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class CreateEmailUserReq {
 
@@ -28,45 +21,30 @@ public class CreateEmailUserReq {
     @NotBlank(message = "name should not be empty")
     private String name;
 
-    @Size(min = 8, max = 8, message = "incorrect birthYmd format")
-    @NotBlank(message = "birthYmd should not be empty")
+    @Pattern(regexp = "^(19\\d{2}|20\\d{2})(0[1-9]|1[0-2])(0[1-9]|[1-2]\\d|3[0-1])$", message = "incorrect birthYmd format")
+    @NotNull(message = "birthYmd should not be empty")
     private String birthYmd;
 
     @Enum(enumClass = Gender.class, message = "incorrect gender format")
+    @NotNull(message = "gender should not be empty")
     private Gender gender;
 
-    @Min(value = 0, message = "height should be positive value")
+    @Range(min = 100, max = 250, message = "height should be between 100 and 250")
     @NotNull(message = "height should not be empty")
     private Integer height;
 
-    @Min(value = 0, message = "weight should be positive value")
+    @Range(min = 20, max = 600, message = "weight should be between 20 and 600")
     @NotNull(message = "weight should not be empty")
     private Integer weight;
 
     public User toEntity() {
-        return User.builder()
-                .name(this.name)
-                .birthYmd(this.birthYmd)
-                .gender(this.gender)
-                .height(this.height)
-                .weight(this.weight)
-                .auth(UserAuth.builder()
-                        .loginType(LoginType.EMAIL)
-                        .loginId(this.loginId)
-                        .password(this.password)
-                        .build()
-                )
-                .build();
-    }
-
-    @Builder
-    public CreateEmailUserReq(String loginId, String password, String name, String birthYmd, Gender gender, Integer height, Integer weight) {
-        this.loginId = loginId;
-        this.password = password;
-        this.name = name;
-        this.birthYmd = birthYmd;
-        this.gender = gender;
-        this.height = height;
-        this.weight = weight;
+        return User.create(
+                UserAuth.createEmailAuth(this.loginId, this.password),
+                this.name,
+                this.birthYmd,
+                this.gender,
+                this.height,
+                this.weight
+        );
     }
 }

@@ -18,7 +18,6 @@ import static org.assertj.core.api.Assertions.*;
 @DataJpaTest
 @Import(AuditingConfig.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@DisplayName("UserRepository")
 class UserRepositoryTest {
 
     @Autowired

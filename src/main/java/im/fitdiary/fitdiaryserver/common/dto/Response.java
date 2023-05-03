@@ -1,7 +1,6 @@
 package im.fitdiary.fitdiaryserver.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -13,26 +12,17 @@ public class Response {
     private final Object data;
 
     public static Response success() {
-        return Response.builder()
-                .success(true)
-                .build();
+        return new Response(true, null, null);
     }
 
     public static Response success(Object data) {
-        return Response.builder()
-                .success(true)
-                .data(data)
-                .build();
+        return new Response(true, null, data);
     }
 
     public static Response failure(String message) {
-        return Response.builder()
-                .success(false)
-                .message(message)
-                .build();
+        return new Response(false, message, null);
     }
 
-    @Builder
     private Response(boolean success, String message, Object data) {
         this.success = success;
         this.message = message;

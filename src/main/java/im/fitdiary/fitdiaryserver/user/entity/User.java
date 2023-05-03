@@ -4,7 +4,6 @@ import im.fitdiary.fitdiaryserver.common.entity.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -42,13 +41,11 @@ public class User extends BaseEntity {
 
     private LocalDateTime deletedAt;
 
-    @Builder
-    public User(UserAuth auth, String name, String birthYmd, Gender gender, Integer height, Integer weight) {
-        Assert.hasText(name, "name must not be empty");
-        Assert.hasText(birthYmd, "birthYmd must not be empty");
-        Assert.isInstanceOf(Gender.class, gender, "gender must not be empty");
-        Assert.notNull(height, "height must not be empty");
-        Assert.notNull(weight, "weight must not be empty");
+    public static User create(UserAuth auth, String name, String birthYmd, Gender gender, Integer height, Integer weight) {
+        return new User(auth, name, birthYmd, gender, height, weight);
+    }
+
+    private User(UserAuth auth, String name, String birthYmd, Gender gender, Integer height, Integer weight) {
         this.auth = auth;
         this.name = name;
         this.birthYmd = birthYmd;

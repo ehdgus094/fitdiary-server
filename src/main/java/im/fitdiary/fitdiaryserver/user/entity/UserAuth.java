@@ -2,7 +2,6 @@ package im.fitdiary.fitdiaryserver.user.entity;
 
 import javax.persistence.*;
 import lombok.*;
-import org.springframework.util.Assert;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,18 +32,15 @@ public class UserAuth {
         this.password = encoded;
     }
 
-    @Builder
-    public UserAuth(LoginType loginType, String loginId, String password) {
-        Assert.isInstanceOf(LoginType.class, loginType, "LoginType must not be empty");
-        Assert.hasText(loginId, "loginId must not be empty");
-        if (loginType.equals(LoginType.EMAIL)) {
-            Assert.hasText(password, "password must not be empty");
-        } else {
-            Assert.isNull(password, "password must be empty");
-        }
+    public static UserAuth createEmailAuth(String loginId, String password) {
+        return new UserAuth(null, LoginType.EMAIL, loginId, password, null);
+    }
 
+    private UserAuth(Long id, LoginType loginType, String loginId, String password, String refreshToken) {
+        this.id = id;
         this.loginType = loginType;
         this.loginId = loginId;
         this.password = password;
+        this.refreshToken = refreshToken;
     }
 }

@@ -14,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("JwtService")
 class JwtServiceImplTest {
 
     JwtServiceImpl jwtService;

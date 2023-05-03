@@ -3,7 +3,7 @@ package im.fitdiary.fitdiaryserver.user.controller;
 import im.fitdiary.fitdiaryserver.common.dto.Response;
 import im.fitdiary.fitdiaryserver.security.argumentresolver.UserId;
 import im.fitdiary.fitdiaryserver.user.dto.CreateEmailUserReq;
-import im.fitdiary.fitdiaryserver.user.dto.LoginUserReq;
+import im.fitdiary.fitdiaryserver.user.dto.LoginEmailUserReq;
 import im.fitdiary.fitdiaryserver.user.dto.LoginUserRes;
 import im.fitdiary.fitdiaryserver.user.dto.UserRes;
 import im.fitdiary.fitdiaryserver.user.service.UserService;
@@ -25,8 +25,8 @@ public class UserController {
         return Response.success();
     }
 
-    @PostMapping("/login")
-    public Response login(@RequestBody @Valid LoginUserReq req) {
+    @PostMapping("/login/email")
+    public Response loginEmail(@RequestBody @Valid LoginEmailUserReq req) {
         LoginUserRes loginUser = userService.login(req.getLoginId(), req.getPassword());
         return Response.success(loginUser);
     }

@@ -17,13 +17,12 @@ public class EnumValidator implements ConstraintValidator<Enum, Object> {
         boolean result = false;
 
         Object[] enumValues = this.annotation.enumClass().getEnumConstants();
-        if (value == null && this.annotation.nullable()) {
+        if (value == null) {
             result = true;
-        }
-        if (enumValues != null && value != null) {
+        } else if (enumValues != null) {
             for (Object enumValue : enumValues) {
                 if (value.equals(enumValue.toString())
-                    || (this.annotation.ignoreCase() && value.toString().equalsIgnoreCase(enumValue.toString()))) {
+                        || (this.annotation.ignoreCase() && value.toString().equalsIgnoreCase(enumValue.toString()))) {
                     result = true;
                     break;
                 }

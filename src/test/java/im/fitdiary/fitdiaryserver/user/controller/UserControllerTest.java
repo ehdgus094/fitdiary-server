@@ -6,7 +6,7 @@ import im.fitdiary.fitdiaryserver.security.CustomAuthenticationToken;
 import im.fitdiary.fitdiaryserver.security.CustomUserDetails;
 import im.fitdiary.fitdiaryserver.security.filter.JwtAuthenticationFilter;
 import im.fitdiary.fitdiaryserver.user.dto.CreateEmailUserReq;
-import im.fitdiary.fitdiaryserver.user.dto.LoginUserReq;
+import im.fitdiary.fitdiaryserver.user.dto.LoginEmailUserReq;
 import im.fitdiary.fitdiaryserver.user.dto.LoginUserRes;
 import im.fitdiary.fitdiaryserver.user.service.UserService;
 import im.fitdiary.fitdiaryserver.util.factory.user.UserFactory;
@@ -38,7 +38,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
         )
 )
 @EnableConfigurationProperties(value = ConfigProperties.class)
-@DisplayName("UserController")
 class UserControllerTest {
 
     @Autowired
@@ -52,7 +51,6 @@ class UserControllerTest {
     @BeforeAll
     static void setAuthentication() {
         // @UserId 사용을 위한 인증정보 추가
-        System.out.println("before all");
         CustomUserDetails userDetails = new CustomUserDetails("1", null);
         CustomAuthenticationToken auth = new CustomAuthenticationToken(userDetails.getAuthorities(), userDetails);
         SecurityContextHolder.getContext().setAuthentication(auth);
@@ -73,16 +71,16 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("로그인")
-    void login() throws Exception {
+    @DisplayName("이메일 로그인")
+    void loginEmail() throws Exception {
         // given
-        LoginUserReq req = UserFactory.loginUserReq();
+        LoginEmailUserReq req = UserFactory.loginEmailUserReq();
         LoginUserRes res = UserFactory.loginUserRes();
         given(userService.login(req.getLoginId(), req.getPassword()))
                 .willReturn(res);
 
         // when - then
-        mvc.perform(post(BASE_URI + "/login")
+        mvc.perform(post(BASE_URI + "/login/email")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(req)))
                 .andExpectAll(

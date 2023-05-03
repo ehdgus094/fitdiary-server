@@ -13,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.NoSuchElementException;
+
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
@@ -30,7 +32,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public LoginUserRes login(String loginId, String password) {
+    public LoginUserRes login(String loginId, String password)
+            throws InvalidLoginInfoException, NoSuchElementException {
         User user = userRepository
                 .findByLoginId(loginId)
                 .orElseThrow(InvalidLoginInfoException::new);
@@ -48,7 +51,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public UserRes findById(Long id) {
+    public UserRes findById(Long id) throws NotFoundException {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("user not found"));
         return new UserRes(user);
