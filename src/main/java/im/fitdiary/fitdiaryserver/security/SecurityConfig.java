@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                    .antMatchers(HttpMethod.POST, baseUri + "/user/login", baseUri + "/user/email")
+                    .antMatchers(HttpMethod.POST, baseUri + "/user/login/**", baseUri + "/user/email")
                         .permitAll()
                     .antMatchers(HttpMethod.POST, baseUri + "/user/refresh-token")
                         .hasRole(convert(RoleType.ROLE_USER_REFRESH))
