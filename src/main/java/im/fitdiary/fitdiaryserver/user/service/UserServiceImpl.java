@@ -54,16 +54,16 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void logout(Long id) throws UserNotFoundException {
-        User user = userRepository.findAuthByUserId(id)
+    public void logout(Long userId) throws UserNotFoundException {
+        User user = userRepository.findAuthByUserId(userId)
                 .orElseThrow(UserNotFoundException::new);
         user.getAuth().updateRefreshToken(null);
     }
 
     @Transactional
     @Override
-    public RefreshTokenRes refreshToken(Long id, String refreshToken) throws UnauthorizedException {
-        User user = userRepository.findAuthByUserId(id)
+    public RefreshTokenRes refreshToken(Long userId, String refreshToken) throws UnauthorizedException {
+        User user = userRepository.findAuthByUserId(userId)
                 .orElseThrow(UnauthorizedException::new);
         if (!user.getAuth().getRefreshToken().equals(refreshToken)) {
             throw new UnauthorizedException();
@@ -86,16 +86,16 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public UserRes findById(Long id) throws UserNotFoundException {
-        User user = userRepository.findById(id)
+    public UserRes findById(Long userId) throws UserNotFoundException {
+        User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
         return new UserRes(user);
     }
 
     @Transactional
     @Override
-    public void deleteById(Long id) throws UserNotFoundException {
-        User user = userRepository.findById(id)
+    public void deleteById(Long userId) throws UserNotFoundException {
+        User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
         userRepository.delete(user);
     }

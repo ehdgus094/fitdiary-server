@@ -13,8 +13,8 @@ import java.util.NoSuchElementException;
 public interface UserService {
     void create(User user);
     LoginUserRes login(String loginId, String password) throws InvalidLoginInfoException, NoSuchElementException;
-    void logout(Long id) throws UserNotFoundException;
-    RefreshTokenRes refreshToken(Long id, String refreshToken) throws UnauthorizedException;
-    UserRes findById(Long id) throws UserNotFoundException;
-    void deleteById(Long id) throws UserNotFoundException;
+    void logout(Long userId) throws UserNotFoundException;
+    RefreshTokenRes refreshToken(Long userId, String refreshToken) throws UnauthorizedException;
+    UserRes findById(Long userId) throws UserNotFoundException;
+    void deleteById(Long userId) throws UserNotFoundException;
 }
