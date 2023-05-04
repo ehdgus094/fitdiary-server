@@ -24,8 +24,8 @@ public class UserController {
 
     @PostMapping("/login/email")
     public Response loginEmail(@RequestBody @Valid LoginEmailUserReq req) {
-        LoginUserRes loginUser = userService.login(req.getLoginId(), req.getPassword());
-        return Response.success(loginUser);
+        LoginUserRes res = userService.login(req.getLoginId(), req.getPassword());
+        return Response.success(res);
     }
 
     @PostMapping("/logout")

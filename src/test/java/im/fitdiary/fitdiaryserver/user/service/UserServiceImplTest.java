@@ -61,13 +61,12 @@ class UserServiceImplTest {
                 .willReturn(token);
 
         // when
-        LoginUserRes loginUser =
-                userService.login(user.getAuth().getLoginId(), password);
+        LoginUserRes res = userService.login(user.getAuth().getLoginId(), password);
 
         // then
-        assertThat(loginUser.getAccessToken()).isEqualTo(token);
-        assertThat(loginUser.getRefreshToken()).isEqualTo(token);
-        assertThat(loginUser.getUser().getName()).isEqualTo(user.getName());
+        assertThat(res.getAccessToken()).isEqualTo(token);
+        assertThat(res.getRefreshToken()).isEqualTo(token);
+        assertThat(res.getUser().getName()).isEqualTo(user.getName());
         assertThat(user.getAuth().getRefreshToken()).isEqualTo(token);
         assertThatThrownBy(() ->
                 userService.login(incorrectLoginId, user.getAuth().getPassword())
@@ -164,10 +163,10 @@ class UserServiceImplTest {
                 .willReturn(Optional.empty());
 
         // when
-        UserRes findUser = userService.findById(userId);
+        UserRes res = userService.findById(userId);
 
         // then
-        assertThat(user.getName()).isEqualTo(findUser.getName());
+        assertThat(user.getName()).isEqualTo(res.getName());
         assertThatThrownBy(() -> userService.findById(wrongUserId))
                 .isInstanceOf(UserNotFoundException.class);
     }
