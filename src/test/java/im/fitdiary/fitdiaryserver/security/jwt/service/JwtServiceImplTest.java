@@ -1,7 +1,7 @@
 package im.fitdiary.fitdiaryserver.security.jwt.service;
 
 import im.fitdiary.fitdiaryserver.config.ConfigProperties;
-import im.fitdiary.fitdiaryserver.exception.UnauthorizedException;
+import im.fitdiary.fitdiaryserver.exception.e401.UnauthorizedException;
 import im.fitdiary.fitdiaryserver.security.jwt.model.RoleType;
 import im.fitdiary.fitdiaryserver.util.factory.configproperties.ConfigPropertiesFactory;
 import io.jsonwebtoken.Claims;
@@ -10,6 +10,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -29,7 +32,7 @@ class JwtServiceImplTest {
     @DisplayName("토큰 생성")
     void createToken() {
         // given
-        final String subject = "subject";
+        String subject = "subject";
 
         // when
         String userAccessToken = jwtService.createToken(RoleType.ROLE_USER_ACCESS, subject);
@@ -51,8 +54,8 @@ class JwtServiceImplTest {
     @DisplayName("토큰 추출")
     void extract() {
         // given
-        final String subject = "subject";
-        final String wrongToken = "wrongToken";
+        String subject = "subject";
+        String wrongToken = "wrongToken";
 
         String userAccessToken = jwtService.createToken(RoleType.ROLE_USER_ACCESS, subject);
 
@@ -63,21 +66,48 @@ class JwtServiceImplTest {
         String userRefreshToken = jwtService.createToken(RoleType.ROLE_USER_REFRESH, subject);
 
         // when
-        Claims userAccessClaims = jwtService.extract(userAccessToken)
-                .orElseThrow(UnauthorizedException::new);
-        Claims userRefreshClaims = jwtService.extract(userRefreshToken)
-                .orElseThrow(UnauthorizedException::new);
+        Optional<Claims> userAccessClaims = jwtService.extract(userAccessToken);
+        Optional<Claims> userRefreshClaims = jwtService.extract(userRefreshToken);
 
         // then
-        assertThat(userAccessClaims.getSubject()).isEqualTo(subject);
-        assertThat(userAccessClaims.getAudience()).isEqualTo(RoleType.ROLE_USER_ACCESS.toString());
+        assertThat(userAccessClaims).isPresent();
+        assertThat(userAccessClaims.get().getSubject()).isEqualTo(subject);
+        assertThat(userAccessClaims.get().getAudience()).isEqualTo(RoleType.ROLE_USER_ACCESS.toString());
+        assertThat(jwtService.extract(null)).isNotPresent();
         assertThat(jwtService.extract(userAccessTokenExpired)).isNotPresent();
         assertThat(jwtService.extract(wrongToken)).isNotPresent();
 
         properties.getJwt().getUser().getAccess().setSecret("wrongSecret");
         assertThat(jwtService.extract(userAccessToken)).isNotPresent();
 
-        assertThat(userRefreshClaims.getSubject()).isEqualTo(subject);
-        assertThat(userRefreshClaims.getAudience()).isEqualTo(RoleType.ROLE_USER_REFRESH.toString());
+        assertThat(userRefreshClaims).isPresent();
+        assertThat(userRefreshClaims.get().getSubject()).isEqualTo(subject);
+        assertThat(userRefreshClaims.get().getAudience()).isEqualTo(RoleType.ROLE_USER_REFRESH.toString());
+    }
+
+    @Test
+    @DisplayName("만료일 추출")
+    void getExpiration() {
+        // given
+        String subject = "subject";
+        String wrongToken = "wrongToken";
+
+        String refreshToken = jwtService.createToken(RoleType.ROLE_USER_REFRESH, subject);
+
+        properties.getJwt().getUser().getRefresh().setMaxAge(0L);
+        String refreshTokenExpired =
+                jwtService.createToken(RoleType.ROLE_USER_REFRESH, subject);
+
+        // when
+        LocalDateTime expiration = jwtService.getExpiration(refreshToken);
+
+        // then
+        assertThat(expiration).isAfter(LocalDateTime.now());
+        assertThatThrownBy(() ->
+                jwtService.getExpiration(wrongToken)
+        ).isInstanceOf(UnauthorizedException.class);
+        assertThatThrownBy(() ->
+                jwtService.getExpiration(refreshTokenExpired)
+        ).isInstanceOf(UnauthorizedException.class);
     }
 }

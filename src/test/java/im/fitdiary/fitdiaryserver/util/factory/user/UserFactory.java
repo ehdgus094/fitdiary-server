@@ -1,9 +1,6 @@
 package im.fitdiary.fitdiaryserver.util.factory.user;
 
-import im.fitdiary.fitdiaryserver.user.dto.CreateEmailUserReq;
-import im.fitdiary.fitdiaryserver.user.dto.LoginEmailUserReq;
-import im.fitdiary.fitdiaryserver.user.dto.LoginUserRes;
-import im.fitdiary.fitdiaryserver.user.dto.UserRes;
+import im.fitdiary.fitdiaryserver.user.dto.*;
 import im.fitdiary.fitdiaryserver.user.entity.Gender;
 import im.fitdiary.fitdiaryserver.user.entity.User;
 import im.fitdiary.fitdiaryserver.user.entity.UserAuth;
@@ -17,6 +14,8 @@ public class UserFactory {
     private static final Gender GENDER = Gender.MALE;
     private static final String LOGIN_ID = "test";
     private static final String PASSWORD = "1234";
+    private static final String ACCESS_TOKEN = "accessToken";
+    private static final String REFRESH_TOKEN = "refreshToken";
 
     public static User emailUser() {
         return User.create(emailUserAuth(), NAME, BIRTH_YMD, GENDER);
@@ -49,9 +48,13 @@ public class UserFactory {
 
     public static LoginUserRes loginUserRes() {
         return new LoginUserRes(
-                "accessToken",
-                "refreshToken",
+                ACCESS_TOKEN,
+                REFRESH_TOKEN,
                 emailUser()
         );
+    }
+
+    public static RefreshTokenRes refreshTokenRes() {
+        return new RefreshTokenRes(ACCESS_TOKEN, REFRESH_TOKEN);
     }
 }

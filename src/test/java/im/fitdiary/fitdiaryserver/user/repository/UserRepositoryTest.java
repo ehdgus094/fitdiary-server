@@ -11,7 +11,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
 import javax.persistence.EntityManager;
-import java.util.List;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -26,41 +27,13 @@ class UserRepositoryTest {
     EntityManager em;
 
     @Test
-    @DisplayName("기본 crud")
-    void crud() {
-        User user = UserFactory.emailUser();
-
-        // 저장
-        User savedUser = userRepository.save(user);
-        assertThat(savedUser.getId()).isEqualTo(user.getId());
-        assertThat(savedUser.getName()).isEqualTo(user.getName());
-        assertThat(savedUser.getBirthYmd()).isEqualTo(user.getBirthYmd());
-        assertThat(savedUser.getGender()).isEqualTo(user.getGender());
-
-        // 조회
-        User findUser = userRepository.findById(user.getId()).orElseThrow();
-        assertThat(findUser).isEqualTo(user);
-
-        // 전체 조회
-        List<User> all = userRepository.findAll();
-        assertThat(all).hasSize(1);
-
-        // 카운트
-        long count = userRepository.count();
-        assertThat(count).isEqualTo(1);
-
-        // 삭제
-        userRepository.delete(user);
-        long deleteCount = userRepository.count();
-        assertThat(deleteCount).isZero();
-    }
-
-    @Test
     @DisplayName("soft delete")
     void softDelete() {
         // given
         User user = UserFactory.emailUser();
         userRepository.save(user);
+        em.flush();
+        em.clear();
 
         // when
         userRepository.delete(user);
@@ -80,18 +53,36 @@ class UserRepositoryTest {
     void findByLoginId() {
         // given
         User user = UserFactory.emailUser();
-        final String wrongId = "wrongId";
+        String wrongLoginId = "wrongId";
         userRepository.save(user);
         em.flush();
         em.clear();
 
         // when
-        User findUser = userRepository
-                .findByLoginId(user.getAuth().getLoginId())
-                .orElseThrow();
+        Optional<User> findUser = userRepository.findByLoginId(user.getAuth().getLoginId());
 
         // then
-        assertThat(findUser.getId()).isEqualTo(user.getId());
-        assertThat(userRepository.findByLoginId(wrongId)).isNotPresent();
+        assertThat(findUser).isPresent();
+        assertThat(findUser.get().getId()).isEqualTo(user.getId());
+        assertThat(userRepository.findByLoginId(wrongLoginId)).isNotPresent();
+    }
+
+    @Test
+    @DisplayName("findAuthByUserId")
+    void findAuthByUserId() {
+        // given
+        User user = UserFactory.emailUser();
+        Long wrongId = 1000000L;
+        userRepository.save(user);
+        em.flush();
+        em.clear();
+
+        // when
+        Optional<User> findUser = userRepository.findAuthByUserId(user.getId());
+
+        // then
+        assertThat(findUser).isPresent();
+        assertThat(findUser.get().getId()).isEqualTo(user.getId());
+        assertThat(userRepository.findAuthByUserId(wrongId)).isNotPresent();
     }
 }

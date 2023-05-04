@@ -1,10 +1,12 @@
 package im.fitdiary.fitdiaryserver.user.service;
 
-import im.fitdiary.fitdiaryserver.exception.InvalidLoginInfoException;
-import im.fitdiary.fitdiaryserver.exception.NotFoundException;
+import im.fitdiary.fitdiaryserver.exception.e401.InvalidLoginInfoException;
+import im.fitdiary.fitdiaryserver.exception.e401.UnauthorizedException;
+import im.fitdiary.fitdiaryserver.exception.e404.UserNotFoundException;
 import im.fitdiary.fitdiaryserver.security.jwt.service.JwtService;
 import im.fitdiary.fitdiaryserver.security.jwt.model.RoleType;
 import im.fitdiary.fitdiaryserver.user.dto.LoginUserRes;
+import im.fitdiary.fitdiaryserver.user.dto.RefreshTokenRes;
 import im.fitdiary.fitdiaryserver.user.dto.UserRes;
 import im.fitdiary.fitdiaryserver.user.entity.User;
 import im.fitdiary.fitdiaryserver.user.repository.UserRepository;
@@ -13,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
@@ -49,16 +52,51 @@ public class UserServiceImpl implements UserService {
         return new LoginUserRes(accessToken, refreshToken, user);
     }
 
+    @Transactional
+    @Override
+    public void logout(Long id) throws UserNotFoundException {
+        User user = userRepository.findAuthByUserId(id)
+                .orElseThrow(UserNotFoundException::new);
+        user.getAuth().updateRefreshToken(null);
+    }
+
+    @Transactional
+    @Override
+    public RefreshTokenRes refreshToken(Long id, String refreshToken) throws UnauthorizedException {
+        User user = userRepository.findAuthByUserId(id)
+                .orElseThrow(UnauthorizedException::new);
+        if (!user.getAuth().getRefreshToken().equals(refreshToken)) {
+            throw new UnauthorizedException();
+        }
+
+        String newAccessToken =
+                jwtService.createToken(RoleType.ROLE_USER_ACCESS, user.getId().toString());
+
+        // refreshToken 만료 한달 이내 재발급
+        LocalDateTime expiration = jwtService.getExpiration(refreshToken);
+        LocalDateTime now = LocalDateTime.now();
+        if (now.plusMonths(1).isAfter(expiration)) {
+            String newRefreshToken =
+                    jwtService.createToken(RoleType.ROLE_USER_REFRESH, user.getId().toString());
+            user.getAuth().updateRefreshToken(newRefreshToken);
+        }
+
+        return new RefreshTokenRes(newAccessToken, user.getAuth().getRefreshToken());
+    }
+
     @Transactional(readOnly = true)
     @Override
-    public UserRes findById(Long id) throws NotFoundException {
+    public UserRes findById(Long id) throws UserNotFoundException {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("user not found"));
+                .orElseThrow(UserNotFoundException::new);
         return new UserRes(user);
     }
 
+    @Transactional
     @Override
-    public void deleteById(Long id) {
-        userRepository.deleteById(id);
+    public void deleteById(Long id) throws UserNotFoundException {
+        User user = userRepository.findById(id)
+                .orElseThrow(UserNotFoundException::new);
+        userRepository.delete(user);
     }
 }

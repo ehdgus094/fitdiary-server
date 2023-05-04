@@ -3,9 +3,9 @@ package im.fitdiary.fitdiaryserver.exception.advice;
 import im.fitdiary.fitdiaryserver.common.dto.Response;
 import im.fitdiary.fitdiaryserver.config.ConfigProperties;
 import im.fitdiary.fitdiaryserver.config.properties.Mode;
-import im.fitdiary.fitdiaryserver.exception.InvalidLoginInfoException;
-import im.fitdiary.fitdiaryserver.exception.NotFoundException;
-import im.fitdiary.fitdiaryserver.exception.UnauthorizedException;
+import im.fitdiary.fitdiaryserver.exception.e401.InvalidLoginInfoException;
+import im.fitdiary.fitdiaryserver.exception.e404.NotFoundException;
+import im.fitdiary.fitdiaryserver.exception.e401.UnauthorizedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -14,6 +14,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -38,6 +39,12 @@ public class ExceptionAdvice {
     @ExceptionHandler(UnauthorizedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public Response unauthorized() {
+        return Response.failure("unauthorized");
+    }
+
+    @ExceptionHandler(MissingRequestHeaderException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public Response missingRequestHeader() {
         return Response.failure("unauthorized");
     }
 

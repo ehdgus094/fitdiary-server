@@ -1,12 +1,15 @@
 package im.fitdiary.fitdiaryserver.security.jwt.service;
 
 import im.fitdiary.fitdiaryserver.config.ConfigProperties;
+import im.fitdiary.fitdiaryserver.exception.e401.UnauthorizedException;
 import im.fitdiary.fitdiaryserver.security.jwt.model.RoleType;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -46,11 +49,20 @@ public class JwtServiceImpl implements JwtService {
         return Optional.empty();
     }
 
+    public LocalDateTime getExpiration(String token) throws UnauthorizedException {
+        return new Timestamp(this.extract(token)
+                .orElseThrow(UnauthorizedException::new)
+                .getExpiration()
+                .getTime()
+        ).toLocalDateTime();
+    }
+
     public String getType() {
         return TYPE;
     }
 
     private String unType(String token) throws JwtException {
+        if (token == null) throw new JwtException("wrong type");
         if (token.contains(TYPE)) return token.substring(TYPE.length());
         throw new JwtException("wrong type");
     }

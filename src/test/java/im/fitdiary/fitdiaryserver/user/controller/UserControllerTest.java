@@ -2,15 +2,10 @@ package im.fitdiary.fitdiaryserver.user.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import im.fitdiary.fitdiaryserver.config.ConfigProperties;
-import im.fitdiary.fitdiaryserver.security.CustomAuthenticationToken;
-import im.fitdiary.fitdiaryserver.security.CustomUserDetails;
 import im.fitdiary.fitdiaryserver.security.filter.JwtAuthenticationFilter;
-import im.fitdiary.fitdiaryserver.user.dto.CreateEmailUserReq;
-import im.fitdiary.fitdiaryserver.user.dto.LoginEmailUserReq;
-import im.fitdiary.fitdiaryserver.user.dto.LoginUserRes;
+import im.fitdiary.fitdiaryserver.user.dto.*;
 import im.fitdiary.fitdiaryserver.user.service.UserService;
 import im.fitdiary.fitdiaryserver.util.factory.user.UserFactory;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +16,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.BDDMockito.*;
@@ -47,14 +41,6 @@ class UserControllerTest {
     @MockBean
     UserService userService;
     private final String BASE_URI = "/user";
-
-    @BeforeAll
-    static void setAuthentication() {
-        // @UserId 사용을 위한 인증정보 추가
-        CustomUserDetails userDetails = new CustomUserDetails("1", null);
-        CustomAuthenticationToken auth = new CustomAuthenticationToken(userDetails.getAuthorities(), userDetails);
-        SecurityContextHolder.getContext().setAuthentication(auth);
-    }
 
     @Test
     @DisplayName("이메일 유저 생성")
@@ -86,7 +72,47 @@ class UserControllerTest {
                 .andExpectAll(
                         status().isOk(),
                         jsonPath("$.data.accessToken")
-                                .value(res.getAccessToken())
+                                .value(res.getAccessToken()),
+                        jsonPath("$.data.refreshToken")
+                                .value(res.getRefreshToken()),
+                        jsonPath("$.data.user.name")
+                                .value(res.getUser().getName()),
+                        jsonPath("$.data.user.birthYmd")
+                                .value(res.getUser().getBirthYmd())
+                )
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("로그아웃")
+    void logout() throws Exception {
+        // given
+
+        // when - then
+        mvc.perform(post(BASE_URI + "/logout"))
+                .andExpectAll(
+                        status().isOk()
+                )
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("토큰 갱신")
+    void refreshToken() throws Exception {
+        // given
+        RefreshTokenRes res = UserFactory.refreshTokenRes();
+        given(userService.refreshToken(any(), anyString()))
+                .willReturn(res);
+
+        // when - then
+        mvc.perform(post(BASE_URI + "/refresh-token")
+                        .header("Authorization", "token"))
+                .andExpectAll(
+                        status().isOk(),
+                        jsonPath("$.data.accessToken")
+                                .value(res.getAccessToken()),
+                        jsonPath("$.data.refreshToken")
+                                .value(res.getRefreshToken())
                 )
                 .andDo(print());
     }
@@ -95,9 +121,29 @@ class UserControllerTest {
     @DisplayName("조회")
     void find() throws Exception {
         // given
+        UserRes res = UserFactory.userRes();
+        given(userService.findById(any()))
+                .willReturn(res);
 
         // when - then
         mvc.perform(get(BASE_URI))
+                .andExpectAll(
+                        status().isOk(),
+                        jsonPath("$.data.name")
+                                .value(res.getName()),
+                        jsonPath("$.data.birthYmd")
+                                .value(res.getBirthYmd())
+                )
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("탈퇴")
+    void remove() throws Exception {
+        // given
+
+        // when - then
+        mvc.perform(delete(BASE_URI))
                 .andExpectAll(
                         status().isOk()
                 )

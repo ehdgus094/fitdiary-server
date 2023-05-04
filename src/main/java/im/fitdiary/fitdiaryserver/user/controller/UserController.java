@@ -2,10 +2,7 @@ package im.fitdiary.fitdiaryserver.user.controller;
 
 import im.fitdiary.fitdiaryserver.common.dto.Response;
 import im.fitdiary.fitdiaryserver.security.argumentresolver.UserId;
-import im.fitdiary.fitdiaryserver.user.dto.CreateEmailUserReq;
-import im.fitdiary.fitdiaryserver.user.dto.LoginEmailUserReq;
-import im.fitdiary.fitdiaryserver.user.dto.LoginUserRes;
-import im.fitdiary.fitdiaryserver.user.dto.UserRes;
+import im.fitdiary.fitdiaryserver.user.dto.*;
 import im.fitdiary.fitdiaryserver.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -31,9 +28,27 @@ public class UserController {
         return Response.success(loginUser);
     }
 
+    @PostMapping("/logout")
+    public Response logout(@UserId Long id) {
+        userService.logout(id);
+        return Response.success();
+    }
+
+    @PostMapping("/refresh-token")
+    public Response refreshToken(@UserId Long id, @RequestHeader("Authorization") String refreshToken) {
+        RefreshTokenRes res = userService.refreshToken(id, refreshToken);
+        return Response.success(res);
+    }
+
     @GetMapping
     public Response find(@UserId Long id) {
-        UserRes user = userService.findById(id);
-        return Response.success(user);
+        UserRes res = userService.findById(id);
+        return Response.success(res);
+    }
+
+    @DeleteMapping
+    public Response remove(@UserId Long id) {
+        userService.deleteById(id);
+        return Response.success();
     }
 }
