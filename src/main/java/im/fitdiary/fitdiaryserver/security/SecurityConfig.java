@@ -2,8 +2,7 @@ package im.fitdiary.fitdiaryserver.security;
 
 import im.fitdiary.fitdiaryserver.security.exception.CustomAccessDeniedHandler;
 import im.fitdiary.fitdiaryserver.security.exception.CustomAuthenticationEntryPoint;
-import im.fitdiary.fitdiaryserver.security.jwt.model.RoleType;
-import im.fitdiary.fitdiaryserver.security.filter.JwtAuthenticationFilter;
+import im.fitdiary.fitdiaryserver.security.jwt.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -38,7 +37,11 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                    .antMatchers(HttpMethod.POST, baseUri + "/user/login/**", baseUri + "/user/email")
+                    .antMatchers(HttpMethod.POST,
+                            baseUri + "/user/login/**",
+                            baseUri + "/user/email",
+                            baseUri + "/user/kakao"
+                    )
                         .permitAll()
                     .antMatchers(HttpMethod.POST, baseUri + "/user/refresh-token")
                         .hasRole(convert(RoleType.ROLE_USER_REFRESH))

@@ -7,7 +7,7 @@ import java.util.Collection;
 
 public class CustomAuthenticationToken extends AbstractAuthenticationToken {
 
-    private CustomUserDetails principal;
+    private final CustomUserDetails principal;
 
     public CustomAuthenticationToken(Collection<? extends GrantedAuthority> authorities, CustomUserDetails principal) {
         super(authorities);
@@ -23,5 +23,15 @@ public class CustomAuthenticationToken extends AbstractAuthenticationToken {
     @Override
     public Object getPrincipal() {
         return principal;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

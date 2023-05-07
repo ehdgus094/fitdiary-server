@@ -3,13 +3,14 @@ package im.fitdiary.fitdiaryserver.user.service;
 import im.fitdiary.fitdiaryserver.exception.e401.InvalidLoginInfoException;
 import im.fitdiary.fitdiaryserver.exception.e401.UnauthorizedException;
 import im.fitdiary.fitdiaryserver.exception.e404.UserNotFoundException;
-import im.fitdiary.fitdiaryserver.security.jwt.service.JwtService;
-import im.fitdiary.fitdiaryserver.security.jwt.model.RoleType;
-import im.fitdiary.fitdiaryserver.user.dto.LoginUserRes;
-import im.fitdiary.fitdiaryserver.user.dto.RefreshTokenRes;
-import im.fitdiary.fitdiaryserver.user.dto.UserRes;
-import im.fitdiary.fitdiaryserver.user.entity.User;
-import im.fitdiary.fitdiaryserver.user.repository.UserRepository;
+import im.fitdiary.fitdiaryserver.exception.e409.UserDuplicatedException;
+import im.fitdiary.fitdiaryserver.security.jwt.handler.JwtHandler;
+import im.fitdiary.fitdiaryserver.security.RoleType;
+import im.fitdiary.fitdiaryserver.user.data.entity.User;
+import im.fitdiary.fitdiaryserver.user.data.UserRepository;
+import im.fitdiary.fitdiaryserver.user.service.dto.AuthToken;
+import im.fitdiary.fitdiaryserver.user.service.dto.CreateUser;
+import im.fitdiary.fitdiaryserver.user.service.dto.LoginUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,37 +24,40 @@ import java.util.NoSuchElementException;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final JwtService jwtService;
+    private final JwtHandler jwtHandler;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    @Override
-    public void create(User user) {
-        user.getAuth().passwordEncode(passwordEncoder.encode(user.getAuth().getPassword()));
+    public User create(CreateUser createUser) throws UserDuplicatedException {
+        userRepository.findByLoginIdAndLoginType(createUser.getLoginId(), createUser.getLoginType())
+                        .ifPresent(user -> {
+                            throw new UserDuplicatedException();
+                        });
+        createUser.encodePassword(passwordEncoder);
+        User user = createUser.toEntity();
         userRepository.save(user);
+        return user;
     }
 
     @Transactional
-    @Override
-    public LoginUserRes login(String loginId, String password)
+    public AuthToken login(LoginUser loginUser)
             throws InvalidLoginInfoException, NoSuchElementException {
         User user = userRepository
-                .findByLoginId(loginId)
+                .findByLoginIdAndLoginType(loginUser.getLoginId(), loginUser.getLoginType())
                 .orElseThrow(InvalidLoginInfoException::new);
-        if (!passwordEncoder.matches(password, user.getAuth().getPassword())) {
+        if (!loginUser.hasValidPassword(user.getAuth().getPassword(), passwordEncoder)) {
             throw new InvalidLoginInfoException();
         }
 
         String accessToken =
-                jwtService.createToken(RoleType.ROLE_USER_ACCESS, user.getId().toString());
+                jwtHandler.createToken(RoleType.ROLE_USER_ACCESS, user.getId().toString());
         String refreshToken =
-                jwtService.createToken(RoleType.ROLE_USER_REFRESH, user.getId().toString());
+                jwtHandler.createToken(RoleType.ROLE_USER_REFRESH, user.getId().toString());
         user.getAuth().updateRefreshToken(refreshToken);
-        return new LoginUserRes(accessToken, refreshToken, user);
+        return new AuthToken(accessToken, refreshToken);
     }
 
     @Transactional
-    @Override
     public void logout(Long userId) throws UserNotFoundException {
         User user = userRepository.findAuthByUserId(userId)
                 .orElseThrow(UserNotFoundException::new);
@@ -61,39 +65,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    @Override
-    public RefreshTokenRes refreshToken(Long userId, String refreshToken) throws UnauthorizedException {
+    public AuthToken refreshToken(Long userId, String refreshToken) throws UnauthorizedException {
         User user = userRepository.findAuthByUserId(userId)
                 .orElseThrow(UnauthorizedException::new);
-        if (!user.getAuth().getRefreshToken().equals(refreshToken)) {
+        if (!user.getAuth().hasSameToken(refreshToken)) {
             throw new UnauthorizedException();
         }
 
-        String newAccessToken =
-                jwtService.createToken(RoleType.ROLE_USER_ACCESS, user.getId().toString());
-
-        // refreshToken 만료 한달 이내 재발급
-        LocalDateTime expiration = jwtService.getExpiration(refreshToken);
-        LocalDateTime now = LocalDateTime.now();
-        if (now.plusMonths(1).isAfter(expiration)) {
+        LocalDateTime expiration = jwtHandler.getExpiration(user.getAuth().getRefreshToken());
+        if (user.getAuth().isRefreshTokenAboutToExpire(expiration)) {
             String newRefreshToken =
-                    jwtService.createToken(RoleType.ROLE_USER_REFRESH, user.getId().toString());
+                    jwtHandler.createToken(RoleType.ROLE_USER_REFRESH, user.getId().toString());
             user.getAuth().updateRefreshToken(newRefreshToken);
         }
+        String newAccessToken =
+                jwtHandler.createToken(RoleType.ROLE_USER_ACCESS, user.getId().toString());
 
-        return new RefreshTokenRes(newAccessToken, user.getAuth().getRefreshToken());
+        return new AuthToken(newAccessToken, user.getAuth().getRefreshToken());
     }
 
     @Transactional(readOnly = true)
-    @Override
-    public UserRes findById(Long userId) throws UserNotFoundException {
-        User user = userRepository.findById(userId)
+    public User findById(Long userId) throws UserNotFoundException {
+        return userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
-        return new UserRes(user);
     }
 
     @Transactional
-    @Override
     public void deleteById(Long userId) throws UserNotFoundException {
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
