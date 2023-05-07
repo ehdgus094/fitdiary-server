@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -37,10 +38,16 @@ public class ExceptionAdvice {
         return Response.failure(e.getMessage());
     }
 
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public Response accessDenied() {
+        return Response.failure("unauthorized");
+    }
+
     @ExceptionHandler(UnauthorizedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public Response unauthorized() {
-        return Response.failure("unauthorized");
+    public Response unauthorized(UnauthorizedException e) {
+        return Response.failure(e.getMessage());
     }
 
     @ExceptionHandler(MissingRequestHeaderException.class)

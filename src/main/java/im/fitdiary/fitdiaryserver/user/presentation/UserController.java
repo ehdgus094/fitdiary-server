@@ -7,6 +7,7 @@ import im.fitdiary.fitdiaryserver.user.presentation.dto.*;
 import im.fitdiary.fitdiaryserver.user.service.UserService;
 import im.fitdiary.fitdiaryserver.user.service.dto.AuthToken;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -42,24 +43,28 @@ public class UserController {
         return Response.success(new LoginUserRes(token));
     }
 
+    @Secured("ROLE_USER_ACCESS")
     @PostMapping("/logout")
     public Response logout(@UserId Long id) {
         userService.logout(id);
         return Response.success();
     }
 
+    @Secured("ROLE_USER_REFRESH")
     @PostMapping("/refresh-token")
     public Response refreshToken(@UserId Long id, @RequestHeader("Authorization") String refreshToken) {
         AuthToken token = userService.refreshToken(id, refreshToken);
         return Response.success(new RefreshTokenUserRes(token));
     }
 
+    @Secured("ROLE_USER_ACCESS")
     @GetMapping
     public Response find(@UserId Long id) {
         User user = userService.findById(id);
         return Response.success(new UserRes(user));
     }
 
+    @Secured("ROLE_USER_ACCESS")
     @DeleteMapping
     public Response remove(@UserId Long id) {
         userService.deleteById(id);
