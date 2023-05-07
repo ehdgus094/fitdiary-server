@@ -14,6 +14,6 @@ public class LoginEmailUser extends LoginUser {
 
     @Override
     public boolean hasValidPassword(String passwordFromDb, PasswordEncoder passwordEncoder) {
-        return passwordEncoder.matches(this.password, passwordFromDb);
+        return passwordEncoder.matches(password, passwordFromDb);
     }
 }

@@ -27,13 +27,18 @@ class JwtHandlerImplTest {
     @Nested
     @DisplayName("createToken")
     class CreateToken {
-        private final String SUBJECT = "subject";
+        private String subject;
+
+        @BeforeEach
+        void init() {
+            subject = "subject";
+        }
 
         @Test
         @DisplayName("userAccessToken")
         void userAccessToken() {
             // when
-            String token = jwtHandler.createToken(RoleType.ROLE_USER_ACCESS, SUBJECT);
+            String token = jwtHandler.createToken(RoleType.ROLE_USER_ACCESS, subject);
 
             // then
             assertThat(token)
@@ -46,7 +51,7 @@ class JwtHandlerImplTest {
         @DisplayName("userRefreshToken")
         void userRefreshToken() {
             // when
-            String token = jwtHandler.createToken(RoleType.ROLE_USER_REFRESH, SUBJECT);
+            String token = jwtHandler.createToken(RoleType.ROLE_USER_REFRESH, subject);
 
             // then
             assertThat(token)
@@ -60,12 +65,13 @@ class JwtHandlerImplTest {
     @DisplayName("getSubject")
     class GetSubject {
 
-        private final String SUBJECT = "subject";
+        private String subject;
         private String token;
 
         @BeforeEach
-        void create() {
-            token = jwtHandler.createToken(RoleType.ROLE_USER_ACCESS, SUBJECT);
+        void init() {
+            subject = "subject";
+            token = jwtHandler.createToken(RoleType.ROLE_USER_ACCESS, subject);
         }
 
         @Test
@@ -75,7 +81,7 @@ class JwtHandlerImplTest {
             String foundSubject = jwtHandler.getSubject(token);
 
             // then
-            assertThat(foundSubject).isEqualTo(SUBJECT);
+            assertThat(foundSubject).isEqualTo(subject);
         }
 
         @Test
@@ -104,12 +110,14 @@ class JwtHandlerImplTest {
     @DisplayName("getRoleType")
     class GetRoleType {
 
-        private final RoleType roleType = RoleType.ROLE_USER_ACCESS;
+        private RoleType roleType;
         private String token;
 
         @BeforeEach
-        void create() {
-            token = jwtHandler.createToken(roleType, "subject");
+        void init() {
+            roleType = RoleType.ROLE_USER_ACCESS;
+            String subject = "subject";
+            token = jwtHandler.createToken(roleType, subject);
         }
 
         @Test

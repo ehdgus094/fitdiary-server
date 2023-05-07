@@ -32,11 +32,11 @@ public class CreateEmailUserReq {
 
     public CreateEmailUser toServiceDto() {
         return new CreateEmailUser(
-                this.loginId,
-                this.password,
-                this.name,
-                this.birthYmd,
-                this.gender
+                loginId,
+                password,
+                name,
+                birthYmd,
+                gender
         );
     }
 }

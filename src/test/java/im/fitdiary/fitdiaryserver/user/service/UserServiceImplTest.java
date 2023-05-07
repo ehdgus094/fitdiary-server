@@ -12,6 +12,7 @@ import im.fitdiary.fitdiaryserver.user.service.dto.AuthToken;
 import im.fitdiary.fitdiaryserver.user.service.dto.CreateUser;
 import im.fitdiary.fitdiaryserver.user.service.dto.LoginUser;
 import im.fitdiary.fitdiaryserver.util.factory.user.UserFactory;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -48,20 +49,29 @@ class UserServiceImplTest {
         @DisplayName("email")
         class Email {
 
+            private CreateUser createUser;
+            private User user;
+            private String encodedPassword;
+
+            @BeforeEach
+            void init() {
+                createUser = UserFactory.createEmailUser();
+                user = UserFactory.emailUser();
+                encodedPassword = "encodedPassword";
+            }
+
             @Test
             @DisplayName("fail_duplicated")
             void fail_duplicated() {
                 // given
-                CreateUser duplicatedUser = UserFactory.createEmailUser();
-                User user = UserFactory.emailUser();
                 given(userRepository.findByLoginIdAndLoginType(
-                        duplicatedUser.getLoginId(),
-                        duplicatedUser.getLoginType()
+                        createUser.getLoginId(),
+                        createUser.getLoginType()
                 )).willReturn(Optional.of(user));
 
                 // when - then
                 assertThatThrownBy(() ->
-                        userService.create(duplicatedUser)
+                        userService.create(createUser)
                 ).isInstanceOf(UserDuplicatedException.class);
             }
 
@@ -69,8 +79,6 @@ class UserServiceImplTest {
             @DisplayName("success")
             void success() {
                 // given
-                CreateUser createUser = UserFactory.createEmailUser();
-                String encodedPassword = "encodedPassword";
                 given(passwordEncoder.encode(anyString())).willReturn(encodedPassword);
 
                 // when
@@ -87,29 +95,33 @@ class UserServiceImplTest {
         @DisplayName("kakao")
         class Kakao {
 
+            private CreateUser createUser;
+            private User user;
+
+            @BeforeEach
+            void init() {
+                createUser = UserFactory.createKakaoUser();
+                user = UserFactory.kakaoUser();
+            }
+
             @Test
             @DisplayName("fail_duplicated")
             void fail_duplicated() {
                 // given
-                CreateUser duplicatedUser = UserFactory.createKakaoUser();
-                User user = UserFactory.kakaoUser();
                 given(userRepository.findByLoginIdAndLoginType(
-                        duplicatedUser.getLoginId(),
-                        duplicatedUser.getLoginType()
+                        createUser.getLoginId(),
+                        createUser.getLoginType()
                 )).willReturn(Optional.of(user));
 
                 // when - then
                 assertThatThrownBy(() ->
-                        userService.create(duplicatedUser)
+                        userService.create(createUser)
                 ).isInstanceOf(UserDuplicatedException.class);
             }
 
             @Test
             @DisplayName("success")
             void success() {
-                // given
-                CreateUser createUser = UserFactory.createKakaoUser();
-
                 // when
                 User createdUser = userService.create(createUser);
 
@@ -128,12 +140,23 @@ class UserServiceImplTest {
         @DisplayName("email")
         class Email {
 
+            private LoginUser loginUser;
+            private String password;
+            private User user;
+            private String token;
+
+            @BeforeEach
+            void init() {
+                loginUser = UserFactory.loginEmailUser();
+                password = (String) getField(loginUser, "password");
+                user = UserFactory.emailUser();
+                setField(user, "id", 1L);
+                token = "token";
+            }
+
             @Test
             @DisplayName("fail_wrongId")
             void fail_wrongId() {
-                // given
-                LoginUser loginUser = UserFactory.loginEmailUser();
-
                 // when - then
                 assertThatThrownBy(() ->
                         userService.login(loginUser)
@@ -144,10 +167,6 @@ class UserServiceImplTest {
             @DisplayName("fail_wrongPassword")
             void fail_wrongPassword() {
                 // given
-                LoginUser loginUser = UserFactory.loginEmailUser();
-                String password = (String) getField(loginUser, "password");
-                User user = UserFactory.emailUser();
-
                 given(userRepository.findByLoginIdAndLoginType(
                         loginUser.getLoginId(),
                         loginUser.getLoginType()
@@ -165,12 +184,6 @@ class UserServiceImplTest {
             @DisplayName("success")
             void success() {
                 // given
-                LoginUser loginUser = UserFactory.loginEmailUser();
-                String password = (String) getField(loginUser, "password");
-                User user = UserFactory.emailUser();
-                setField(user, "id", 1L);
-                String token = "token";
-
                 given(userRepository.findByLoginIdAndLoginType(
                         loginUser.getLoginId(),
                         loginUser.getLoginType()
@@ -193,12 +206,21 @@ class UserServiceImplTest {
         @DisplayName("kakao")
         class Kakao {
 
+            private LoginUser loginUser;
+            private User user;
+            private String token;
+
+            @BeforeEach
+            void init() {
+                loginUser = UserFactory.loginKakaoUser();
+                user = UserFactory.kakaoUser();
+                setField(user, "id", 1L);
+                token = "token";
+            }
+
             @Test
             @DisplayName("fail_wrongId")
             void fail_wrongId() {
-                // given
-                LoginUser loginUser = UserFactory.loginKakaoUser();
-
                 // when - then
                 assertThatThrownBy(() ->
                         userService.login(loginUser)
@@ -209,11 +231,6 @@ class UserServiceImplTest {
             @DisplayName("success")
             void success() {
                 // given
-                LoginUser loginUser = UserFactory.loginKakaoUser();
-                User user = UserFactory.kakaoUser();
-                setField(user, "id", 1L);
-                String token = "token";
-
                 given(userRepository.findByLoginIdAndLoginType(
                         loginUser.getLoginId(),
                         loginUser.getLoginType()
@@ -236,15 +253,24 @@ class UserServiceImplTest {
     @DisplayName("logout")
     class Logout {
 
+        private Long userId;
+        private User user;
+
+        @BeforeEach
+        void init() {
+            userId = 1L;
+            user = UserFactory.emailUser();
+            String oldRefreshToken = "refreshToken";
+            setField(user, "id", userId);
+            setField(user.getAuth(), "refreshToken", oldRefreshToken);
+        }
+
         @Test
         @DisplayName("fail_wrongId")
         void fail_wrongId() {
-            // given
-            Long wrongId = 1L;
-
             // when - then
             assertThatThrownBy(() ->
-                    userService.logout(wrongId)
+                    userService.logout(userId)
             ).isInstanceOf(UserNotFoundException.class);
         }
 
@@ -252,12 +278,6 @@ class UserServiceImplTest {
         @DisplayName("success")
         void success() {
             // given
-            User user = UserFactory.emailUser();
-            Long userId = 1L;
-            String oldRefreshToken = "refreshToken";
-            setField(user, "id", userId);
-            setField(user.getAuth(), "refreshToken", oldRefreshToken);
-
             given(userRepository.findAuthByUserId(userId))
                     .willReturn(Optional.of(user));
 
@@ -273,16 +293,29 @@ class UserServiceImplTest {
     @DisplayName("refreshToken")
     class RefreshToken {
 
+        private Long userId;
+        private User user;
+        private String refreshToken;
+        private String newRefreshToken;
+        private String newAccessToken;
+
+        @BeforeEach
+        void init() {
+            userId = 1L;
+            user = UserFactory.emailUser();
+            refreshToken = "refreshToken";
+            setField(user.getAuth(), "refreshToken", refreshToken);
+            setField(user, "id", userId);
+            newRefreshToken = "newRefreshToken";
+            newAccessToken = "newAccessToken";
+        }
+
         @Test
         @DisplayName("fail_wrongId")
         void fail_wrongId() {
-            // given
-            Long wrongId = 1L;
-            String refreshToken = "refreshToken";
-
             // when - then
             assertThatThrownBy(() ->
-                    userService.refreshToken(wrongId, refreshToken)
+                    userService.refreshToken(userId, refreshToken)
             ).isInstanceOf(UnauthorizedException.class);
         }
 
@@ -290,14 +323,9 @@ class UserServiceImplTest {
         @DisplayName("fail_wrongRefreshToken")
         void fail_wrongRefreshToken() {
             // given
-            User user = UserFactory.emailUser();
-            Long userId = 1L;
-            String refreshToken = "refreshToken";
-            String wrongRefreshToken = "wrongRefreshToken";
-            setField(user.getAuth(), "refreshToken", refreshToken);
-
             given(userRepository.findAuthByUserId(userId))
                     .willReturn(Optional.of(user));
+            String wrongRefreshToken = "wrongRefreshToken";
 
             // when - then
             assertThatThrownBy(() ->
@@ -309,11 +337,6 @@ class UserServiceImplTest {
         @DisplayName("fail_refreshTokenExpired")
         void fail_refreshTokenExpired() {
             // given
-            User user = UserFactory.emailUser();
-            Long userId = 1L;
-            String refreshToken = "refreshToken";
-            setField(user.getAuth(), "refreshToken", refreshToken);
-
             given(userRepository.findAuthByUserId(userId))
                     .willReturn(Optional.of(user));
             given(jwtHandler.getExpiration(refreshToken))
@@ -329,22 +352,14 @@ class UserServiceImplTest {
         @DisplayName("success_refreshTokenAboutToExpire")
         void success_refreshTokenAboutToExpire() {
             // given
-            User user = UserFactory.emailUser();
-            Long userId = 1L;
-            String refreshToken = "refreshToken";
-            setField(user, "id", userId);
-            setField(user.getAuth(), "refreshToken", refreshToken);
-            String newAccessToken = "newAccessToken";
-            String newRefreshToken = "newRefreshToken";
-
             given(userRepository.findAuthByUserId(userId))
                     .willReturn(Optional.of(user));
             given(jwtHandler.getExpiration(refreshToken))
                     .willReturn(LocalDateTime.now().plusDays(29));
-            given(jwtHandler.createToken(eq(RoleType.ROLE_USER_ACCESS), any()))
-                    .willReturn(newAccessToken);
             given(jwtHandler.createToken(eq(RoleType.ROLE_USER_REFRESH), any()))
                     .willReturn(newRefreshToken);
+            given(jwtHandler.createToken(eq(RoleType.ROLE_USER_ACCESS), any()))
+                    .willReturn(newAccessToken);
 
             // when
             AuthToken authToken = userService.refreshToken(userId, refreshToken);
@@ -358,14 +373,6 @@ class UserServiceImplTest {
         @DisplayName("success_refreshTokenNotModified")
         void success_refreshTokenNotModified() {
             // given
-            User user = UserFactory.emailUser();
-            Long userId = 1L;
-            String refreshToken = "refreshToken";
-            setField(user, "id", userId);
-            setField(user.getAuth(), "refreshToken", refreshToken);
-            String newAccessToken = "newAccessToken";
-            String newRefreshToken = "newRefreshToken";
-
             given(userRepository.findAuthByUserId(userId))
                     .willReturn(Optional.of(user));
             given(jwtHandler.getExpiration(refreshToken))
@@ -386,14 +393,20 @@ class UserServiceImplTest {
     @DisplayName("findById")
     class FindById {
 
+        private Long userId;
+        private User user;
+
+        @BeforeEach
+        void init() {
+            userId = 1L;
+            user = UserFactory.emailUser();
+        }
+
         @Test
         @DisplayName("fail_wrongId")
         void fail_wrongId() {
-            // given
-            Long wrongId = 1L;
-
             // when - then
-            assertThatThrownBy(() -> userService.findById(wrongId))
+            assertThatThrownBy(() -> userService.findById(userId))
                     .isInstanceOf(UserNotFoundException.class);
         }
 
@@ -401,8 +414,6 @@ class UserServiceImplTest {
         @DisplayName("success")
         void success() {
             // given
-            Long userId = 1L;
-            User user = UserFactory.emailUser();
             given(userRepository.findById(userId))
                     .willReturn(Optional.of(user));
 
@@ -418,14 +429,20 @@ class UserServiceImplTest {
     @DisplayName("deleteById")
     class DeleteById {
 
+        private Long userId;
+        private User user;
+
+        @BeforeEach
+        void init() {
+            userId = 1L;
+            user = UserFactory.emailUser();
+        }
+
         @Test
         @DisplayName("fail_wrongId")
         void fail_wrongId() {
-            // given
-            Long wrongId = 1L;
-
             // when - then
-            assertThatThrownBy(() -> userService.deleteById(wrongId))
+            assertThatThrownBy(() -> userService.deleteById(userId))
                     .isInstanceOf(UserNotFoundException.class);
         }
 
@@ -433,9 +450,7 @@ class UserServiceImplTest {
         @DisplayName("success")
         void success() {
             // given
-            Long userId = 1L;
-            User user = UserFactory.emailUser();
-            given(userRepository.findById(userId))
+           given(userRepository.findById(userId))
                     .willReturn(Optional.of(user));
 
             // when - then

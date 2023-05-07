@@ -12,6 +12,6 @@ public class LoginKakaoUserReq {
     private String loginId;
 
     public LoginKakaoUser toServiceDto() {
-        return new LoginKakaoUser(this.loginId);
+        return new LoginKakaoUser(loginId);
     }
 }

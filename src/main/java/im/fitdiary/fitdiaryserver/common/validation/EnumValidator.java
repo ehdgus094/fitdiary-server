@@ -9,20 +9,20 @@ public class EnumValidator implements ConstraintValidator<Enum, Object> {
 
     @Override
     public void initialize(Enum constraintAnnotation) {
-        this.annotation = constraintAnnotation;
+        annotation = constraintAnnotation;
     }
 
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
         boolean result = false;
 
-        Object[] enumValues = this.annotation.enumClass().getEnumConstants();
+        Object[] enumValues = annotation.enumClass().getEnumConstants();
         if (value == null) {
             result = true;
         } else if (enumValues != null) {
             for (Object enumValue : enumValues) {
                 if (value.equals(enumValue.toString())
-                        || (this.annotation.ignoreCase() && value.toString().equalsIgnoreCase(enumValue.toString()))) {
+                        || (annotation.ignoreCase() && value.toString().equalsIgnoreCase(enumValue.toString()))) {
                     result = true;
                     break;
                 }

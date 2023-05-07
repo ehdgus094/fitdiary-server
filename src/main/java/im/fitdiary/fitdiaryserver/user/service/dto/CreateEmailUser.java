@@ -17,7 +17,7 @@ public class CreateEmailUser extends CreateUser {
 
     @Override
     public void encodePassword(PasswordEncoder passwordEncoder) {
-        this.password = passwordEncoder.encode(this.password);
+        password = passwordEncoder.encode(password);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class CreateEmailUser extends CreateUser {
         return User.create(
                 UserAuth.createEmailAuth(
                         super.getLoginId(),
-                        this.password
+                        password
                 ),
                 super.getName(),
                 super.getBirthYmd(),

@@ -11,8 +11,8 @@ public class UserRes {
     private final String email;
 
     public UserRes(User user) {
-        this.name = user.getName();
-        this.birthYmd = user.getBirthYmd();
-        this.email = user.getEmail();
+        name = user.getName();
+        birthYmd = user.getBirthYmd();
+        email = user.getEmail();
     }
 }

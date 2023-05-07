@@ -98,7 +98,7 @@ class UserRepositoryTest {
         private User user;
 
         @BeforeEach
-        void create() {
+        void init() {
             user = UserFactory.emailUser();
             userRepository.save(user);
         }
@@ -160,7 +160,7 @@ class UserRepositoryTest {
         private User user;
 
         @BeforeEach
-        void create() {
+        void init() {
             user = UserFactory.emailUser();
             userRepository.save(user);
         }

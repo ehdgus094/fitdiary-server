@@ -21,8 +21,8 @@ public class JwtHandlerImpl implements JwtHandler {
     private final ConfigProperties properties;
 
     public String createToken(RoleType roleType, String subject) throws NoSuchElementException {
-        String secret = this.getSecret(roleType).orElseThrow();
-        Long maxAgeSeconds = this.getMaxAgeSeconds(roleType).orElseThrow();
+        String secret = getSecret(roleType).orElseThrow();
+        Long maxAgeSeconds = getMaxAgeSeconds(roleType).orElseThrow();
         Claims claims = Jwts.claims().setSubject(subject);
         Date now = new Date();
 
@@ -35,13 +35,13 @@ public class JwtHandlerImpl implements JwtHandler {
     }
 
     public String getSubject(String token) throws UnauthorizedException {
-        return this.extract(token)
+        return extract(token)
                 .orElseThrow(UnauthorizedException::new)
                 .getSubject();
     }
 
     public RoleType getRoleType(String token) throws UnauthorizedException {
-        String audience = this.extract(token)
+        String audience = extract(token)
                 .orElseThrow(UnauthorizedException::new)
                 .getAudience();
         RoleType roleType = RoleType.from(audience);
@@ -50,7 +50,7 @@ public class JwtHandlerImpl implements JwtHandler {
     }
 
     public LocalDateTime getExpiration(String token) throws UnauthorizedException {
-        return new Timestamp(this.extract(token)
+        return new Timestamp(extract(token)
                 .orElseThrow(UnauthorizedException::new)
                 .getExpiration()
                 .getTime()
@@ -64,10 +64,10 @@ public class JwtHandlerImpl implements JwtHandler {
     private Optional<Claims> extract(String token) {
         for (RoleType roleType : RoleType.values()) {
             try {
-                String secret = this.getSecret(roleType).orElseThrow();
+                String secret = getSecret(roleType).orElseThrow();
                 return Optional.of(Jwts.parser()
                         .setSigningKey(secret)
-                        .parseClaimsJws(this.unType(token))
+                        .parseClaimsJws(unType(token))
                         .getBody()
                         .setAudience(roleType.toString()));
             } catch (JwtException | NoSuchElementException ignored) {}

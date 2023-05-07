@@ -17,6 +17,6 @@ public class LoginEmailUserReq {
     private String password;
 
     public LoginEmailUser toServiceDto() {
-        return new LoginEmailUser(this.loginId, this.password);
+        return new LoginEmailUser(loginId, password);
     }
 }

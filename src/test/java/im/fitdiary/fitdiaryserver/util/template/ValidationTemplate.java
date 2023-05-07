@@ -16,7 +16,7 @@ public class ValidationTemplate<T> {
 
     public ValidationTemplate(T dto) {
         this.dto = dto;
-        this.validator = Validation.buildDefaultValidatorFactory().getValidator();
+        validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
 
     public void success() {

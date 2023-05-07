@@ -5,7 +5,9 @@ import im.fitdiary.fitdiaryserver.security.CustomAuthenticationToken;
 import im.fitdiary.fitdiaryserver.security.CustomUserDetails;
 import im.fitdiary.fitdiaryserver.security.RoleType;
 import im.fitdiary.fitdiaryserver.security.jwt.handler.JwtHandler;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -35,47 +37,60 @@ class JwtAuthenticationFilterTest {
     @InjectMocks
     JwtAuthenticationFilter filter;
 
-    @Test
-    @DisplayName("doFilterInternal success")
-    void doFilterInternalSuccess() throws Exception {
-        // given
-        String token = "token";
-        String subject = "1";
-        RoleType roleType = RoleType.ROLE_USER_ACCESS;
-        given(request.getHeader("Authorization"))
-                .willReturn(token);
-        given(jwtHandler.getSubject(token))
-                .willReturn(subject);
-        given(jwtHandler.getRoleType(token))
-                .willReturn(roleType);
+    @Nested
+    @DisplayName("doFilterInternal")
+    class DoFilterInternal {
 
-        // when
-        filter.doFilterInternal(request, response, chain);
-        Authentication authentication =
-                SecurityContextHolder.getContext().getAuthentication();
+        private String token;
+        private String subject;
+        private RoleType roleType;
 
-        // then
-        assertThat(authentication).isInstanceOf(CustomAuthenticationToken.class);
-        assertThat(((CustomUserDetails) authentication.getPrincipal()).getUsername())
-                .isEqualTo(subject);
-    }
+        @BeforeEach
+        void init() {
+            SecurityContextHolder.getContext().setAuthentication(null);
+            token = "token";
+            subject = "subject";
+            roleType = RoleType.ROLE_USER_ACCESS;
+        }
 
-    @Test
-    @DisplayName("doFilterInternal fail")
-    void doFilterInternalFail() throws Exception {
-        // given
-        String wrongToken = "wrongToken";
-        given(request.getHeader("Authorization"))
-                .willReturn(wrongToken);
-        given(jwtHandler.getSubject(wrongToken))
-                .willThrow(UnauthorizedException.class);
+        @Test
+        @DisplayName("fail")
+        void fail() throws Exception {
+            // given
+            given(request.getHeader("Authorization"))
+                    .willReturn(token);
+            given(jwtHandler.getSubject(token))
+                    .willThrow(UnauthorizedException.class);
 
-        // when
-        filter.doFilterInternal(request, response, chain);
-        Authentication authentication =
-                SecurityContextHolder.getContext().getAuthentication();
+            // when
+            filter.doFilterInternal(request, response, chain);
+            Authentication authentication =
+                    SecurityContextHolder.getContext().getAuthentication();
 
-        // then
-        assertThat(authentication).isNull();
+            // then
+            assertThat(authentication).isNull();
+        }
+
+        @Test
+        @DisplayName("success")
+        void success() throws Exception {
+            // given
+            given(request.getHeader("Authorization"))
+                    .willReturn(token);
+            given(jwtHandler.getSubject(token))
+                    .willReturn(subject);
+            given(jwtHandler.getRoleType(token))
+                    .willReturn(roleType);
+
+            // when
+            filter.doFilterInternal(request, response, chain);
+            Authentication authentication =
+                    SecurityContextHolder.getContext().getAuthentication();
+
+            // then
+            assertThat(authentication).isInstanceOf(CustomAuthenticationToken.class);
+            assertThat(((CustomUserDetails) authentication.getPrincipal()).getUsername())
+                    .isEqualTo(subject);
+        }
     }
 }

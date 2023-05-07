@@ -121,8 +121,6 @@ class UserControllerTest {
     @Test
     @DisplayName("logout")
     void logout() throws Exception {
-        // given
-
         // when - then
         mvc.perform(post(BASE_URI + "/logout"))
                 .andExpect(status().isOk())
@@ -175,8 +173,6 @@ class UserControllerTest {
     @Test
     @DisplayName("remove")
     void remove() throws Exception {
-        // given
-
         // when - then
         mvc.perform(delete(BASE_URI))
                 .andExpectAll(

@@ -10,7 +10,7 @@ public class RefreshTokenUserRes {
     private final String refreshToken;
 
     public RefreshTokenUserRes(AuthToken authToken) {
-        this.accessToken = authToken.getAccessToken();
-        this.refreshToken = authToken.getRefreshToken();
+        accessToken = authToken.getAccessToken();
+        refreshToken = authToken.getRefreshToken();
     }
 }

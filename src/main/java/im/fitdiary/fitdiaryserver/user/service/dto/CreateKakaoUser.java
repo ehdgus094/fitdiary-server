@@ -27,7 +27,7 @@ public class CreateKakaoUser extends CreateUser {
                 super.getName(),
                 super.getBirthYmd(),
                 super.getGender(),
-                this.email
+                email
         );
     }
 }

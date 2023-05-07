@@ -33,11 +33,11 @@ public class CreateKakaoUserReq {
 
     public CreateKakaoUser toServiceDto() {
         return new CreateKakaoUser(
-                this.loginId,
-                this.name,
-                this.birthYmd,
-                this.gender,
-                this.email
+                loginId,
+                name,
+                birthYmd,
+                gender,
+                email
         );
     }
 }
