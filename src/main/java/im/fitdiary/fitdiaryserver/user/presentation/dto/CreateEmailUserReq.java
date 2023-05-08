@@ -4,12 +4,10 @@ import im.fitdiary.fitdiaryserver.common.validation.Enum;
 import im.fitdiary.fitdiaryserver.user.data.entity.Gender;
 import im.fitdiary.fitdiaryserver.user.service.dto.CreateEmailUser;
 import lombok.Getter;
-import lombok.ToString;
 
 import javax.validation.constraints.*;
 
 @Getter
-@ToString
 public class CreateEmailUserReq {
 
     @NotBlank(message = "loginId should not be empty")
