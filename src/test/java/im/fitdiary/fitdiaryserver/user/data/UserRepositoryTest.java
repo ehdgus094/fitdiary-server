@@ -25,48 +25,53 @@ import static org.assertj.core.api.Assertions.*;
 class UserRepositoryTest {
 
     @Autowired
-    UserRepository userRepository;
+    UserRepository repository;
     @Autowired
     EntityManager em;
 
-    @Test
-    @DisplayName("createEmailUser")
-    void createEmailUser() {
-        // given
-        User user = UserFactory.emailUser();
-        userRepository.save(user);
-        em.flush();
-        em.clear();
+    @Nested
+    @DisplayName("create")
+    class Create {
 
-        // when
-        Optional<User> foundUser = userRepository.findById(user.getId());
+        @Test
+        @DisplayName("createEmail")
+        void createEmail() {
+            // given
+            User user = UserFactory.emailUser();
+            repository.save(user);
+            em.flush();
+            em.clear();
 
-        // then
-        assertThat(foundUser).isPresent();
-        assertThat(foundUser.get().getAuth().getLoginType()).isEqualTo(LoginType.EMAIL);
-        assertThat(foundUser.get().getAuth().getLoginId())
-                .isEqualTo(foundUser.get().getEmail());
-        assertThat(foundUser.get().getAuth().getPassword()).isNotNull();
-        assertThat(foundUser.get().getAuth().getRefreshToken()).isNull();
-    }
+            // when
+            Optional<User> foundUser = repository.findById(user.getId());
 
-    @Test
-    @DisplayName("createKakaoUser")
-    void createKakaoUser() {
-        // given
-        User user = UserFactory.kakaoUser();
-        userRepository.save(user);
-        em.flush();
-        em.clear();
+            // then
+            assertThat(foundUser).isPresent();
+            assertThat(foundUser.get().getAuth().getLoginType()).isEqualTo(LoginType.EMAIL);
+            assertThat(foundUser.get().getAuth().getLoginId())
+                    .isEqualTo(foundUser.get().getEmail());
+            assertThat(foundUser.get().getAuth().getPassword()).isNotNull();
+            assertThat(foundUser.get().getAuth().getRefreshToken()).isNull();
+        }
 
-        // when
-        Optional<User> foundUser = userRepository.findById(user.getId());
+        @Test
+        @DisplayName("createKakao")
+        void createKakao() {
+            // given
+            User user = UserFactory.kakaoUser();
+            repository.save(user);
+            em.flush();
+            em.clear();
 
-        // then
-        assertThat(foundUser).isPresent();
-        assertThat(foundUser.get().getAuth().getLoginType()).isEqualTo(LoginType.KAKAO);
-        assertThat(foundUser.get().getAuth().getPassword()).isNull();
-        assertThat(foundUser.get().getAuth().getRefreshToken()).isNull();
+            // when
+            Optional<User> foundUser = repository.findById(user.getId());
+
+            // then
+            assertThat(foundUser).isPresent();
+            assertThat(foundUser.get().getAuth().getLoginType()).isEqualTo(LoginType.KAKAO);
+            assertThat(foundUser.get().getAuth().getPassword()).isNull();
+            assertThat(foundUser.get().getAuth().getRefreshToken()).isNull();
+        }
     }
 
     @Test
@@ -74,12 +79,12 @@ class UserRepositoryTest {
     void softDelete() {
         // given
         User user = UserFactory.emailUser();
-        userRepository.save(user);
+        repository.save(user);
         em.flush();
         em.clear();
 
         // when
-        userRepository.delete(user);
+        repository.delete(user);
         User foundUser = (User) em.createNativeQuery(
                 "select * from user where id = :id",
                         User.class
@@ -100,7 +105,7 @@ class UserRepositoryTest {
         @BeforeEach
         void init() {
             user = UserFactory.emailUser();
-            userRepository.save(user);
+            repository.save(user);
         }
 
         @Test
@@ -108,7 +113,7 @@ class UserRepositoryTest {
         void found() {
             // when
             Optional<User> foundUser =
-                    userRepository.findByLoginIdAndLoginType(
+                    repository.findByLoginIdAndLoginType(
                             user.getAuth().getLoginId(),
                             user.getAuth().getLoginType()
                     );
@@ -126,7 +131,7 @@ class UserRepositoryTest {
 
             // when
             Optional<User> foundUser =
-                    userRepository.findByLoginIdAndLoginType(
+                    repository.findByLoginIdAndLoginType(
                             wrongLoginId,
                             user.getAuth().getLoginType()
                     );
@@ -143,7 +148,7 @@ class UserRepositoryTest {
 
             // when
             Optional<User> foundUser =
-                    userRepository.findByLoginIdAndLoginType(
+                    repository.findByLoginIdAndLoginType(
                             user.getAuth().getLoginId(),
                             wrongLoginType
                     );
@@ -162,14 +167,14 @@ class UserRepositoryTest {
         @BeforeEach
         void init() {
             user = UserFactory.emailUser();
-            userRepository.save(user);
+            repository.save(user);
         }
 
         @Test
         @DisplayName("found")
         void found() {
             // when
-            Optional<User> foundUser = userRepository.findAuthByUserId(user.getId());
+            Optional<User> foundUser = repository.findAuthByUserId(user.getId());
 
             // then
             assertThat(foundUser).isPresent();
@@ -183,7 +188,7 @@ class UserRepositoryTest {
             Long wrongId = 1000000L;
 
             // when
-            Optional<User> foundUser = userRepository.findAuthByUserId(wrongId);
+            Optional<User> foundUser = repository.findAuthByUserId(wrongId);
 
             // then
             assertThat(foundUser).isNotPresent();
