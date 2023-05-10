@@ -1,6 +1,7 @@
 package im.fitdiary.fitdiaryserver.bodylog.presentation.dto;
 
 import im.fitdiary.fitdiaryserver.bodylog.service.dto.CreateBodyLog;
+import im.fitdiary.fitdiaryserver.common.validation.PastOrPresentTimestamp;
 import lombok.Getter;
 
 import javax.validation.constraints.Max;
@@ -28,12 +29,16 @@ public class CreateBodyLogReq {
     @Positive(message = "bodyFat should be positive")
     private BigDecimal bodyFat;
 
+    @PastOrPresentTimestamp(message = "measuredAt must be past or present")
+    private Long measuredAt;
+
     public CreateBodyLog toServiceDto() {
         return new CreateBodyLog(
                 height,
                 weight,
                 muscleMass,
-                bodyFat
+                bodyFat,
+                measuredAt
         );
     }
 }

@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -16,6 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString
+@DynamicInsert
 @Where(clause = "deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE body_log SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
 public class BodyLog extends BaseEntity {
@@ -38,17 +41,22 @@ public class BodyLog extends BaseEntity {
     @Column(precision = 5, scale = 2)
     private BigDecimal bodyFat; // %
 
+    @Column(nullable = false)
+    @ColumnDefault("CURRENT_TIMESTAMP")
+    private LocalDateTime measuredAt;
+
     private LocalDateTime deletedAt;
 
-    public static BodyLog create(Long userId, BigDecimal height, BigDecimal weight, BigDecimal muscleMass, BigDecimal bodyFat) {
-        return new BodyLog(userId, height, weight, muscleMass, bodyFat);
+    public static BodyLog create(Long userId, BigDecimal height, BigDecimal weight, BigDecimal muscleMass, BigDecimal bodyFat, LocalDateTime measuredAt) {
+        return new BodyLog(userId, height, weight, muscleMass, bodyFat, measuredAt);
     }
 
-    private BodyLog(Long userId, BigDecimal height, BigDecimal weight, BigDecimal muscleMass, BigDecimal bodyFat) {
+    private BodyLog(Long userId, BigDecimal height, BigDecimal weight, BigDecimal muscleMass, BigDecimal bodyFat, LocalDateTime measuredAt) {
         this.userId = userId;
         this.height = height;
         this.weight = weight;
         this.muscleMass = muscleMass;
         this.bodyFat = bodyFat;
+        this.measuredAt = measuredAt;
     }
 }

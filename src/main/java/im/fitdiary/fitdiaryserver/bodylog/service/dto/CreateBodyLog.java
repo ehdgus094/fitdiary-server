@@ -1,6 +1,7 @@
 package im.fitdiary.fitdiaryserver.bodylog.service.dto;
 
 import im.fitdiary.fitdiaryserver.bodylog.data.entity.BodyLog;
+import im.fitdiary.fitdiaryserver.common.converter.TimeConverter;
 import im.fitdiary.fitdiaryserver.user.data.entity.User;
 import lombok.Getter;
 import org.springframework.lang.Nullable;
@@ -17,17 +18,21 @@ public class CreateBodyLog {
     private final BigDecimal muscleMass;
     @Nullable
     private final BigDecimal bodyFat;
+    @Nullable
+    private final Long measuredAt;
 
     public CreateBodyLog(
             @Nullable BigDecimal height,
             BigDecimal weight,
             @Nullable BigDecimal muscleMass,
-            @Nullable BigDecimal bodyFat
+            @Nullable BigDecimal bodyFat,
+            @Nullable Long measuredAt
     ) {
         this.height = height;
         this.weight = weight;
         this.muscleMass = muscleMass;
         this.bodyFat = bodyFat;
+        this.measuredAt = measuredAt;
     }
 
     public void updateHeight(BigDecimal height) {
@@ -40,7 +45,8 @@ public class CreateBodyLog {
                 height,
                 weight,
                 muscleMass,
-                bodyFat
+                bodyFat,
+                TimeConverter.toLocalDateTime(measuredAt)
         );
     }
 }

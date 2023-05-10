@@ -49,4 +49,11 @@ class CreateBodyLogReqTest {
         template.fail("bodyFat", new BigDecimal("0"));
         template.fail("bodyFat", new BigDecimal("101"));
     }
+
+    @Test
+    @DisplayName("유효성 검사 MeasuredAt")
+    void validateMeasuredAt() {
+        template.success("measuredAt", null);
+        template.fail("measuredAt", 10000000000L);
+    }
 }

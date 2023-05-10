@@ -3,6 +3,7 @@ package im.fitdiary.fitdiaryserver.bodylog.service;
 import im.fitdiary.fitdiaryserver.bodylog.data.BodyLogRepository;
 import im.fitdiary.fitdiaryserver.bodylog.data.entity.BodyLog;
 import im.fitdiary.fitdiaryserver.bodylog.service.dto.CreateBodyLog;
+import im.fitdiary.fitdiaryserver.common.converter.TimeConverter;
 import im.fitdiary.fitdiaryserver.exception.e404.PreviousHeightNotFound;
 import im.fitdiary.fitdiaryserver.user.data.entity.User;
 import im.fitdiary.fitdiaryserver.user.service.UserService;
@@ -83,6 +84,8 @@ class BodyLogServiceImplTest {
             assertThat(createdBodyLog.getWeight()).isEqualTo(createBodyLog.getWeight());
             assertThat(createdBodyLog.getMuscleMass()).isEqualTo(createBodyLog.getMuscleMass());
             assertThat(createdBodyLog.getBodyFat()).isEqualTo(createBodyLog.getBodyFat());
+            assertThat(createdBodyLog.getMeasuredAt())
+                    .isEqualTo(TimeConverter.toLocalDateTime(createBodyLog.getMeasuredAt()));
         }
 
         @Test
@@ -101,6 +104,8 @@ class BodyLogServiceImplTest {
             assertThat(createdBodyLog.getWeight()).isEqualTo(createBodyLog.getWeight());
             assertThat(createdBodyLog.getMuscleMass()).isNull();
             assertThat(createdBodyLog.getBodyFat()).isEqualTo(createBodyLog.getBodyFat());
+            assertThat(createdBodyLog.getMeasuredAt())
+                    .isEqualTo(TimeConverter.toLocalDateTime(createBodyLog.getMeasuredAt()));
         }
 
         @Test
@@ -119,6 +124,44 @@ class BodyLogServiceImplTest {
             assertThat(createdBodyLog.getWeight()).isEqualTo(createBodyLog.getWeight());
             assertThat(createdBodyLog.getMuscleMass()).isEqualTo(createBodyLog.getMuscleMass());
             assertThat(createdBodyLog.getBodyFat()).isNull();
+            assertThat(createdBodyLog.getMeasuredAt())
+                    .isEqualTo(TimeConverter.toLocalDateTime(createBodyLog.getMeasuredAt()));
+        }
+
+        @Test
+        @DisplayName("success_withoutMeasuredAt")
+        void success_withoutMeasuredAt() {
+            // given
+            setField(createBodyLog, "measuredAt", null);
+
+            // when
+            BodyLog createdBodyLog = bodyLogService.create(userId, createBodyLog);
+
+            // then
+            verify(bodyLogRepository, never()).findLatestOne(anyLong());
+            assertThat(createdBodyLog.getUserId()).isEqualTo(user.getId());
+            assertThat(createdBodyLog.getHeight()).isEqualTo(createBodyLog.getHeight());
+            assertThat(createdBodyLog.getWeight()).isEqualTo(createBodyLog.getWeight());
+            assertThat(createdBodyLog.getMuscleMass()).isEqualTo(createBodyLog.getMuscleMass());
+            assertThat(createdBodyLog.getBodyFat()).isEqualTo(createBodyLog.getBodyFat());
+            assertThat(createdBodyLog.getMeasuredAt()).isNull();
+        }
+
+        @Test
+        @DisplayName("success")
+        void success() {
+            // when
+            BodyLog createdBodyLog = bodyLogService.create(userId, createBodyLog);
+
+            // then
+            verify(bodyLogRepository, never()).findLatestOne(anyLong());
+            assertThat(createdBodyLog.getUserId()).isEqualTo(user.getId());
+            assertThat(createdBodyLog.getHeight()).isEqualTo(createBodyLog.getHeight());
+            assertThat(createdBodyLog.getWeight()).isEqualTo(createBodyLog.getWeight());
+            assertThat(createdBodyLog.getMuscleMass()).isEqualTo(createBodyLog.getMuscleMass());
+            assertThat(createdBodyLog.getBodyFat()).isEqualTo(createBodyLog.getBodyFat());
+            assertThat(createdBodyLog.getMeasuredAt())
+                    .isEqualTo(TimeConverter.toLocalDateTime(createBodyLog.getMeasuredAt()));
         }
     }
 }
