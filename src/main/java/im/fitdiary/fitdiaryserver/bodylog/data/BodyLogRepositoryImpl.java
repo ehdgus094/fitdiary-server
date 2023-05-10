@@ -18,7 +18,7 @@ public class BodyLogRepositoryImpl implements BodyLogRepositoryCustom {
                 .select(bodyLog)
                 .from(bodyLog)
                 .where(bodyLog.userId.eq(userId))
-                .orderBy(bodyLog.createdAt.desc())
+                .orderBy(bodyLog.measuredAt.desc())
                 .fetchFirst();
         return Optional.ofNullable(foundBodyLog);
     }
