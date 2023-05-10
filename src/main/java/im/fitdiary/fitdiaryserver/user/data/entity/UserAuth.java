@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@ToString(of = {"id", "loginType", "loginId", "password", "refreshToken"})
+@ToString
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"loginType", "loginId"}))
 public class UserAuth {
 

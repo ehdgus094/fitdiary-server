@@ -10,9 +10,19 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    @Query("select u from User u join fetch u.auth where u.auth.loginId = :loginId and u.auth.loginType = :loginType")
-    Optional<User> findByLoginIdAndLoginType(@Param("loginId") String loginId, @Param("loginType") LoginType loginType);
+    @Query("SELECT u " +
+            "FROM User u " +
+            "JOIN FETCH u.auth " +
+            "WHERE u.auth.loginId = :loginId " +
+            "AND u.auth.loginType = :loginType")
+    Optional<User> findByLoginIdAndLoginType(
+            @Param("loginId") String loginId,
+            @Param("loginType") LoginType loginType
+    );
 
-    @Query("select u from User u join fetch u.auth where u.id = :id")
+    @Query("SELECT u " +
+            "FROM User u " +
+            "JOIN FETCH u.auth " +
+            "WHERE u.id = :id")
     Optional<User> findAuthByUserId(@Param("id") Long id);
 }

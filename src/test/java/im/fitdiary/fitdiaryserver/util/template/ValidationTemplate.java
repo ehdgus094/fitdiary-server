@@ -23,14 +23,18 @@ public class ValidationTemplate<T> {
         test(true, null, null);
     }
 
-    public void fail(String fieldName, Object failValue) {
-        test(false, fieldName, failValue);
+    public void success(String fieldName, Object newValue) {
+        test(true, fieldName, newValue);
     }
 
-    private void test(boolean success, String fieldName, Object failValue) {
+    public void fail(String fieldName, Object newValue) {
+        test(false, fieldName, newValue);
+    }
+
+    private void test(boolean success, String fieldName, Object newValue) {
         // given
         if (fieldName != null) {
-            setField(dto, fieldName, failValue);
+            setField(dto, fieldName, newValue);
         }
 
         // when
@@ -44,7 +48,7 @@ public class ValidationTemplate<T> {
             assertThat(validate).isEmpty();
         } else {
             assertThat(validate).isNotEmpty();
-            assertThat(result).contains(failValue);
+            assertThat(result).contains(newValue);
         }
     }
 }

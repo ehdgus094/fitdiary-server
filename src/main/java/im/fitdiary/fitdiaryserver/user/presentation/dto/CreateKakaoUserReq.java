@@ -20,11 +20,11 @@ public class CreateKakaoUserReq {
     private String name;
 
     @Pattern(regexp = "^(19\\d{2}|20\\d{2})(0[1-9]|1[0-2])(0[1-9]|[1-2]\\d|3[0-1])$", message = "incorrect birthYmd format")
-    @NotNull(message = "birthYmd should not be empty")
+    @NotNull(message = "birthYmd should not be null")
     private String birthYmd;
 
     @Enum(enumClass = Gender.class, message = "incorrect gender format")
-    @NotNull(message = "gender should not be empty")
+    @NotNull(message = "gender should not be null")
     private Gender gender;
 
     @NotBlank(message = "email should not be empty")

@@ -86,8 +86,13 @@ class UserServiceImplTest {
 
                 // then
                 assertThat(createdUser.getAuth().getLoginId()).isEqualTo(createUser.getLoginId());
-                assertThat(createdUser.getEmail()).isEqualTo(createdUser.getAuth().getLoginId());
+                assertThat(createdUser.getAuth().getLoginType()).isEqualTo(createUser.getLoginType());
                 assertThat(createdUser.getAuth().getPassword()).isEqualTo(encodedPassword);
+                assertThat(createdUser.getAuth().getRefreshToken()).isNull();
+                assertThat(createdUser.getName()).isEqualTo(createUser.getName());
+                assertThat(createdUser.getBirthYmd()).isEqualTo(createUser.getBirthYmd());
+                assertThat(createdUser.getGender()).isEqualTo(createUser.getGender());
+                assertThat(createdUser.getEmail()).isEqualTo(createdUser.getAuth().getLoginId());
             }
         }
 
@@ -124,10 +129,18 @@ class UserServiceImplTest {
             void success() {
                 // when
                 User createdUser = userService.create(createUser);
+                String createUserEmail = (String) getField(createUser, "email");
 
                 // then
-                assertThat(createdUser.getAuth().getLoginId()).isEqualTo(createUser.getLoginId());
                 verify(passwordEncoder, never()).encode(anyString());
+                assertThat(createdUser.getAuth().getLoginId()).isEqualTo(createUser.getLoginId());
+                assertThat(createdUser.getAuth().getLoginType()).isEqualTo(createUser.getLoginType());
+                assertThat(createdUser.getAuth().getPassword()).isNull();
+                assertThat(createdUser.getAuth().getRefreshToken()).isNull();
+                assertThat(createdUser.getName()).isEqualTo(createUser.getName());
+                assertThat(createdUser.getBirthYmd()).isEqualTo(createUser.getBirthYmd());
+                assertThat(createdUser.getGender()).isEqualTo(createUser.getGender());
+                assertThat(createdUser.getEmail()).isEqualTo(createUserEmail);
             }
         }
     }

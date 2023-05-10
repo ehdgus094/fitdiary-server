@@ -11,16 +11,16 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@ToString(of = {"id", "name", "birthYmd", "gender", "email", "deletedAt"})
+@ToString(exclude = {"auth"})
 @Where(clause = "deleted_at IS NULL")
-@SQLDelete(sql = "UPDATE user SET deleted_at = CURRENT_TIMESTAMP where id = ?")
+@SQLDelete(sql = "UPDATE user SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
 public class User extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "auth_id", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, optional = false)
+    @JoinColumn(name = "auth_id")
     private UserAuth auth;
 
     @Column(nullable = false)
