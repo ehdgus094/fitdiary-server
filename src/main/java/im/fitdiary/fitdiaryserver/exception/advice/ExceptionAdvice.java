@@ -1,13 +1,10 @@
 package im.fitdiary.fitdiaryserver.exception.advice;
 
 import im.fitdiary.fitdiaryserver.common.dto.Response;
-import im.fitdiary.fitdiaryserver.config.ConfigProperties;
-import im.fitdiary.fitdiaryserver.config.properties.Mode;
 import im.fitdiary.fitdiaryserver.exception.e401.InvalidLoginInfoException;
 import im.fitdiary.fitdiaryserver.exception.e404.NotFoundException;
 import im.fitdiary.fitdiaryserver.exception.e401.UnauthorizedException;
 import im.fitdiary.fitdiaryserver.exception.e409.DuplicatedException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -25,11 +22,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import javax.validation.ConstraintViolationException;
 
 @Slf4j
-@RequiredArgsConstructor
 @RestControllerAdvice
 public class ExceptionAdvice {
-
-    private final ConfigProperties properties;
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -71,8 +65,6 @@ public class ExceptionAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Response methodArgumentNotValid(MethodArgumentNotValidException e) {
-        if (properties.getMode().equals(Mode.PROD)) return Response.failure("bad request");
-
         final String SEPARATOR = " | ";
         StringBuilder builder = new StringBuilder();
         for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
