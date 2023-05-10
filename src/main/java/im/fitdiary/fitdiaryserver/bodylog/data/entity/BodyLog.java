@@ -1,6 +1,7 @@
 package im.fitdiary.fitdiaryserver.bodylog.data.entity;
 
 import im.fitdiary.fitdiaryserver.common.entity.BaseEntity;
+import im.fitdiary.fitdiaryserver.user.data.entity.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,8 +27,8 @@ public class BodyLog extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 
     @Column(nullable = false, precision = 8, scale = 4)
     private BigDecimal height; // cm
@@ -47,12 +48,26 @@ public class BodyLog extends BaseEntity {
 
     private LocalDateTime deletedAt;
 
-    public static BodyLog create(Long userId, BigDecimal height, BigDecimal weight, BigDecimal muscleMass, BigDecimal bodyFat, LocalDateTime measuredAt) {
-        return new BodyLog(userId, height, weight, muscleMass, bodyFat, measuredAt);
+    public static BodyLog create(
+            User user,
+            BigDecimal height,
+            BigDecimal weight,
+            BigDecimal muscleMass,
+            BigDecimal bodyFat,
+            LocalDateTime measuredAt
+    ) {
+        return new BodyLog(user, height, weight, muscleMass, bodyFat, measuredAt);
     }
 
-    private BodyLog(Long userId, BigDecimal height, BigDecimal weight, BigDecimal muscleMass, BigDecimal bodyFat, LocalDateTime measuredAt) {
-        this.userId = userId;
+    private BodyLog(
+            User user,
+            BigDecimal height,
+            BigDecimal weight,
+            BigDecimal muscleMass,
+            BigDecimal bodyFat,
+            LocalDateTime measuredAt
+    ) {
+        this.user = user;
         this.height = height;
         this.weight = weight;
         this.muscleMass = muscleMass;

@@ -20,7 +20,6 @@ public class User extends BaseEntity {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, optional = false)
-    @JoinColumn(name = "auth_id")
     private UserAuth auth;
 
     @Column(nullable = false)

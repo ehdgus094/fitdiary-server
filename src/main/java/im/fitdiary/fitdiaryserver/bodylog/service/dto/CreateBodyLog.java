@@ -41,7 +41,7 @@ public class CreateBodyLog {
 
     public BodyLog toEntity(User user) {
         return BodyLog.create(
-                user.getId(),
+                user,
                 height,
                 weight,
                 muscleMass,

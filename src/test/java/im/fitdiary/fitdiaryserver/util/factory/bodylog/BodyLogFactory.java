@@ -2,11 +2,13 @@ package im.fitdiary.fitdiaryserver.util.factory.bodylog;
 
 import im.fitdiary.fitdiaryserver.bodylog.data.entity.BodyLog;
 import im.fitdiary.fitdiaryserver.bodylog.presentation.dto.CreateBodyLogReq;
+import im.fitdiary.fitdiaryserver.bodylog.service.dto.BodyLogSlice;
 import im.fitdiary.fitdiaryserver.bodylog.service.dto.CreateBodyLog;
 import im.fitdiary.fitdiaryserver.user.data.entity.User;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import static org.springframework.test.util.ReflectionTestUtils.*;
 
@@ -21,7 +23,7 @@ public class BodyLogFactory {
 
     public static BodyLog bodyLog(User user) {
         return BodyLog.create(
-                user.getId(),
+                user,
                 HEIGHT,
                 WEIGHT,
                 MUSCLE_MASS,
@@ -32,6 +34,14 @@ public class BodyLogFactory {
 
     public static CreateBodyLog createBodyLog() {
         return new CreateBodyLog(HEIGHT, WEIGHT, MUSCLE_MASS, BODY_FAT, MEASURED_AT_TIMESTAMP);
+    }
+
+    public static BodyLogSlice bodyLogSlice(User user) {
+        ArrayList<BodyLog> bodyLogs = new ArrayList<>();
+        for (int i=0; i<5; i++) {
+            bodyLogs.add(bodyLog(user));
+        }
+        return new BodyLogSlice(bodyLogs, false);
     }
 
     public static CreateBodyLogReq createBodyLogReq() {

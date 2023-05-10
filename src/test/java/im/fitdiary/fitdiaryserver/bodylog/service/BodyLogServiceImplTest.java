@@ -58,7 +58,7 @@ class BodyLogServiceImplTest {
         void fail_withoutHeight_previousHeightNotFound() {
             // given
             setField(createBodyLog, "height", null);
-            given(bodyLogRepository.findLatestOne(user.getId()))
+            given(bodyLogRepository.findLatestOne(user))
                     .willReturn(Optional.empty());
 
             // when - then
@@ -72,14 +72,14 @@ class BodyLogServiceImplTest {
         void success_withoutHeight() {
             // given
             setField(createBodyLog, "height", null);
-            given(bodyLogRepository.findLatestOne(user.getId()))
+            given(bodyLogRepository.findLatestOne(user))
                     .willReturn(Optional.of(foundBodyLog));
 
             // when
             BodyLog createdBodyLog = bodyLogService.create(userId, createBodyLog);
 
             // then
-            assertThat(createdBodyLog.getUserId()).isEqualTo(user.getId());
+            assertThat(createdBodyLog.getUser().getId()).isEqualTo(user.getId());
             assertThat(createdBodyLog.getHeight()).isEqualTo(foundBodyLog.getHeight());
             assertThat(createdBodyLog.getWeight()).isEqualTo(createBodyLog.getWeight());
             assertThat(createdBodyLog.getMuscleMass()).isEqualTo(createBodyLog.getMuscleMass());
@@ -98,8 +98,8 @@ class BodyLogServiceImplTest {
             BodyLog createdBodyLog = bodyLogService.create(userId, createBodyLog);
 
             // then
-            verify(bodyLogRepository, never()).findLatestOne(anyLong());
-            assertThat(createdBodyLog.getUserId()).isEqualTo(user.getId());
+            verify(bodyLogRepository, never()).findLatestOne(any());
+            assertThat(createdBodyLog.getUser().getId()).isEqualTo(user.getId());
             assertThat(createdBodyLog.getHeight()).isEqualTo(createBodyLog.getHeight());
             assertThat(createdBodyLog.getWeight()).isEqualTo(createBodyLog.getWeight());
             assertThat(createdBodyLog.getMuscleMass()).isNull();
@@ -118,8 +118,8 @@ class BodyLogServiceImplTest {
             BodyLog createdBodyLog = bodyLogService.create(userId, createBodyLog);
 
             // then
-            verify(bodyLogRepository, never()).findLatestOne(anyLong());
-            assertThat(createdBodyLog.getUserId()).isEqualTo(user.getId());
+            verify(bodyLogRepository, never()).findLatestOne(any());
+            assertThat(createdBodyLog.getUser().getId()).isEqualTo(user.getId());
             assertThat(createdBodyLog.getHeight()).isEqualTo(createBodyLog.getHeight());
             assertThat(createdBodyLog.getWeight()).isEqualTo(createBodyLog.getWeight());
             assertThat(createdBodyLog.getMuscleMass()).isEqualTo(createBodyLog.getMuscleMass());
@@ -138,8 +138,8 @@ class BodyLogServiceImplTest {
             BodyLog createdBodyLog = bodyLogService.create(userId, createBodyLog);
 
             // then
-            verify(bodyLogRepository, never()).findLatestOne(anyLong());
-            assertThat(createdBodyLog.getUserId()).isEqualTo(user.getId());
+            verify(bodyLogRepository, never()).findLatestOne(any());
+            assertThat(createdBodyLog.getUser().getId()).isEqualTo(user.getId());
             assertThat(createdBodyLog.getHeight()).isEqualTo(createBodyLog.getHeight());
             assertThat(createdBodyLog.getWeight()).isEqualTo(createBodyLog.getWeight());
             assertThat(createdBodyLog.getMuscleMass()).isEqualTo(createBodyLog.getMuscleMass());
@@ -154,8 +154,8 @@ class BodyLogServiceImplTest {
             BodyLog createdBodyLog = bodyLogService.create(userId, createBodyLog);
 
             // then
-            verify(bodyLogRepository, never()).findLatestOne(anyLong());
-            assertThat(createdBodyLog.getUserId()).isEqualTo(user.getId());
+            verify(bodyLogRepository, never()).findLatestOne(any());
+            assertThat(createdBodyLog.getUser().getId()).isEqualTo(user.getId());
             assertThat(createdBodyLog.getHeight()).isEqualTo(createBodyLog.getHeight());
             assertThat(createdBodyLog.getWeight()).isEqualTo(createBodyLog.getWeight());
             assertThat(createdBodyLog.getMuscleMass()).isEqualTo(createBodyLog.getMuscleMass());

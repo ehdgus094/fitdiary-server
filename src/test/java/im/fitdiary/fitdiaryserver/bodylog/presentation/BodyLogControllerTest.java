@@ -3,9 +3,12 @@ package im.fitdiary.fitdiaryserver.bodylog.presentation;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import im.fitdiary.fitdiaryserver.bodylog.presentation.dto.CreateBodyLogReq;
 import im.fitdiary.fitdiaryserver.bodylog.service.BodyLogService;
+import im.fitdiary.fitdiaryserver.bodylog.service.dto.BodyLogSlice;
 import im.fitdiary.fitdiaryserver.config.ConfigProperties;
 import im.fitdiary.fitdiaryserver.security.jwt.filter.JwtAuthenticationFilter;
+import im.fitdiary.fitdiaryserver.user.data.entity.User;
 import im.fitdiary.fitdiaryserver.util.factory.bodylog.BodyLogFactory;
+import im.fitdiary.fitdiaryserver.util.factory.user.UserFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
@@ -52,6 +56,29 @@ class BodyLogControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(req)))
                 .andExpect(status().isOk())
+                .andDo(print());
+    }
+    
+    @Test
+    @DisplayName("searchLatest")
+    void searchLatest() throws Exception {
+        // given
+        User user = UserFactory.emailUser();
+        BodyLogSlice bodyLogSlice = BodyLogFactory.bodyLogSlice(user);
+        given(bodyLogService.searchLatest(any(), any()))
+                .willReturn(bodyLogSlice);
+        
+        // when - then
+        mvc.perform(get(BASE_URI + "/search-latest"))
+                .andExpectAll(
+                        status().isOk(),
+                        jsonPath("$.data.content")
+                                .isArray(),
+                        jsonPath("$.data.content")
+                                .isNotEmpty(),
+                        jsonPath("$.data.hasNext")
+                                .value(bodyLogSlice.isHasNext())
+                )
                 .andDo(print());
     }
 }

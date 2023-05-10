@@ -14,11 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.springframework.test.util.ReflectionTestUtils.*;
 
 @DataJpaTest
 @Import({AuditingConfig.class, QuerydslConfig.class})
@@ -89,10 +93,32 @@ class BodyLogRepositoryTest {
         bodyLogRepository.save(bodyLog3);
 
         // when
-        Optional<BodyLog> foundBodyLog = bodyLogRepository.findLatestOne(user.getId());
+        Optional<BodyLog> foundBodyLog = bodyLogRepository.findLatestOne(user);
 
         // then
         assertThat(foundBodyLog).isPresent();
         assertThat(foundBodyLog.get().getCreatedAt()).isEqualTo(bodyLog3.getCreatedAt());
+    }
+
+    @Test
+    @DisplayName("searchLatest")
+    void searchLatest() {
+        // given
+        LocalDateTime now = LocalDateTime.now();
+        for (int i = 0; i < 20; i++) {
+            BodyLog bodyLog = BodyLogFactory.bodyLog(user);
+            setField(bodyLog, "measuredAt", now.minusDays(i));
+            bodyLogRepository.save(bodyLog);
+        }
+
+        // when
+        Slice<BodyLog> page_1 = bodyLogRepository.searchLatest(PageRequest.of(0, 19), user.getId());
+        Slice<BodyLog> page_2 = bodyLogRepository.searchLatest(PageRequest.of(1, 19), user.getId());
+
+        // then
+        assertThat(page_1.getContent()).hasSize(19);
+        assertThat(page_1.hasNext()).isTrue();
+        assertThat(page_2.getContent()).hasSize(1);
+        assertThat(page_2.hasNext()).isFalse();
     }
 }
