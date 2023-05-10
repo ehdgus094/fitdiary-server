@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface BodyLogRepositoryCustom {
     Optional<BodyLog> findLatestOne(User user);
     Slice<BodyLog> searchLatest(Pageable pageable, Long userId);
+    Optional<BodyLog> findMineById(Long userId, Long bodyLogId);
 }

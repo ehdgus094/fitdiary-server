@@ -4,6 +4,7 @@ import im.fitdiary.fitdiaryserver.bodylog.data.entity.BodyLog;
 import im.fitdiary.fitdiaryserver.bodylog.data.BodyLogRepository;
 import im.fitdiary.fitdiaryserver.bodylog.service.dto.BodyLogSlice;
 import im.fitdiary.fitdiaryserver.bodylog.service.dto.CreateBodyLog;
+import im.fitdiary.fitdiaryserver.exception.e404.BodyLogNotFoundException;
 import im.fitdiary.fitdiaryserver.exception.e404.PreviousHeightNotFound;
 import im.fitdiary.fitdiaryserver.exception.e404.UserNotFoundException;
 import im.fitdiary.fitdiaryserver.user.data.entity.User;
@@ -26,9 +27,9 @@ public class BodyLogServiceImpl implements BodyLogService {
             throws UserNotFoundException, PreviousHeightNotFound {
         User user = userService.findById(userId);
         if (createBodyLog.getHeight() == null) {
-            BodyLog foundBodyLog = bodyLogRepository.findLatestOne(user)
+            BodyLog latestBodyLog = bodyLogRepository.findLatestOne(user)
                     .orElseThrow(PreviousHeightNotFound::new);
-            createBodyLog.updateHeight(foundBodyLog.getHeight());
+            createBodyLog.updateHeight(latestBodyLog.getHeight());
         }
         BodyLog bodyLog = createBodyLog.toEntity(user);
         bodyLogRepository.save(bodyLog);
@@ -39,5 +40,12 @@ public class BodyLogServiceImpl implements BodyLogService {
     public BodyLogSlice searchLatest(Long userId, Pageable pageable) {
         Slice<BodyLog> bodyLogs = bodyLogRepository.searchLatest(pageable, userId);
         return new BodyLogSlice(bodyLogs.getContent(), bodyLogs.hasNext());
+    }
+
+    @Transactional
+    public void deleteMineById(Long userId, Long bodyLogId) throws BodyLogNotFoundException {
+        BodyLog bodyLog = bodyLogRepository.findMineById(userId, bodyLogId)
+                .orElseThrow(BodyLogNotFoundException::new);
+        bodyLogRepository.delete(bodyLog);
     }
 }

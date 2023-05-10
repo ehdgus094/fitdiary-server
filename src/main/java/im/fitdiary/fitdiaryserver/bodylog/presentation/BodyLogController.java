@@ -22,15 +22,22 @@ public class BodyLogController {
 
     @Secured("ROLE_USER_ACCESS")
     @PostMapping
-    public Response create(@UserId Long id, @RequestBody @Valid CreateBodyLogReq req) {
-        bodyLogService.create(id, req.toServiceDto());
+    public Response create(@UserId Long userId, @RequestBody @Valid CreateBodyLogReq req) {
+        bodyLogService.create(userId, req.toServiceDto());
         return Response.success();
     }
 
     @Secured("ROLE_USER_ACCESS")
     @GetMapping("/search-latest")
-    public Response searchLatest(@UserId Long id, Pageable pageable) {
-        BodyLogSlice bodyLogSlice = bodyLogService.searchLatest(id, pageable);
+    public Response searchLatest(@UserId Long userId, Pageable pageable) {
+        BodyLogSlice bodyLogSlice = bodyLogService.searchLatest(userId, pageable);
         return Response.success(new BodyLogSliceRes(bodyLogSlice));
+    }
+
+    @Secured("ROLE_USER_ACCESS")
+    @DeleteMapping("/{bodyLogId}")
+    public Response remove(@UserId Long userId, @PathVariable("bodyLogId") Long bodyLogId) {
+        bodyLogService.deleteMineById(userId, bodyLogId);
+        return Response.success();
     }
 }

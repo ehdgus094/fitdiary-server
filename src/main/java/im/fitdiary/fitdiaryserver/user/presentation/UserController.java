@@ -45,29 +45,29 @@ public class UserController {
 
     @Secured("ROLE_USER_ACCESS")
     @PostMapping("/logout")
-    public Response logout(@UserId Long id) {
-        userService.logout(id);
+    public Response logout(@UserId Long userId) {
+        userService.logout(userId);
         return Response.success();
     }
 
     @Secured("ROLE_USER_REFRESH")
     @PostMapping("/refresh-token")
-    public Response refreshToken(@UserId Long id, @RequestHeader("Authorization") String refreshToken) {
-        AuthToken token = userService.refreshToken(id, refreshToken);
+    public Response refreshToken(@UserId Long userId, @RequestHeader("Authorization") String refreshToken) {
+        AuthToken token = userService.refreshToken(userId, refreshToken);
         return Response.success(new RefreshTokenUserRes(token));
     }
 
     @Secured("ROLE_USER_ACCESS")
     @GetMapping
-    public Response find(@UserId Long id) {
-        User user = userService.findById(id);
+    public Response find(@UserId Long userId) {
+        User user = userService.findById(userId);
         return Response.success(new UserRes(user));
     }
 
     @Secured("ROLE_USER_ACCESS")
     @DeleteMapping
-    public Response remove(@UserId Long id) {
-        userService.deleteById(id);
+    public Response remove(@UserId Long userId) {
+        userService.deleteById(userId);
         return Response.success();
     }
 }

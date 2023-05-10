@@ -48,4 +48,14 @@ public class BodyLogRepositoryImpl implements BodyLogRepositoryCustom {
 
         return new SliceImpl<>(content, pageable, hasNext);
     }
+
+    public Optional<BodyLog> findMineById(Long userId, Long bodyLogId) {
+        BodyLog foundBodyLog = queryFactory
+                .select(bodyLog)
+                .from(bodyLog)
+                .join(bodyLog.user, user)
+                .where(user.id.eq(userId), bodyLog.id.eq(bodyLogId))
+                .fetchFirst();
+        return Optional.ofNullable(foundBodyLog);
+    }
 }

@@ -85,11 +85,15 @@ class BodyLogRepositoryTest {
     @DisplayName("findLatestOne")
     void findLatestOne() {
         // given
+        LocalDateTime now = LocalDateTime.now();
         BodyLog bodyLog1 = BodyLogFactory.bodyLog(user);
+        setField(bodyLog1, "measuredAt", now.minusDays(1));
         bodyLogRepository.save(bodyLog1);
         BodyLog bodyLog2 = BodyLogFactory.bodyLog(user);
+        setField(bodyLog2, "measuredAt", now.minusDays(2));
         bodyLogRepository.save(bodyLog2);
         BodyLog bodyLog3 = BodyLogFactory.bodyLog(user);
+        setField(bodyLog3, "measuredAt", now.minusDays(3));
         bodyLogRepository.save(bodyLog3);
 
         // when
@@ -97,7 +101,7 @@ class BodyLogRepositoryTest {
 
         // then
         assertThat(foundBodyLog).isPresent();
-        assertThat(foundBodyLog.get().getCreatedAt()).isEqualTo(bodyLog3.getCreatedAt());
+        assertThat(foundBodyLog.get().getMeasuredAt()).isEqualTo(bodyLog1.getMeasuredAt());
     }
 
     @Test
@@ -120,5 +124,20 @@ class BodyLogRepositoryTest {
         assertThat(page_1.hasNext()).isTrue();
         assertThat(page_2.getContent()).hasSize(1);
         assertThat(page_2.hasNext()).isFalse();
+    }
+
+    @Test
+    @DisplayName("findMineById")
+    void findMineById() {
+        // given
+        BodyLog bodyLog = BodyLogFactory.bodyLog(user);
+        bodyLogRepository.save(bodyLog);
+
+        // when
+        Optional<BodyLog> foundBodyLog =
+                bodyLogRepository.findMineById(user.getId(), bodyLog.getId());
+
+        // then
+        assertThat(foundBodyLog).isPresent();
     }
 }
