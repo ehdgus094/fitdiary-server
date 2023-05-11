@@ -2,14 +2,12 @@ package im.fitdiary.fitdiaryserver.bodylog.data.entity;
 
 import im.fitdiary.fitdiaryserver.common.entity.BaseEntity;
 import im.fitdiary.fitdiaryserver.user.data.entity.User;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -18,7 +16,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@ToString
+@ToString(exclude = "user")
 @DynamicInsert
 @Where(clause = "deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE body_log SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
@@ -30,42 +28,54 @@ public class BodyLog extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @Column(nullable = false, precision = 8, scale = 4)
+    @Column(nullable = false, columnDefinition = "DECIMAL(7,4) UNSIGNED")
     private BigDecimal height; // cm
 
-    @Column(nullable = false, precision = 8, scale = 4)
+    @Column(nullable = false, columnDefinition = "DECIMAL(7,4) UNSIGNED")
     private BigDecimal weight; // kg
 
-    @Column(precision = 8, scale = 4)
+    @Nullable
+    @Column(columnDefinition = "DECIMAL(7,4) UNSIGNED")
     private BigDecimal muscleMass; // kg
 
-    @Column(precision = 5, scale = 2)
+    @Nullable
+    @Column(columnDefinition = "DECIMAL(5,2) UNSIGNED")
     private BigDecimal bodyFat; // %
 
     @Column(nullable = false)
     @ColumnDefault("CURRENT_TIMESTAMP")
     private LocalDateTime measuredAt;
 
+    @Nullable
     private LocalDateTime deletedAt;
 
     public static BodyLog create(
             User user,
             BigDecimal height,
             BigDecimal weight,
-            BigDecimal muscleMass,
-            BigDecimal bodyFat,
+            @Nullable BigDecimal muscleMass,
+            @Nullable BigDecimal bodyFat,
             LocalDateTime measuredAt
     ) {
-        return new BodyLog(user, height, weight, muscleMass, bodyFat, measuredAt);
+        return BodyLog.builder()
+                .user(user)
+                .height(height)
+                .weight(weight)
+                .muscleMass(muscleMass)
+                .bodyFat(bodyFat)
+                .measuredAt(measuredAt)
+                .build();
     }
 
+    @Builder
     private BodyLog(
             User user,
             BigDecimal height,
             BigDecimal weight,
-            BigDecimal muscleMass,
-            BigDecimal bodyFat,
-            LocalDateTime measuredAt
+            @Nullable BigDecimal muscleMass,
+            @Nullable BigDecimal bodyFat,
+            LocalDateTime measuredAt,
+            @Nullable LocalDateTime deletedAt
     ) {
         this.user = user;
         this.height = height;
@@ -73,5 +83,6 @@ public class BodyLog extends BaseEntity {
         this.muscleMass = muscleMass;
         this.bodyFat = bodyFat;
         this.measuredAt = measuredAt;
+        this.deletedAt = deletedAt;
     }
 }

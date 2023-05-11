@@ -2,6 +2,7 @@ package im.fitdiary.fitdiaryserver.user.data.entity;
 
 import javax.persistence.*;
 import lombok.*;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
 
@@ -22,9 +23,11 @@ public class UserAuth {
     @Column(nullable = false, columnDefinition = "VARCHAR(255) BINARY")
     private String loginId;
 
+    @Nullable
     @Column(length = 60)
     private String password;
 
+    @Nullable
     private String refreshToken;
 
     public void updateRefreshToken(String refreshToken) {
@@ -43,15 +46,30 @@ public class UserAuth {
     }
 
     public static UserAuth createEmailAuth(String loginId, String password) {
-        return new UserAuth(null, LoginType.EMAIL, loginId, password, null);
+        return UserAuth.builder()
+                .loginType(LoginType.EMAIL)
+                .loginId(loginId)
+                .password(password)
+                .refreshToken(null)
+                .build();
     }
 
     public static UserAuth createKakaoAuth(String loginId) {
-        return new UserAuth(null, LoginType.KAKAO, loginId, null, null);
+        return UserAuth.builder()
+                .loginType(LoginType.KAKAO)
+                .loginId(loginId)
+                .password(null)
+                .refreshToken(null)
+                .build();
     }
 
-    private UserAuth(Long id, LoginType loginType, String loginId, String password, String refreshToken) {
-        this.id = id;
+    @Builder
+    private UserAuth(
+            LoginType loginType,
+            String loginId,
+            @Nullable String password,
+            @Nullable String refreshToken
+    ) {
         this.loginType = loginType;
         this.loginId = loginId;
         this.password = password;
