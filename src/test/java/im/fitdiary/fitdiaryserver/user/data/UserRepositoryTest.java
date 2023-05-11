@@ -21,7 +21,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
-@DataJpaTest
+@DataJpaTest(showSql = false)
 @Import({AuditingConfig.class, QuerydslConfig.class, P6SpySqlFormatConfig.class})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class UserRepositoryTest {

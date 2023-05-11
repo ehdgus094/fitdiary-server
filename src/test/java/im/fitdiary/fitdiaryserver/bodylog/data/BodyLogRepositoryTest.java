@@ -25,7 +25,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.util.ReflectionTestUtils.*;
 
-@DataJpaTest
+@DataJpaTest(showSql = false)
 @Import({AuditingConfig.class, QuerydslConfig.class, P6SpySqlFormatConfig.class})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class BodyLogRepositoryTest {
