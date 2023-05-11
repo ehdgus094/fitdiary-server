@@ -1,6 +1,7 @@
 package im.fitdiary.fitdiaryserver.user.data;
 
 import im.fitdiary.fitdiaryserver.config.AuditingConfig;
+import im.fitdiary.fitdiaryserver.config.P6SpySqlFormatConfig;
 import im.fitdiary.fitdiaryserver.config.QuerydslConfig;
 import im.fitdiary.fitdiaryserver.user.data.entity.LoginType;
 import im.fitdiary.fitdiaryserver.user.data.entity.User;
@@ -21,7 +22,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.*;
 
 @DataJpaTest
-@Import({AuditingConfig.class, QuerydslConfig.class})
+@Import({AuditingConfig.class, QuerydslConfig.class, P6SpySqlFormatConfig.class})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class UserRepositoryTest {
 

@@ -2,6 +2,7 @@ package im.fitdiary.fitdiaryserver.bodylog.data;
 
 import im.fitdiary.fitdiaryserver.bodylog.data.entity.BodyLog;
 import im.fitdiary.fitdiaryserver.config.AuditingConfig;
+import im.fitdiary.fitdiaryserver.config.P6SpySqlFormatConfig;
 import im.fitdiary.fitdiaryserver.config.QuerydslConfig;
 import im.fitdiary.fitdiaryserver.user.data.UserRepository;
 import im.fitdiary.fitdiaryserver.user.data.entity.User;
@@ -25,7 +26,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.util.ReflectionTestUtils.*;
 
 @DataJpaTest
-@Import({AuditingConfig.class, QuerydslConfig.class})
+@Import({AuditingConfig.class, QuerydslConfig.class, P6SpySqlFormatConfig.class})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class BodyLogRepositoryTest {
 
