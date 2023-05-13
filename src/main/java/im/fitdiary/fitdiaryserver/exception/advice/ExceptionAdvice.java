@@ -1,10 +1,9 @@
 package im.fitdiary.fitdiaryserver.exception.advice;
 
 import im.fitdiary.fitdiaryserver.common.dto.Response;
-import im.fitdiary.fitdiaryserver.exception.e401.InvalidLoginInfoException;
+import im.fitdiary.fitdiaryserver.exception.e401.BaseUnauthorizedException;
 import im.fitdiary.fitdiaryserver.exception.e404.NotFoundException;
-import im.fitdiary.fitdiaryserver.exception.e401.UnauthorizedException;
-import im.fitdiary.fitdiaryserver.exception.e409.DuplicatedException;
+import im.fitdiary.fitdiaryserver.exception.e409.ConflictException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -38,28 +37,10 @@ public class ExceptionAdvice {
         return Response.failure("unauthorized");
     }
 
-    @ExceptionHandler(UnauthorizedException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public Response unauthorized(UnauthorizedException e) {
-        return Response.failure(e.getMessage());
-    }
-
     @ExceptionHandler(MissingRequestHeaderException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public Response missingRequestHeader() {
         return Response.failure("unauthorized");
-    }
-
-    @ExceptionHandler(NotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Response notFound(NotFoundException e) {
-        return Response.failure(e.getMessage());
-    }
-
-    @ExceptionHandler(DuplicatedException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public Response duplicated(DuplicatedException e) {
-        return Response.failure(e.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -106,9 +87,21 @@ public class ExceptionAdvice {
         return Response.failure(e.getMessage());
     }
 
-    @ExceptionHandler(InvalidLoginInfoException.class)
+    @ExceptionHandler(BaseUnauthorizedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public Response invalidLoginInfo(InvalidLoginInfoException e) {
+    public Response unauthorized(BaseUnauthorizedException e) {
+        return Response.failure(e.getMessage());
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Response notFound(NotFoundException e) {
+        return Response.failure(e.getMessage());
+    }
+
+    @ExceptionHandler(ConflictException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Response duplicated(ConflictException e) {
         return Response.failure(e.getMessage());
     }
 }

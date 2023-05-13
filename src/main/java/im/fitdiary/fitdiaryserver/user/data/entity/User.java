@@ -4,7 +4,6 @@ import im.fitdiary.fitdiaryserver.common.entity.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,16 +11,13 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@ToString(exclude = {"auth"})
+@ToString
 @Where(clause = "deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE user SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
 public class User extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, optional = false)
-    private UserAuth auth;
 
     @Column(nullable = false)
     private String name;
@@ -36,12 +32,11 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String email;
 
-    @Nullable
+    @Getter(AccessLevel.NONE)
     private LocalDateTime deletedAt;
 
-    public static User create(UserAuth auth, String name, String birthYmd, Gender gender, String email) {
+    public static User create(String name, String birthYmd, Gender gender, String email) {
         return User.builder()
-                .auth(auth)
                 .name(name)
                 .birthYmd(birthYmd)
                 .gender(gender)
@@ -51,18 +46,14 @@ public class User extends BaseEntity {
 
     @Builder
     private User(
-            UserAuth auth,
             String name,
             String birthYmd,
             Gender gender,
-            String email,
-            @Nullable LocalDateTime deletedAt
+            String email
     ) {
-        this.auth = auth;
         this.name = name;
         this.birthYmd = birthYmd;
         this.gender = gender;
         this.email = email;
-        this.deletedAt = deletedAt;
     }
 }

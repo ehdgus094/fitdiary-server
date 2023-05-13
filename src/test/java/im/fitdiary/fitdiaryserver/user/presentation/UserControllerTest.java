@@ -6,7 +6,6 @@ import im.fitdiary.fitdiaryserver.security.jwt.filter.JwtAuthenticationFilter;
 import im.fitdiary.fitdiaryserver.user.data.entity.User;
 import im.fitdiary.fitdiaryserver.user.presentation.dto.*;
 import im.fitdiary.fitdiaryserver.user.service.UserService;
-import im.fitdiary.fitdiaryserver.user.service.dto.AuthToken;
 import im.fitdiary.fitdiaryserver.util.factory.user.UserFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -73,86 +72,10 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("loginEmail")
-    void loginEmail() throws Exception {
-        // given
-        LoginEmailUserReq req = UserFactory.loginEmailUserReq();
-        AuthToken authToken = UserFactory.authToken();
-        given(userService.login(any()))
-                .willReturn(authToken);
-
-        // when - then
-        mvc.perform(post(BASE_URI + "/login/email")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(req)))
-                .andExpectAll(
-                        status().isOk(),
-                        jsonPath("$.data.accessToken")
-                                .value(authToken.getAccessToken()),
-                        jsonPath("$.data.refreshToken")
-                                .value(authToken.getRefreshToken())
-                )
-                .andDo(print());
-    }
-
-    @Test
-    @DisplayName("loginKakao")
-    void loginKakao() throws Exception {
-        // given
-        LoginKakaoUserReq req = UserFactory.loginKakaoUserReq();
-        AuthToken authToken = UserFactory.authToken();
-        given(userService.login(any()))
-                .willReturn(authToken);
-
-        // when - then
-        mvc.perform(post(BASE_URI + "/login/kakao")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(req)))
-                .andExpectAll(
-                        status().isOk(),
-                        jsonPath("$.data.accessToken")
-                                .value(authToken.getAccessToken()),
-                        jsonPath("$.data.refreshToken")
-                                .value(authToken.getRefreshToken())
-                )
-                .andDo(print());
-    }
-
-    @Test
-    @DisplayName("logout")
-    void logout() throws Exception {
-        // when - then
-        mvc.perform(post(BASE_URI + "/logout"))
-                .andExpect(status().isOk())
-                .andDo(print());
-    }
-
-    @Test
-    @DisplayName("refreshToken")
-    void refreshToken() throws Exception {
-        // given
-        AuthToken authToken = UserFactory.authToken();
-        given(userService.refreshToken(any(), anyString()))
-                .willReturn(authToken);
-
-        // when - then
-        mvc.perform(post(BASE_URI + "/refresh-token")
-                        .header("Authorization", "token"))
-                .andExpectAll(
-                        status().isOk(),
-                        jsonPath("$.data.accessToken")
-                                .value(authToken.getAccessToken()),
-                        jsonPath("$.data.refreshToken")
-                                .value(authToken.getRefreshToken())
-                )
-                .andDo(print());
-    }
-
-    @Test
     @DisplayName("find")
     void find() throws Exception {
         // given
-        User user = UserFactory.emailUser();
+        User user = UserFactory.user();
         given(userService.findById(any()))
                 .willReturn(user);
 
@@ -171,7 +94,7 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("remove")
+    @DisplayName("delete")
     void remove() throws Exception {
         // when - then
         mvc.perform(delete(BASE_URI))

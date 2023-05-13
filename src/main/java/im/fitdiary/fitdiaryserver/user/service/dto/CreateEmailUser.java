@@ -1,36 +1,32 @@
 package im.fitdiary.fitdiaryserver.user.service.dto;
 
+import im.fitdiary.fitdiaryserver.auth.data.entity.UserLoginType;
+import im.fitdiary.fitdiaryserver.auth.service.dto.CreateAuthUser;
+import im.fitdiary.fitdiaryserver.auth.service.dto.CreateEmailAuthUser;
 import im.fitdiary.fitdiaryserver.user.data.entity.Gender;
-import im.fitdiary.fitdiaryserver.user.data.entity.LoginType;
 import im.fitdiary.fitdiaryserver.user.data.entity.User;
-import im.fitdiary.fitdiaryserver.user.data.entity.UserAuth;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class CreateEmailUser extends CreateUser {
 
-    private String password;
+    private final String password;
 
     public CreateEmailUser(String loginId, String password, String name, String birthYmd, Gender gender) {
-        super(loginId, LoginType.EMAIL, name, birthYmd, gender);
+        super(loginId, UserLoginType.EMAIL, name, birthYmd, gender);
         this.password = password;
     }
 
     @Override
-    public void encodePassword(PasswordEncoder passwordEncoder) {
-        password = passwordEncoder.encode(password);
-    }
-
-    @Override
-    public User toEntity() {
+    public User toUserEntity() {
         return User.create(
-                UserAuth.createEmailAuth(
-                        super.getLoginId(),
-                        password
-                ),
                 super.getName(),
                 super.getBirthYmd(),
                 super.getGender(),
                 super.getLoginId()
         );
+    }
+
+    @Override
+    public CreateAuthUser toAuthUserServiceDto(Long userId) {
+        return new CreateEmailAuthUser(userId, super.getLoginId(), password);
     }
 }
