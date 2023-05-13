@@ -1,7 +1,8 @@
 package im.fitdiary.fitdiaryserver.user.presentation;
 
 import im.fitdiary.fitdiaryserver.common.dto.Response;
-import im.fitdiary.fitdiaryserver.security.argumentresolver.UserId;
+import im.fitdiary.fitdiaryserver.security.argumentresolver.Auth;
+import im.fitdiary.fitdiaryserver.security.argumentresolver.AuthToken;
 import im.fitdiary.fitdiaryserver.user.data.entity.User;
 import im.fitdiary.fitdiaryserver.user.presentation.dto.*;
 import im.fitdiary.fitdiaryserver.user.service.UserService;
@@ -32,15 +33,15 @@ public class UserController {
 
     @Secured("ROLE_USER_ACCESS")
     @GetMapping
-    public Response find(@UserId Long userId) {
-        User user = userService.findById(userId);
+    public Response find(@Auth AuthToken authToken) {
+        User user = userService.findById(authToken.getId());
         return Response.success(new UserRes(user));
     }
 
     @Secured("ROLE_USER_ACCESS")
     @DeleteMapping
-    public Response delete(@UserId Long userId) {
-        userService.delete(userId);
+    public Response delete(@Auth AuthToken authToken) {
+        userService.delete(authToken.getId());
         return Response.success();
     }
 }

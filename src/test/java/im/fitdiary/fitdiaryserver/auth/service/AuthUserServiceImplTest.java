@@ -2,7 +2,7 @@ package im.fitdiary.fitdiaryserver.auth.service;
 
 import im.fitdiary.fitdiaryserver.auth.data.AuthUserRepository;
 import im.fitdiary.fitdiaryserver.auth.data.entity.AuthUser;
-import im.fitdiary.fitdiaryserver.auth.service.dto.AuthToken;
+import im.fitdiary.fitdiaryserver.auth.service.dto.JwtToken;
 import im.fitdiary.fitdiaryserver.auth.service.dto.CreateAuthUser;
 import im.fitdiary.fitdiaryserver.auth.service.dto.LoginUser;
 import im.fitdiary.fitdiaryserver.exception.e401.InvalidLoginInfoException;
@@ -199,11 +199,11 @@ class AuthUserServiceImplTest {
                 given(jwtHandler.createToken(any(), anyString())).willReturn(token);
 
                 // when
-                AuthToken authToken = authUserService.login(loginUser);
+                JwtToken jwtToken = authUserService.login(loginUser);
 
                 // then
-                assertThat(authToken.getAccessToken()).isEqualTo(token);
-                assertThat(authToken.getRefreshToken()).isEqualTo(token);
+                assertThat(jwtToken.getAccessToken()).isEqualTo(token);
+                assertThat(jwtToken.getRefreshToken()).isEqualTo(token);
                 assertThat(authUser.getRefreshToken()).isEqualTo(token);
             }
         }
@@ -244,12 +244,12 @@ class AuthUserServiceImplTest {
                 given(jwtHandler.createToken(any(), anyString())).willReturn(token);
 
                 // when
-                AuthToken authToken = authUserService.login(loginUser);
+                JwtToken jwtToken = authUserService.login(loginUser);
 
                 // then
                 verify(passwordEncoder, never()).matches(anyString(), anyString());
-                assertThat(authToken.getAccessToken()).isEqualTo(token);
-                assertThat(authToken.getRefreshToken()).isEqualTo(token);
+                assertThat(jwtToken.getAccessToken()).isEqualTo(token);
+                assertThat(jwtToken.getRefreshToken()).isEqualTo(token);
                 assertThat(authUser.getRefreshToken()).isEqualTo(token);
             }
         }
@@ -368,11 +368,11 @@ class AuthUserServiceImplTest {
                     .willReturn(newAccessToken);
 
             // when
-            AuthToken authToken = authUserService.refreshToken(userId, refreshToken);
+            JwtToken jwtToken = authUserService.refreshToken(userId, refreshToken);
 
             // then
-            assertThat(authToken.getAccessToken()).isEqualTo(newAccessToken);
-            assertThat(authToken.getRefreshToken()).isEqualTo(newRefreshToken);
+            assertThat(jwtToken.getAccessToken()).isEqualTo(newAccessToken);
+            assertThat(jwtToken.getRefreshToken()).isEqualTo(newRefreshToken);
         }
 
         @Test
@@ -387,11 +387,11 @@ class AuthUserServiceImplTest {
                     .willReturn(newAccessToken);
 
             // when
-            AuthToken authToken = authUserService.refreshToken(userId, refreshToken);
+            JwtToken jwtToken = authUserService.refreshToken(userId, refreshToken);
 
             // then
-            assertThat(authToken.getAccessToken()).isEqualTo(newAccessToken);
-            assertThat(authToken.getRefreshToken()).isNotEqualTo(newRefreshToken);
+            assertThat(jwtToken.getAccessToken()).isEqualTo(newAccessToken);
+            assertThat(jwtToken.getRefreshToken()).isNotEqualTo(newRefreshToken);
         }
     }
 }

@@ -6,7 +6,9 @@ import im.fitdiary.fitdiaryserver.security.jwt.filter.JwtAuthenticationFilter;
 import im.fitdiary.fitdiaryserver.user.data.entity.User;
 import im.fitdiary.fitdiaryserver.user.presentation.dto.*;
 import im.fitdiary.fitdiaryserver.user.service.UserService;
+import im.fitdiary.fitdiaryserver.util.TestUtils;
 import im.fitdiary.fitdiaryserver.util.factory.user.UserFactory;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,11 @@ class UserControllerTest {
     @MockBean
     UserService userService;
     private final String BASE_URI = "/user";
+
+    @BeforeEach
+    void init() {
+        TestUtils.setCustomAuthenticationToken();
+    }
 
     @Test
     @DisplayName("createEmail")

@@ -2,6 +2,7 @@ package im.fitdiary.fitdiaryserver.security.argumentresolver;
 
 import im.fitdiary.fitdiaryserver.security.CustomAuthenticationToken;
 import im.fitdiary.fitdiaryserver.security.CustomUserDetails;
+import im.fitdiary.fitdiaryserver.security.RoleType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,10 +10,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.MethodParameter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
@@ -39,9 +45,9 @@ class PrincipalArgumentResolverTest {
     @DisplayName("supportsParameter")
     void supportsParameter() {
         // given
-        given(parameter.hasParameterAnnotation(UserId.class))
+        given(parameter.hasParameterAnnotation(Auth.class))
                 .willReturn(true);
-        doReturn(Long.class)
+        doReturn(AuthToken.class)
                 .when(parameter).getParameterType();
 
         // when
@@ -55,20 +61,23 @@ class PrincipalArgumentResolverTest {
     @DisplayName("resolveArgument")
     void resolveArgument() throws Exception {
         // given
-        String id = "1";
-        CustomUserDetails userDetails = new CustomUserDetails(id, null);
+        Long id = 1L;
+        RoleType roleType = RoleType.ROLE_USER_ACCESS;
+
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority(roleType.toString()));
+        CustomUserDetails userDetails = new CustomUserDetails(id.toString(), authorities);
         CustomAuthenticationToken authenticationToken =
                 new CustomAuthenticationToken(userDetails.getAuthorities(), userDetails);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
         // when
-        Object result =
-                resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
+        AuthToken result = (AuthToken) resolver
+                .resolveArgument(parameter, mavContainer, webRequest, binderFactory);
 
         // then
-        assertThat(result)
-                .isNotNull()
-                .isEqualTo(Long.parseLong(id));
-        assertThat(result.getClass()).isEqualTo(Long.class);
+        assertThat(result).isNotNull();
+        assertThat(result.getId()).isEqualTo(id);
+        assertThat(result.has(roleType)).isTrue();
     }
 }

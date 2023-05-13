@@ -6,7 +6,9 @@ import im.fitdiary.fitdiaryserver.body.service.BodyLogService;
 import im.fitdiary.fitdiaryserver.body.service.dto.BodyLogSlice;
 import im.fitdiary.fitdiaryserver.config.ConfigProperties;
 import im.fitdiary.fitdiaryserver.security.jwt.filter.JwtAuthenticationFilter;
+import im.fitdiary.fitdiaryserver.util.TestUtils;
 import im.fitdiary.fitdiaryserver.util.factory.body.BodyFactory;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,11 @@ class BodyLogControllerTest {
     @MockBean
     BodyLogService bodyLogService;
     private final String BASE_URI = "/body/log";
+
+    @BeforeEach
+    void init() {
+        TestUtils.setCustomAuthenticationToken();
+    }
 
     @Test
     @DisplayName("create")

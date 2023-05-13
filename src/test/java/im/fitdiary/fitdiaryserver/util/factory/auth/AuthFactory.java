@@ -40,8 +40,8 @@ public class AuthFactory {
         return new LoginKakaoUser(LOGIN_ID);
     }
 
-    public static AuthToken authToken() {
-        return new AuthToken(ACCESS_TOKEN, REFRESH_TOKEN);
+    public static JwtToken jwtToken() {
+        return new JwtToken(ACCESS_TOKEN, REFRESH_TOKEN);
     }
 
     public static LoginEmailUserReq loginEmailUserReq() {

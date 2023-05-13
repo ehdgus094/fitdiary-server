@@ -2,7 +2,7 @@ package im.fitdiary.fitdiaryserver.auth.service;
 
 import im.fitdiary.fitdiaryserver.auth.data.AuthUserRepository;
 import im.fitdiary.fitdiaryserver.auth.data.entity.AuthUser;
-import im.fitdiary.fitdiaryserver.auth.service.dto.AuthToken;
+import im.fitdiary.fitdiaryserver.auth.service.dto.JwtToken;
 import im.fitdiary.fitdiaryserver.auth.service.dto.CreateAuthUser;
 import im.fitdiary.fitdiaryserver.auth.service.dto.LoginUser;
 import im.fitdiary.fitdiaryserver.exception.e401.InvalidLoginInfoException;
@@ -44,7 +44,7 @@ public class AuthUserServiceImpl implements AuthUserService {
     }
 
     @Transactional
-    public AuthToken login(LoginUser loginUser)
+    public JwtToken login(LoginUser loginUser)
             throws InvalidLoginInfoException, NoSuchElementException {
         AuthUser authUser = authUserRepository
                 .findByLoginIdAndLoginType(loginUser.getLoginId(), loginUser.getLoginType())
@@ -58,7 +58,7 @@ public class AuthUserServiceImpl implements AuthUserService {
         String refreshToken =
                 jwtHandler.createToken(RoleType.ROLE_USER_REFRESH, authUser.getUserId().toString());
         authUser.updateRefreshToken(refreshToken);
-        return new AuthToken(accessToken, refreshToken);
+        return new JwtToken(accessToken, refreshToken);
     }
 
     @Transactional
@@ -69,7 +69,7 @@ public class AuthUserServiceImpl implements AuthUserService {
     }
 
     @Transactional
-    public AuthToken refreshToken(Long userId, String refreshToken) throws UnauthorizedException {
+    public JwtToken refreshToken(Long userId, String refreshToken) throws UnauthorizedException {
         AuthUser authUser = authUserRepository.findByUserId(userId)
                 .orElseThrow(UnauthorizedException::new);
         if (!authUser.hasSameToken(refreshToken)) {
@@ -85,7 +85,7 @@ public class AuthUserServiceImpl implements AuthUserService {
         String newAccessToken =
                 jwtHandler.createToken(RoleType.ROLE_USER_ACCESS, authUser.getUserId().toString());
 
-        return new AuthToken(newAccessToken, authUser.getRefreshToken());
+        return new JwtToken(newAccessToken, authUser.getRefreshToken());
     }
 
     @Transactional

@@ -5,7 +5,8 @@ import im.fitdiary.fitdiaryserver.body.presentation.dto.CreateBodyLogReq;
 import im.fitdiary.fitdiaryserver.body.service.BodyLogService;
 import im.fitdiary.fitdiaryserver.body.service.dto.BodyLogSlice;
 import im.fitdiary.fitdiaryserver.common.dto.Response;
-import im.fitdiary.fitdiaryserver.security.argumentresolver.UserId;
+import im.fitdiary.fitdiaryserver.security.argumentresolver.Auth;
+import im.fitdiary.fitdiaryserver.security.argumentresolver.AuthToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
@@ -22,22 +23,22 @@ public class BodyLogController {
 
     @Secured("ROLE_USER_ACCESS")
     @PostMapping
-    public Response create(@UserId Long userId, @RequestBody @Valid CreateBodyLogReq req) {
-        bodyLogService.create(req.toServiceDto(userId));
+    public Response create(@Auth AuthToken authToken, @RequestBody @Valid CreateBodyLogReq req) {
+        bodyLogService.create(req.toServiceDto(authToken.getId()));
         return Response.success();
     }
 
     @Secured("ROLE_USER_ACCESS")
     @GetMapping("/search-latest")
-    public Response searchLatest(@UserId Long userId, Pageable pageable) {
-        BodyLogSlice bodyLogSlice = bodyLogService.searchLatest(pageable, userId);
+    public Response searchLatest(@Auth AuthToken authToken, Pageable pageable) {
+        BodyLogSlice bodyLogSlice = bodyLogService.searchLatest(pageable, authToken.getId());
         return Response.success(new BodyLogSliceRes(bodyLogSlice));
     }
 
     @Secured("ROLE_USER_ACCESS")
     @DeleteMapping("/{bodyLogId}")
-    public Response delete(@UserId Long userId, @PathVariable("bodyLogId") Long bodyLogId) {
-        bodyLogService.deleteById(bodyLogId, userId);
+    public Response delete(@Auth AuthToken authToken, @PathVariable("bodyLogId") Long bodyLogId) {
+        bodyLogService.deleteById(bodyLogId, authToken.getId());
         return Response.success();
     }
 }
