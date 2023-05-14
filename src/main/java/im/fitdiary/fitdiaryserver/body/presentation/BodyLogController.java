@@ -1,5 +1,7 @@
 package im.fitdiary.fitdiaryserver.body.presentation;
 
+import im.fitdiary.fitdiaryserver.body.data.entity.BodyLog;
+import im.fitdiary.fitdiaryserver.body.presentation.dto.BodyLogRes;
 import im.fitdiary.fitdiaryserver.body.presentation.dto.BodyLogSliceRes;
 import im.fitdiary.fitdiaryserver.body.presentation.dto.CreateBodyLogReq;
 import im.fitdiary.fitdiaryserver.body.service.BodyLogService;
@@ -24,8 +26,8 @@ public class BodyLogController {
     @Secured("ROLE_USER_ACCESS")
     @PostMapping
     public Response create(@Auth AuthToken authToken, @RequestBody @Valid CreateBodyLogReq req) {
-        bodyLogService.create(req.toServiceDto(authToken.getId()));
-        return Response.success();
+        BodyLog bodyLog = bodyLogService.create(req.toServiceDto(authToken.getId()));
+        return Response.success(new BodyLogRes(bodyLog));
     }
 
     @Secured("ROLE_USER_ACCESS")

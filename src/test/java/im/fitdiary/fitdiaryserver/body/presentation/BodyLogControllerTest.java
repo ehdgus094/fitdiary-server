@@ -1,6 +1,8 @@
 package im.fitdiary.fitdiaryserver.body.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import im.fitdiary.fitdiaryserver.body.data.entity.BodyLog;
+import im.fitdiary.fitdiaryserver.body.presentation.dto.BodyLogRes;
 import im.fitdiary.fitdiaryserver.body.presentation.dto.CreateBodyLogReq;
 import im.fitdiary.fitdiaryserver.body.service.BodyLogService;
 import im.fitdiary.fitdiaryserver.body.service.dto.BodyLogSlice;
@@ -55,12 +57,30 @@ class BodyLogControllerTest {
     void create() throws Exception {
         // given
         CreateBodyLogReq req = BodyFactory.createBodyLogReq();
+        BodyLog bodyLog = BodyFactory.bodyLog();
+        BodyLogRes res = new BodyLogRes(bodyLog);
+        given(bodyLogService.create(any()))
+                .willReturn(bodyLog);
 
         // when - then
         mvc.perform(post(BASE_URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(req)))
-                .andExpect(status().isOk())
+                .andExpectAll(
+                        status().isOk(),
+                        jsonPath("$.data.id")
+                                .value(res.getId()),
+                        jsonPath("$.data.height")
+                                .value(res.getHeight()),
+                        jsonPath("$.data.weight")
+                                .value(res.getWeight()),
+                        jsonPath("$.data.muscleMass")
+                                .value(res.getMuscleMass()),
+                        jsonPath("$.data.bodyFat")
+                                .value(res.getBodyFat()),
+                        jsonPath("$.data.measuredAt")
+                                .value(res.getMeasuredAt())
+                )
                 .andDo(print());
     }
 

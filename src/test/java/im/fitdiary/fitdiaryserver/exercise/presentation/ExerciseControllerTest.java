@@ -1,13 +1,14 @@
-package im.fitdiary.fitdiaryserver.user.presentation;
+package im.fitdiary.fitdiaryserver.exercise.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import im.fitdiary.fitdiaryserver.config.ConfigProperties;
+import im.fitdiary.fitdiaryserver.exercise.data.entity.Exercise;
+import im.fitdiary.fitdiaryserver.exercise.presentation.dto.CreateExerciseReq;
+import im.fitdiary.fitdiaryserver.exercise.presentation.dto.ExerciseRes;
+import im.fitdiary.fitdiaryserver.exercise.service.ExerciseService;
 import im.fitdiary.fitdiaryserver.security.jwt.filter.JwtAuthenticationFilter;
-import im.fitdiary.fitdiaryserver.user.data.entity.User;
-import im.fitdiary.fitdiaryserver.user.presentation.dto.*;
-import im.fitdiary.fitdiaryserver.user.service.UserService;
 import im.fitdiary.fitdiaryserver.util.TestUtils;
-import im.fitdiary.fitdiaryserver.util.factory.user.UserFactory;
+import im.fitdiary.fitdiaryserver.util.factory.exercise.ExerciseFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,10 +24,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(value = UserController.class,
+@WebMvcTest(value = ExerciseController.class,
         // disable spring security
         excludeAutoConfiguration = SecurityAutoConfiguration.class,
         excludeFilters = @ComponentScan.Filter(
@@ -35,15 +36,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
         )
 )
 @EnableConfigurationProperties(value = ConfigProperties.class)
-class UserControllerTest {
+class ExerciseControllerTest {
 
     @Autowired
     MockMvc mvc;
     @Autowired
     ObjectMapper mapper;
     @MockBean
-    UserService userService;
-    private final String BASE_URI = "/user";
+    ExerciseService exerciseService;
+    private final String BASE_URI = "/exercise";
 
     @BeforeEach
     void init() {
@@ -51,30 +52,30 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("createEmail")
-    void createEmail() throws Exception {
+    @DisplayName("create")
+    void create() throws Exception {
         // given
-        CreateEmailUserReq req = UserFactory.createEmailUserReq();
+        CreateExerciseReq req = ExerciseFactory.createExerciseReq();
+        Exercise exercise = ExerciseFactory.exercise();
+        ExerciseRes res = new ExerciseRes(exercise);
+        given(exerciseService.create(any()))
+                .willReturn(exercise);
 
         // when - then
-        mvc.perform(post(BASE_URI + "/email")
+        mvc.perform(post(BASE_URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(req)))
-                .andExpect(status().isOk())
-                .andDo(print());
-    }
-
-    @Test
-    @DisplayName("createKakao")
-    void createKakao() throws Exception {
-        // given
-        CreateKakaoUserReq req = UserFactory.createKakaoUserReq();
-
-        // when - then
-        mvc.perform(post(BASE_URI + "/kakao")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(req)))
-                .andExpect(status().isOk())
+                .andExpectAll(
+                        status().isOk(),
+                        jsonPath("$.data.id")
+                                .value(res.getId()),
+                        jsonPath("$.data.name")
+                                .value(res.getName()),
+                        jsonPath("$.data.category")
+                                .value(res.getCategory().toString()),
+                        jsonPath("$.data.active")
+                                .value(res.isActive())
+                )
                 .andDo(print());
     }
 
@@ -82,21 +83,24 @@ class UserControllerTest {
     @DisplayName("find")
     void find() throws Exception {
         // given
-        User user = UserFactory.user();
-        UserRes res = new UserRes(user);
-        given(userService.findById(any()))
-                .willReturn(user);
+        long exerciseId = 1L;
+        Exercise exercise = ExerciseFactory.exercise();
+        ExerciseRes res = new ExerciseRes(exercise);
+        given(exerciseService.findById(any(), anyLong()))
+                .willReturn(exercise);
 
         // when - then
-        mvc.perform(get(BASE_URI))
+        mvc.perform(get(BASE_URI + "/" + exerciseId))
                 .andExpectAll(
                         status().isOk(),
+                        jsonPath("$.data.id")
+                                .value(res.getId()),
                         jsonPath("$.data.name")
                                 .value(res.getName()),
-                        jsonPath("$.data.birthYmd")
-                                .value(res.getBirthYmd()),
-                        jsonPath("$.data.email")
-                                .value(res.getEmail())
+                        jsonPath("$.data.category")
+                                .value(res.getCategory().toString()),
+                        jsonPath("$.data.active")
+                                .value(res.isActive())
                 )
                 .andDo(print());
     }
@@ -104,8 +108,11 @@ class UserControllerTest {
     @Test
     @DisplayName("delete")
     void remove() throws Exception {
+        // given
+        long exerciseId = 1L;
+
         // when - then
-        mvc.perform(delete(BASE_URI))
+        mvc.perform(delete(BASE_URI + "/" + exerciseId))
                 .andExpectAll(
                         status().isOk()
                 )

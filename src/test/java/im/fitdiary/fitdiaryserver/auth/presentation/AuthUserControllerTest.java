@@ -3,6 +3,8 @@ package im.fitdiary.fitdiaryserver.auth.presentation;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import im.fitdiary.fitdiaryserver.auth.presentation.dto.LoginEmailUserReq;
 import im.fitdiary.fitdiaryserver.auth.presentation.dto.LoginKakaoUserReq;
+import im.fitdiary.fitdiaryserver.auth.presentation.dto.LoginUserRes;
+import im.fitdiary.fitdiaryserver.auth.presentation.dto.RefreshTokenUserRes;
 import im.fitdiary.fitdiaryserver.auth.service.AuthUserService;
 import im.fitdiary.fitdiaryserver.auth.service.dto.JwtToken;
 import im.fitdiary.fitdiaryserver.config.ConfigProperties;
@@ -57,6 +59,7 @@ class AuthUserControllerTest {
         // given
         LoginEmailUserReq req = AuthFactory.loginEmailUserReq();
         JwtToken jwtToken = AuthFactory.jwtToken();
+        LoginUserRes res = new LoginUserRes(jwtToken);
         given(authUserService.login(any()))
                 .willReturn(jwtToken);
 
@@ -67,9 +70,9 @@ class AuthUserControllerTest {
                 .andExpectAll(
                         status().isOk(),
                         jsonPath("$.data.accessToken")
-                                .value(jwtToken.getAccessToken()),
+                                .value(res.getAccessToken()),
                         jsonPath("$.data.refreshToken")
-                                .value(jwtToken.getRefreshToken())
+                                .value(res.getRefreshToken())
                 )
                 .andDo(print());
     }
@@ -80,6 +83,7 @@ class AuthUserControllerTest {
         // given
         LoginKakaoUserReq req = AuthFactory.loginKakaoUserReq();
         JwtToken jwtToken = AuthFactory.jwtToken();
+        LoginUserRes res = new LoginUserRes(jwtToken);
         given(authUserService.login(any()))
                 .willReturn(jwtToken);
 
@@ -90,9 +94,9 @@ class AuthUserControllerTest {
                 .andExpectAll(
                         status().isOk(),
                         jsonPath("$.data.accessToken")
-                                .value(jwtToken.getAccessToken()),
+                                .value(res.getAccessToken()),
                         jsonPath("$.data.refreshToken")
-                                .value(jwtToken.getRefreshToken())
+                                .value(res.getRefreshToken())
                 )
                 .andDo(print());
     }
@@ -111,6 +115,7 @@ class AuthUserControllerTest {
     void refreshTokenUser() throws Exception {
         // given
         JwtToken jwtToken = AuthFactory.jwtToken();
+        RefreshTokenUserRes res = new RefreshTokenUserRes(jwtToken);
         given(authUserService.refreshToken(any(), anyString()))
                 .willReturn(jwtToken);
 
@@ -120,9 +125,9 @@ class AuthUserControllerTest {
                 .andExpectAll(
                         status().isOk(),
                         jsonPath("$.data.accessToken")
-                                .value(jwtToken.getAccessToken()),
+                                .value(res.getAccessToken()),
                         jsonPath("$.data.refreshToken")
-                                .value(jwtToken.getRefreshToken())
+                                .value(res.getRefreshToken())
                 )
                 .andDo(print());
     }
