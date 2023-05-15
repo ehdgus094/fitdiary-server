@@ -41,7 +41,7 @@ public class ExerciseFactory {
     public static CreateExerciseReq createExerciseReq() {
         CreateExerciseReq req = new CreateExerciseReq();
         setField(req, "name", NAME);
-        setField(req, "category", CATEGORY);
+        setField(req, "category", CATEGORY.toString());
         setField(req, "active", ACTIVE);
         return req;
     }
@@ -49,7 +49,7 @@ public class ExerciseFactory {
     public static UpdateExerciseReq updateExerciseReq() {
         UpdateExerciseReq req = new UpdateExerciseReq();
         setField(req, "name", JsonNullable.of(NAME));
-        setField(req, "category", JsonNullable.of(CATEGORY));
+        setField(req, "category", JsonNullable.of(CATEGORY.toString()));
         setField(req, "active", JsonNullable.of(ACTIVE));
         return req;
     }

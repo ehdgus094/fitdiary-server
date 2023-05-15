@@ -45,7 +45,7 @@ public class UserFactory {
         setField(req, "password", PASSWORD);
         setField(req, "name", NAME);
         setField(req, "birthYmd", BIRTH_YMD);
-        setField(req, "gender", GENDER);
+        setField(req, "gender", GENDER.toString());
         return req;
     }
 
@@ -54,7 +54,7 @@ public class UserFactory {
         setField(req, "loginId", LOGIN_ID);
         setField(req, "name", NAME);
         setField(req, "birthYmd", BIRTH_YMD);
-        setField(req, "gender", GENDER);
+        setField(req, "gender", GENDER.toString());
         setField(req, "email", EMAIL);
         return req;
     }
