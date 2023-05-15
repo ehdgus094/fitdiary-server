@@ -20,11 +20,11 @@ public class ValidationTemplate<T> {
         validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
 
-    public void success() {
+    public void succeed() {
         test(true, null, null);
     }
 
-    public void success(String fieldName, Object newValue) {
+    public void succeed(String fieldName, Object newValue) {
         test(true, fieldName, newValue);
     }
 

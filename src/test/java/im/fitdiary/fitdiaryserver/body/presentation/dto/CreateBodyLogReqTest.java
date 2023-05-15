@@ -15,13 +15,13 @@ class CreateBodyLogReqTest {
     @Test
     @DisplayName("유효성 검사")
     void validate() {
-        template.success();
+        template.succeed();
     }
 
     @Test
     @DisplayName("유효성 검사 Height")
     void validateHeight() {
-        template.success("height", null);
+        template.succeed("height", null);
         template.fail("height", new BigDecimal("0"));
         template.fail("height", new BigDecimal("251"));
     }
@@ -37,7 +37,7 @@ class CreateBodyLogReqTest {
     @Test
     @DisplayName("유효성 검사 MuscleMass")
     void validateMuscleMass() {
-        template.success("muscleMass", null);
+        template.succeed("muscleMass", null);
         template.fail("muscleMass", new BigDecimal("0"));
         template.fail("muscleMass", new BigDecimal("201"));
     }
@@ -45,7 +45,7 @@ class CreateBodyLogReqTest {
     @Test
     @DisplayName("유효성 검사 BodyFat")
     void validateBodyFat() {
-        template.success("bodyFat", null);
+        template.succeed("bodyFat", null);
         template.fail("bodyFat", new BigDecimal("0"));
         template.fail("bodyFat", new BigDecimal("101"));
     }
@@ -53,7 +53,7 @@ class CreateBodyLogReqTest {
     @Test
     @DisplayName("유효성 검사 MeasuredAt")
     void validateMeasuredAt() {
-        template.success("measuredAt", null);
+        template.succeed("measuredAt", null);
         template.fail("measuredAt", 10000000000L);
     }
 }

@@ -13,7 +13,7 @@ class LoginKakaoUserReqTest {
     @Test
     @DisplayName("유효성 검사")
     void validate() {
-        template.success();
+        template.succeed();
     }
 
     @Test

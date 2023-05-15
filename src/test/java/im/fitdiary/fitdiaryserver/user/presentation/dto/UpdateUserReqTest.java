@@ -14,13 +14,13 @@ class UpdateUserReqTest {
     @Test
     @DisplayName("유효성 검사")
     void validate() {
-        template.success();
+        template.succeed();
     }
 
     @Test
     @DisplayName("유효성 검사 Name")
     void validateName() {
-        template.success("name", JsonNullable.undefined());
+        template.succeed("name", JsonNullable.undefined());
         template.fail("name", JsonNullable.of(null));
         template.fail("name", JsonNullable.of(""));
     }

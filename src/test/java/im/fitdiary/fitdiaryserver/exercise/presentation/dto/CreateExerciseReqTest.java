@@ -13,7 +13,7 @@ class CreateExerciseReqTest {
     @Test
     @DisplayName("유효성 검사")
     void validate() {
-        template.success();
+        template.succeed();
     }
 
     @Test
@@ -32,6 +32,6 @@ class CreateExerciseReqTest {
     @Test
     @DisplayName("유효성 검사 Active")
     void validateActive() {
-        template.success("active", null);
+        template.succeed("active", null);
     }
 }
