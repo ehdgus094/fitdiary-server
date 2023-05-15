@@ -3,6 +3,8 @@ package im.fitdiary.fitdiaryserver.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import im.fitdiary.fitdiaryserver.exception.filter.ErrorMessageFilter;
 import im.fitdiary.fitdiaryserver.security.argumentresolver.PrincipalArgumentResolver;
+import org.openapitools.jackson.nullable.JsonNullableModule;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,5 +29,10 @@ public class WebConfig implements WebMvcConfigurer {
         filterRegistrationBean.setOrder(1);
         filterRegistrationBean.addUrlPatterns("/*");
         return filterRegistrationBean;
+    }
+
+    @Bean
+    public Jackson2ObjectMapperBuilderCustomizer customizer() {
+        return builder -> builder.modules(new JsonNullableModule());
     }
 }

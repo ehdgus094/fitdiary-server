@@ -6,6 +6,7 @@ import im.fitdiary.fitdiaryserver.exception.e409.AuthUserDuplicatedException;
 import im.fitdiary.fitdiaryserver.user.data.entity.User;
 import im.fitdiary.fitdiaryserver.user.data.UserRepository;
 import im.fitdiary.fitdiaryserver.user.service.dto.CreateUser;
+import im.fitdiary.fitdiaryserver.user.data.entity.UserEditor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,13 @@ public class UserServiceImpl implements UserService {
     public User findById(Long userId) throws UserNotFoundException {
         return userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
+    }
+
+    @Transactional
+    public void update(Long userId, UserEditor userEditor) throws UserNotFoundException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+        userEditor.edit(user);
     }
 
     @Transactional

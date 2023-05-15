@@ -3,6 +3,7 @@ package im.fitdiary.fitdiaryserver.util.template;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -39,16 +40,18 @@ public class ValidationTemplate<T> {
 
         // when
         Set<ConstraintViolation<T>> validate = validator.validate(dto);
-        Set<Object> result = validate.stream()
-                .map(ConstraintViolation::getInvalidValue)
-                .collect(Collectors.toSet());
+        List<String> result = validate.stream()
+                .map(tConstraintViolation ->
+                        tConstraintViolation.getPropertyPath().toString()
+                )
+                .collect(Collectors.toList());
 
         // then
         if (success) {
             assertThat(validate).isEmpty();
         } else {
             assertThat(validate).isNotEmpty();
-            assertThat(result).contains(newValue);
+            assertThat(result).contains(fieldName);
         }
     }
 }
