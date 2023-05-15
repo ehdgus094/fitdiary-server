@@ -21,15 +21,15 @@ public class ValidationTemplate<T> {
         validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
 
-    public void succeed() {
+    public void success() {
         test(true, null, null);
     }
 
-    public void succeed(String fieldName, Object newValue) {
+    public void success(String fieldName, Object newValue) {
         test(true, fieldName, newValue);
     }
 
-    public void fail(String fieldName, Object newValue) {
+    public void failure(String fieldName, Object newValue) {
         test(false, fieldName, newValue);
     }
 

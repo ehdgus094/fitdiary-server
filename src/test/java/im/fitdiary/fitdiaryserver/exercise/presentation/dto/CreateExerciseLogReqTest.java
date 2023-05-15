@@ -13,14 +13,14 @@ class CreateExerciseLogReqTest {
     @Test
     @DisplayName("유효성 검사")
     void validate() {
-        template.succeed();
+        template.success();
     }
 
     @Test
     @DisplayName("유효성 검사 Duration")
     void validateDuration() {
-        template.fail("duration", null);
-        template.fail("duration", 0);
-        template.fail("duration", 86401);
+        template.failure("duration", null);
+        template.failure("duration", 0);
+        template.failure("duration", 86401);
     }
 }

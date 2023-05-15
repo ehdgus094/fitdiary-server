@@ -16,50 +16,50 @@ class UpdateBodyLogReqTest {
     @Test
     @DisplayName("유효성 검사")
     void validate() {
-        template.succeed();
+        template.success();
     }
 
     @Test
     @DisplayName("유효성 검사 Height")
     void validateHeight() {
-        template.succeed("height", JsonNullable.undefined());
-        template.fail("height", JsonNullable.of(null));
-        template.fail("height", JsonNullable.of(new BigDecimal("0")));
-        template.fail("height", JsonNullable.of(new BigDecimal("251")));
+        template.success("height", JsonNullable.undefined());
+        template.failure("height", JsonNullable.of(null));
+        template.failure("height", JsonNullable.of(new BigDecimal("0")));
+        template.failure("height", JsonNullable.of(new BigDecimal("251")));
     }
 
     @Test
     @DisplayName("유효성 검사 Weight")
     void validateWeight() {
-        template.succeed("weight", JsonNullable.undefined());
-        template.fail("weight", JsonNullable.of(null));
-        template.fail("weight", JsonNullable.of(new BigDecimal("0")));
-        template.fail("weight", JsonNullable.of(new BigDecimal("1001")));
+        template.success("weight", JsonNullable.undefined());
+        template.failure("weight", JsonNullable.of(null));
+        template.failure("weight", JsonNullable.of(new BigDecimal("0")));
+        template.failure("weight", JsonNullable.of(new BigDecimal("1001")));
     }
 
     @Test
     @DisplayName("유효성 검사 MuscleMass")
     void validateMuscleMass() {
-        template.succeed("muscleMass", JsonNullable.undefined());
-        template.succeed("muscleMass", JsonNullable.of(null));
-        template.fail("muscleMass", JsonNullable.of(new BigDecimal("0")));
-        template.fail("muscleMass", JsonNullable.of(new BigDecimal("201")));
+        template.success("muscleMass", JsonNullable.undefined());
+        template.success("muscleMass", JsonNullable.of(null));
+        template.failure("muscleMass", JsonNullable.of(new BigDecimal("0")));
+        template.failure("muscleMass", JsonNullable.of(new BigDecimal("201")));
     }
 
     @Test
     @DisplayName("유효성 검사 BodyFat")
     void validateBodyFat() {
-        template.succeed("bodyFat", JsonNullable.undefined());
-        template.succeed("bodyFat", JsonNullable.of(null));
-        template.fail("bodyFat", JsonNullable.of(new BigDecimal("0")));
-        template.fail("bodyFat", JsonNullable.of(new BigDecimal("101")));
+        template.success("bodyFat", JsonNullable.undefined());
+        template.success("bodyFat", JsonNullable.of(null));
+        template.failure("bodyFat", JsonNullable.of(new BigDecimal("0")));
+        template.failure("bodyFat", JsonNullable.of(new BigDecimal("101")));
     }
 
     @Test
     @DisplayName("유효성 검사 MeasuredAt")
     void validateMeasuredAt() {
-        template.succeed("measuredAt", JsonNullable.undefined());
-        template.fail("measuredAt", JsonNullable.of(null));
-        template.fail("measuredAt", JsonNullable.of(10000000000L));
+        template.success("measuredAt", JsonNullable.undefined());
+        template.failure("measuredAt", JsonNullable.of(null));
+        template.failure("measuredAt", JsonNullable.of(10000000000L));
     }
 }

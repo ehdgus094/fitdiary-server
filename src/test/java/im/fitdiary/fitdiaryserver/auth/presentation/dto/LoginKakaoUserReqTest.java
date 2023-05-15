@@ -13,13 +13,13 @@ class LoginKakaoUserReqTest {
     @Test
     @DisplayName("유효성 검사")
     void validate() {
-        template.succeed();
+        template.success();
     }
 
     @Test
     @DisplayName("유효성 검사 LoginId")
     void validateLoginId() {
-        template.fail("loginId", null);
-        template.fail("loginId", "");
+        template.failure("loginId", null);
+        template.failure("loginId", "");
     }
 }

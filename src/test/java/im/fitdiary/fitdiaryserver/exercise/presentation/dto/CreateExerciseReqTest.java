@@ -13,25 +13,25 @@ class CreateExerciseReqTest {
     @Test
     @DisplayName("유효성 검사")
     void validate() {
-        template.succeed();
+        template.success();
     }
 
     @Test
     @DisplayName("유효성 검사 Name")
     void validateName() {
-        template.fail("name", null);
-        template.fail("name", "");
+        template.failure("name", null);
+        template.failure("name", "");
     }
 
     @Test
     @DisplayName("유효성 검사 Category")
     void validateCategory() {
-        template.fail("category", null);
+        template.failure("category", null);
     }
 
     @Test
     @DisplayName("유효성 검사 Active")
     void validateActive() {
-        template.succeed("active", null);
+        template.success("active", null);
     }
 }

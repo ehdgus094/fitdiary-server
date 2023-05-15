@@ -14,28 +14,28 @@ class UpdateExerciseReqTest {
     @Test
     @DisplayName("유효성 검사")
     void validate() {
-        template.succeed();
+        template.success();
     }
 
     @Test
     @DisplayName("유효성 검사 Name")
     void validateName() {
-        template.succeed("name", JsonNullable.undefined());
-        template.fail("name", JsonNullable.of(null));
-        template.fail("name", JsonNullable.of(""));
+        template.success("name", JsonNullable.undefined());
+        template.failure("name", JsonNullable.of(null));
+        template.failure("name", JsonNullable.of(""));
     }
 
     @Test
     @DisplayName("유효성 검사 Category")
     void validateCategory() {
-        template.succeed("category", JsonNullable.undefined());
-        template.fail("category", JsonNullable.of(null));
+        template.success("category", JsonNullable.undefined());
+        template.failure("category", JsonNullable.of(null));
     }
 
     @Test
     @DisplayName("유효성 검사 Active")
     void validateActive() {
-        template.succeed("active", JsonNullable.undefined());
-        template.fail("active", JsonNullable.of(null));
+        template.success("active", JsonNullable.undefined());
+        template.failure("active", JsonNullable.of(null));
     }
 }

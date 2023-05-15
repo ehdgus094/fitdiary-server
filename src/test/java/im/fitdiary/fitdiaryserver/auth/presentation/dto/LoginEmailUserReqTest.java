@@ -13,21 +13,21 @@ class LoginEmailUserReqTest {
     @Test
     @DisplayName("유효성 검사")
     void validate() {
-        template.succeed();
+        template.success();
     }
 
     @Test
     @DisplayName("유효성 검사 LoginId")
     void validateLoginId() {
-        template.fail("loginId", null);
-        template.fail("loginId", "");
-        template.fail("loginId", "fdasfds");
+        template.failure("loginId", null);
+        template.failure("loginId", "");
+        template.failure("loginId", "fdasfds");
     }
 
     @Test
     @DisplayName("유효성 검사 Password")
     void validatePassword() {
-        template.fail("password", null);
-        template.fail("password", "");
+        template.failure("password", null);
+        template.failure("password", "");
     }
 }
