@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import im.fitdiary.fitdiaryserver.body.data.entity.BodyLog;
 import im.fitdiary.fitdiaryserver.body.presentation.dto.BodyLogRes;
 import im.fitdiary.fitdiaryserver.body.presentation.dto.CreateBodyLogReq;
+import im.fitdiary.fitdiaryserver.body.presentation.dto.UpdateBodyLogReq;
 import im.fitdiary.fitdiaryserver.body.service.BodyLogService;
 import im.fitdiary.fitdiaryserver.body.service.dto.BodyLogSlice;
 import im.fitdiary.fitdiaryserver.config.ConfigProperties;
@@ -102,6 +103,23 @@ class BodyLogControllerTest {
                                 .isNotEmpty(),
                         jsonPath("$.data.hasNext")
                                 .value(bodyLogSlice.isHasNext())
+                )
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("update")
+    void update() throws Exception {
+        // given
+        long bodyLogId = 1L;
+        UpdateBodyLogReq req = BodyFactory.updateBodyLogReq();
+
+        // when - then
+        mvc.perform(put(BASE_URI + "/" + bodyLogId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(req)))
+                .andExpectAll(
+                        status().isOk()
                 )
                 .andDo(print());
     }

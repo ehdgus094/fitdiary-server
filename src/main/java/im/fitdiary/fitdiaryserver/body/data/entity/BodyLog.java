@@ -27,21 +27,26 @@ public class BodyLog extends BaseEntity {
     @Column(nullable = false)
     private Long userId;
 
+    @Setter(AccessLevel.PROTECTED)
     @Column(nullable = false, columnDefinition = "DECIMAL(7,4) UNSIGNED")
     private BigDecimal height; // cm
 
+    @Setter(AccessLevel.PROTECTED)
     @Column(nullable = false, columnDefinition = "DECIMAL(7,4) UNSIGNED")
     private BigDecimal weight; // kg
 
     @Nullable
+    @Setter(AccessLevel.PROTECTED)
     @Column(columnDefinition = "DECIMAL(7,4) UNSIGNED")
     private BigDecimal muscleMass; // kg
 
     @Nullable
+    @Setter(AccessLevel.PROTECTED)
     @Column(columnDefinition = "DECIMAL(5,2) UNSIGNED")
     private BigDecimal bodyFat; // %
 
     @Nullable
+    @Setter(AccessLevel.PROTECTED)
     @Column(nullable = false)
     @ColumnDefault("CURRENT_TIMESTAMP")
     private LocalDateTime measuredAt;

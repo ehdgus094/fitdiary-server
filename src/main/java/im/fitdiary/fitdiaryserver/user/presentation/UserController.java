@@ -39,6 +39,13 @@ public class UserController {
     }
 
     @Secured("ROLE_USER_ACCESS")
+    @PutMapping
+    public Response update(@Auth AuthToken authToken, @RequestBody @Valid UpdateUserReq req) {
+        userService.update(authToken.getId(), req.toEditor());
+        return Response.success();
+    }
+
+    @Secured("ROLE_USER_ACCESS")
     @DeleteMapping
     public Response delete(@Auth AuthToken authToken) {
         userService.delete(authToken.getId());

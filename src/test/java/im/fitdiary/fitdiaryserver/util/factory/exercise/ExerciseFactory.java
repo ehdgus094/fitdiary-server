@@ -2,8 +2,11 @@ package im.fitdiary.fitdiaryserver.util.factory.exercise;
 
 import im.fitdiary.fitdiaryserver.exercise.data.entity.Exercise;
 import im.fitdiary.fitdiaryserver.exercise.data.entity.ExerciseCategory;
+import im.fitdiary.fitdiaryserver.exercise.data.entity.ExerciseEditor;
 import im.fitdiary.fitdiaryserver.exercise.presentation.dto.CreateExerciseReq;
+import im.fitdiary.fitdiaryserver.exercise.presentation.dto.UpdateExerciseReq;
 import im.fitdiary.fitdiaryserver.exercise.service.dto.CreateExercise;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 import static org.springframework.test.util.ReflectionTestUtils.*;
 
@@ -23,6 +26,14 @@ public class ExerciseFactory {
         );
     }
 
+    public static ExerciseEditor exerciseEditor() {
+        return new ExerciseEditor(
+                JsonNullable.of(NAME),
+                JsonNullable.of(CATEGORY),
+                JsonNullable.of(ACTIVE)
+        );
+    }
+
     public static CreateExercise createExercise() {
         return new CreateExercise(USER_ID, NAME, CATEGORY, ACTIVE);
     }
@@ -32,6 +43,14 @@ public class ExerciseFactory {
         setField(req, "name", NAME);
         setField(req, "category", CATEGORY);
         setField(req, "active", ACTIVE);
+        return req;
+    }
+
+    public static UpdateExerciseReq updateExerciseReq() {
+        UpdateExerciseReq req = new UpdateExerciseReq();
+        setField(req, "name", JsonNullable.of(NAME));
+        setField(req, "category", JsonNullable.of(CATEGORY));
+        setField(req, "active", JsonNullable.of(ACTIVE));
         return req;
     }
 }

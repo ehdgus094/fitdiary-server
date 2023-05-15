@@ -2,8 +2,10 @@ package im.fitdiary.fitdiaryserver.body.service;
 
 import im.fitdiary.fitdiaryserver.body.data.BodyLogRepository;
 import im.fitdiary.fitdiaryserver.body.data.entity.BodyLog;
+import im.fitdiary.fitdiaryserver.body.data.entity.BodyLogEditor;
 import im.fitdiary.fitdiaryserver.body.service.dto.BodyLogSlice;
 import im.fitdiary.fitdiaryserver.body.service.dto.CreateBodyLog;
+import im.fitdiary.fitdiaryserver.exception.e404.BodyLogNotFoundException;
 import im.fitdiary.fitdiaryserver.exception.e404.PreviousHeightNotFound;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +35,14 @@ public class BodyLogServiceImpl implements BodyLogService {
     public BodyLogSlice searchLatest(Pageable pageable, Long userId) {
         Slice<BodyLog> bodyLogs = bodyLogRepository.searchLatest(pageable, userId);
         return new BodyLogSlice(bodyLogs.getContent(), bodyLogs.hasNext());
+    }
+
+    @Transactional
+    public void update(Long bodyLogId, Long userId, BodyLogEditor editor)
+            throws BodyLogNotFoundException {
+        BodyLog bodyLog = bodyLogRepository.findById(bodyLogId, userId)
+                .orElseThrow(BodyLogNotFoundException::new);
+        editor.edit(bodyLog);
     }
 
     @Transactional

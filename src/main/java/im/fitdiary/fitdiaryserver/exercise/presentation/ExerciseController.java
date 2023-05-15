@@ -4,6 +4,7 @@ import im.fitdiary.fitdiaryserver.common.dto.Response;
 import im.fitdiary.fitdiaryserver.exercise.data.entity.Exercise;
 import im.fitdiary.fitdiaryserver.exercise.presentation.dto.CreateExerciseReq;
 import im.fitdiary.fitdiaryserver.exercise.presentation.dto.ExerciseRes;
+import im.fitdiary.fitdiaryserver.exercise.presentation.dto.UpdateExerciseReq;
 import im.fitdiary.fitdiaryserver.exercise.service.ExerciseService;
 import im.fitdiary.fitdiaryserver.security.argumentresolver.Auth;
 import im.fitdiary.fitdiaryserver.security.argumentresolver.AuthToken;
@@ -32,6 +33,17 @@ public class ExerciseController {
     public Response find(@Auth AuthToken authToken, @PathVariable("exerciseId") Long exerciseId) {
         Exercise exercise = exerciseService.findById(exerciseId, authToken.getId());
         return Response.success(new ExerciseRes(exercise));
+    }
+
+    @Secured("ROLE_USER_ACCESS")
+    @PutMapping("/{exerciseId}")
+    public Response update(
+            @Auth AuthToken authToken,
+            @PathVariable("exerciseId") Long exerciseId,
+            @RequestBody @Valid UpdateExerciseReq req
+    ) {
+        exerciseService.update(exerciseId, authToken.getId(), req.toEditor());
+        return Response.success();
     }
 
     @Secured("ROLE_USER_ACCESS")

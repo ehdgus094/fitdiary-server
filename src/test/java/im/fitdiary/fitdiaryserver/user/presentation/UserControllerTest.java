@@ -102,6 +102,22 @@ class UserControllerTest {
     }
 
     @Test
+    @DisplayName("update")
+    void update() throws Exception {
+        // given
+        UpdateUserReq req = UserFactory.updateUserReq();
+
+        // when - then
+        mvc.perform(put(BASE_URI)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(req)))
+                .andExpectAll(
+                        status().isOk()
+                )
+                .andDo(print());
+    }
+
+    @Test
     @DisplayName("delete")
     void remove() throws Exception {
         // when - then

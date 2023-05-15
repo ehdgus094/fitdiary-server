@@ -32,6 +32,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0'
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+	implementation 'org.openapitools:jackson-databind-nullable:0.2.6' // request dto에서 undefined 사용 위함
 	// querydsl start
 	implementation 'com.google.code.findbugs:jsr305:3.0.2' // @Nullable로 인한 querydsl compile warning 해결
 	implementation "com.querydsl:querydsl-jpa:${querydslVersion}"

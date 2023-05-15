@@ -5,6 +5,7 @@ import im.fitdiary.fitdiaryserver.config.ConfigProperties;
 import im.fitdiary.fitdiaryserver.exercise.data.entity.Exercise;
 import im.fitdiary.fitdiaryserver.exercise.presentation.dto.CreateExerciseReq;
 import im.fitdiary.fitdiaryserver.exercise.presentation.dto.ExerciseRes;
+import im.fitdiary.fitdiaryserver.exercise.presentation.dto.UpdateExerciseReq;
 import im.fitdiary.fitdiaryserver.exercise.service.ExerciseService;
 import im.fitdiary.fitdiaryserver.security.jwt.filter.JwtAuthenticationFilter;
 import im.fitdiary.fitdiaryserver.util.TestUtils;
@@ -101,6 +102,23 @@ class ExerciseControllerTest {
                                 .value(res.getCategory().toString()),
                         jsonPath("$.data.active")
                                 .value(res.isActive())
+                )
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("update")
+    void update() throws Exception {
+        // given
+        long exerciseId = 1L;
+        UpdateExerciseReq req = ExerciseFactory.updateExerciseReq();
+
+        // when - then
+        mvc.perform(put(BASE_URI + "/" + exerciseId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(req)))
+                .andExpectAll(
+                        status().isOk()
                 )
                 .andDo(print());
     }

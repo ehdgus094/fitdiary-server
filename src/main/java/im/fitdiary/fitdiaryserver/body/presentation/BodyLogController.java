@@ -4,6 +4,7 @@ import im.fitdiary.fitdiaryserver.body.data.entity.BodyLog;
 import im.fitdiary.fitdiaryserver.body.presentation.dto.BodyLogRes;
 import im.fitdiary.fitdiaryserver.body.presentation.dto.BodyLogSliceRes;
 import im.fitdiary.fitdiaryserver.body.presentation.dto.CreateBodyLogReq;
+import im.fitdiary.fitdiaryserver.body.presentation.dto.UpdateBodyLogReq;
 import im.fitdiary.fitdiaryserver.body.service.BodyLogService;
 import im.fitdiary.fitdiaryserver.body.service.dto.BodyLogSlice;
 import im.fitdiary.fitdiaryserver.common.dto.Response;
@@ -35,6 +36,17 @@ public class BodyLogController {
     public Response searchLatest(@Auth AuthToken authToken, Pageable pageable) {
         BodyLogSlice bodyLogSlice = bodyLogService.searchLatest(pageable, authToken.getId());
         return Response.success(new BodyLogSliceRes(bodyLogSlice));
+    }
+
+    @Secured("ROLE_USER_ACCESS")
+    @PutMapping("/{bodyLogId}")
+    public Response update(
+            @Auth AuthToken authToken,
+            @PathVariable("bodyLogId") Long bodyLogId,
+            @RequestBody @Valid UpdateBodyLogReq req
+    ) {
+        bodyLogService.update(bodyLogId, authToken.getId(), req.toEditor());
+        return Response.success();
     }
 
     @Secured("ROLE_USER_ACCESS")

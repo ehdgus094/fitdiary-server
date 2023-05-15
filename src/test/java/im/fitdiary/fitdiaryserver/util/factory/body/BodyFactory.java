@@ -1,9 +1,12 @@
 package im.fitdiary.fitdiaryserver.util.factory.body;
 
 import im.fitdiary.fitdiaryserver.body.data.entity.BodyLog;
+import im.fitdiary.fitdiaryserver.body.data.entity.BodyLogEditor;
 import im.fitdiary.fitdiaryserver.body.presentation.dto.CreateBodyLogReq;
+import im.fitdiary.fitdiaryserver.body.presentation.dto.UpdateBodyLogReq;
 import im.fitdiary.fitdiaryserver.body.service.dto.BodyLogSlice;
 import im.fitdiary.fitdiaryserver.body.service.dto.CreateBodyLog;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -32,6 +35,16 @@ public class BodyFactory {
         );
     }
 
+    public static BodyLogEditor bodyLogEditor() {
+        return new BodyLogEditor(
+                JsonNullable.of(HEIGHT),
+                JsonNullable.of(WEIGHT),
+                JsonNullable.of(MUSCLE_MASS),
+                JsonNullable.of(BODY_FAT),
+                JsonNullable.of(MEASURED_AT)
+        );
+    }
+
     public static CreateBodyLog createBodyLog() {
         return new CreateBodyLog(USER_ID, HEIGHT, WEIGHT, MUSCLE_MASS, BODY_FAT, MEASURED_AT);
     }
@@ -51,6 +64,16 @@ public class BodyFactory {
         setField(req, "muscleMass", MUSCLE_MASS);
         setField(req, "bodyFat", BODY_FAT);
         setField(req, "measuredAt", MEASURED_AT_TIMESTAMP);
+        return req;
+    }
+
+    public static UpdateBodyLogReq updateBodyLogReq() {
+        UpdateBodyLogReq req = new UpdateBodyLogReq();
+        setField(req, "height", JsonNullable.of(HEIGHT));
+        setField(req, "weight", JsonNullable.of(WEIGHT));
+        setField(req, "muscleMass", JsonNullable.of(MUSCLE_MASS));
+        setField(req, "bodyFat", JsonNullable.of(BODY_FAT));
+        setField(req, "measuredAt", JsonNullable.of(MEASURED_AT_TIMESTAMP));
         return req;
     }
 }

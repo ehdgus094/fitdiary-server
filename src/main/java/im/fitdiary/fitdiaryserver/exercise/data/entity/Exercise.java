@@ -22,13 +22,16 @@ public class Exercise extends BaseEntity {
     @Column(nullable = false)
     private Long userId;
 
+    @Setter(AccessLevel.PROTECTED)
     @Column(nullable = false)
     private String name;
 
+    @Setter(AccessLevel.PROTECTED)
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ExerciseCategory category;
 
+    @Setter(AccessLevel.PROTECTED)
     @Column(nullable = false)
     private boolean active;
 

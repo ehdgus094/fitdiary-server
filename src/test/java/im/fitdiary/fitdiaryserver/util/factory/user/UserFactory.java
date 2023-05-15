@@ -2,8 +2,10 @@ package im.fitdiary.fitdiaryserver.util.factory.user;
 
 import im.fitdiary.fitdiaryserver.user.data.entity.Gender;
 import im.fitdiary.fitdiaryserver.user.data.entity.User;
+import im.fitdiary.fitdiaryserver.user.data.entity.UserEditor;
 import im.fitdiary.fitdiaryserver.user.presentation.dto.*;
 import im.fitdiary.fitdiaryserver.user.service.dto.*;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 import static org.springframework.test.util.ReflectionTestUtils.*;
 
@@ -23,6 +25,10 @@ public class UserFactory {
                 GENDER,
                 EMAIL
         );
+    }
+
+    public static UserEditor userEditor() {
+        return new UserEditor(JsonNullable.of(NAME));
     }
 
     public static CreateEmailUser createEmailUser() {
@@ -50,6 +56,12 @@ public class UserFactory {
         setField(req, "birthYmd", BIRTH_YMD);
         setField(req, "gender", GENDER);
         setField(req, "email", EMAIL);
+        return req;
+    }
+
+    public static UpdateUserReq updateUserReq() {
+        UpdateUserReq req = new UpdateUserReq();
+        setField(req, "name", JsonNullable.of(NAME));
         return req;
     }
 }
