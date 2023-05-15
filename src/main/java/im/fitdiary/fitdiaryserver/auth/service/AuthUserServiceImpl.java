@@ -24,7 +24,9 @@ import java.util.NoSuchElementException;
 public class AuthUserServiceImpl implements AuthUserService {
 
     private final AuthUserRepository authUserRepository;
+
     private final JwtHandler jwtHandler;
+
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -89,7 +91,7 @@ public class AuthUserServiceImpl implements AuthUserService {
     }
 
     @Transactional
-    public void delete(Long userId) {
+    public void deleteByUserId(Long userId) {
         authUserRepository.deleteByUserId(userId);
     }
 }

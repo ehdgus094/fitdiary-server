@@ -7,7 +7,9 @@ import lombok.Getter;
 public class UserRes {
 
     private final String name;
+
     private final String birthYmd;
+
     private final String email;
 
     public UserRes(User user) {

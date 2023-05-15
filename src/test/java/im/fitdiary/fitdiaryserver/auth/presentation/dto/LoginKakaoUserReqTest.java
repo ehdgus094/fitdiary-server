@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 class LoginKakaoUserReqTest {
 
-    private final ValidationTemplate<LoginKakaoUserReq> template =
+    ValidationTemplate<LoginKakaoUserReq> template =
             new ValidationTemplate<>(AuthFactory.loginKakaoUserReq());
 
     @Test

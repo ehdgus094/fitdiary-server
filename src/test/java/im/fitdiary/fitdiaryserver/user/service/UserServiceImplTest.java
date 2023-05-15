@@ -26,8 +26,10 @@ class UserServiceImplTest {
 
     @Mock
     UserRepository userRepository;
+
     @Mock
     AuthUserService authUserService;
+
     @InjectMocks
     UserServiceImpl userService;
 
@@ -35,7 +37,7 @@ class UserServiceImplTest {
     @DisplayName("create")
     class Create {
 
-        private CreateUser createUser;
+        CreateUser createUser;
 
         @BeforeEach
         void init() {
@@ -72,8 +74,9 @@ class UserServiceImplTest {
     @DisplayName("findById")
     class FindById {
 
-        private Long userId;
-        private User user;
+        Long userId;
+
+        User user;
 
         @BeforeEach
         void init() {

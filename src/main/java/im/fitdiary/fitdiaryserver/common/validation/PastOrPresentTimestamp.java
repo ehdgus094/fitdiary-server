@@ -13,6 +13,8 @@ import java.lang.annotation.Target;
 public @interface PastOrPresentTimestamp {
 
     String message() default "Invalid value. This is not permitted.";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

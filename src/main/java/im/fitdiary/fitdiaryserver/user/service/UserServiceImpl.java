@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
     private final AuthUserService authUserService;
 
     @Transactional
@@ -33,17 +34,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public void update(Long userId, UserEditor userEditor) throws UserNotFoundException {
+    public void updateById(Long userId, UserEditor userEditor) throws UserNotFoundException {
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
         userEditor.edit(user);
     }
 
     @Transactional
-    public void delete(Long userId) {
+    public void deleteById(Long userId) {
         userRepository.findById(userId).ifPresent(user -> {
             userRepository.delete(user);
-            authUserService.delete(userId);
+            authUserService.deleteByUserId(userId);
         });
     }
 }

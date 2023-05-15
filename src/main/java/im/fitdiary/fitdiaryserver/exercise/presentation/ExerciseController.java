@@ -30,25 +30,25 @@ public class ExerciseController {
 
     @Secured("ROLE_USER_ACCESS")
     @GetMapping("/{exerciseId}")
-    public Response find(@Auth AuthToken authToken, @PathVariable("exerciseId") Long exerciseId) {
+    public Response findById(@Auth AuthToken authToken, @PathVariable("exerciseId") Long exerciseId) {
         Exercise exercise = exerciseService.findById(exerciseId, authToken.getId());
         return Response.success(new ExerciseRes(exercise));
     }
 
     @Secured("ROLE_USER_ACCESS")
     @PutMapping("/{exerciseId}")
-    public Response update(
+    public Response updateById(
             @Auth AuthToken authToken,
             @PathVariable("exerciseId") Long exerciseId,
             @RequestBody @Valid UpdateExerciseReq req
     ) {
-        exerciseService.update(exerciseId, authToken.getId(), req.toEditor());
+        exerciseService.updateById(exerciseId, authToken.getId(), req.toEditor());
         return Response.success();
     }
 
     @Secured("ROLE_USER_ACCESS")
     @DeleteMapping("/{exerciseId}")
-    public Response delete(@Auth AuthToken authToken, @PathVariable("exerciseId") Long exerciseId) {
+    public Response deleteById(@Auth AuthToken authToken, @PathVariable("exerciseId") Long exerciseId) {
         exerciseService.deleteById(exerciseId, authToken.getId());
         return Response.success();
     }

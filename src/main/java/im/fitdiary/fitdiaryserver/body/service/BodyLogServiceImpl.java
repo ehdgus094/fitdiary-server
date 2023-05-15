@@ -38,7 +38,7 @@ public class BodyLogServiceImpl implements BodyLogService {
     }
 
     @Transactional
-    public void update(Long bodyLogId, Long userId, BodyLogEditor editor)
+    public void updateById(Long bodyLogId, Long userId, BodyLogEditor editor)
             throws BodyLogNotFoundException {
         BodyLog bodyLog = bodyLogRepository.findById(bodyLogId, userId)
                 .orElseThrow(BodyLogNotFoundException::new);

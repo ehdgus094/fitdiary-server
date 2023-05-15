@@ -40,18 +40,18 @@ public class BodyLogController {
 
     @Secured("ROLE_USER_ACCESS")
     @PutMapping("/{bodyLogId}")
-    public Response update(
+    public Response updateById(
             @Auth AuthToken authToken,
             @PathVariable("bodyLogId") Long bodyLogId,
             @RequestBody @Valid UpdateBodyLogReq req
     ) {
-        bodyLogService.update(bodyLogId, authToken.getId(), req.toEditor());
+        bodyLogService.updateById(bodyLogId, authToken.getId(), req.toEditor());
         return Response.success();
     }
 
     @Secured("ROLE_USER_ACCESS")
     @DeleteMapping("/{bodyLogId}")
-    public Response delete(@Auth AuthToken authToken, @PathVariable("bodyLogId") Long bodyLogId) {
+    public Response deleteById(@Auth AuthToken authToken, @PathVariable("bodyLogId") Long bodyLogId) {
         bodyLogService.deleteById(bodyLogId, authToken.getId());
         return Response.success();
     }

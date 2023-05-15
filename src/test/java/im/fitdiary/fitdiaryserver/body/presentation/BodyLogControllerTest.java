@@ -42,11 +42,14 @@ class BodyLogControllerTest {
 
     @Autowired
     MockMvc mvc;
+
     @Autowired
     ObjectMapper mapper;
+
     @MockBean
     BodyLogService bodyLogService;
-    private final String BASE_URI = "/body/log";
+
+    String BASE_URI = "/body/log";
 
     @BeforeEach
     void init() {
@@ -108,8 +111,8 @@ class BodyLogControllerTest {
     }
 
     @Test
-    @DisplayName("update")
-    void update() throws Exception {
+    @DisplayName("updateById")
+    void updateById() throws Exception {
         // given
         long bodyLogId = 1L;
         UpdateBodyLogReq req = BodyFactory.updateBodyLogReq();
@@ -125,8 +128,8 @@ class BodyLogControllerTest {
     }
 
     @Test
-    @DisplayName("delete")
-    void remove() throws Exception {
+    @DisplayName("deleteById")
+    void deleteById() throws Exception {
         // given
         long bodyLogId = 1L;
 

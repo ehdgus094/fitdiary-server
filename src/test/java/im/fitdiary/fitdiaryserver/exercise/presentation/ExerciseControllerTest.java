@@ -41,11 +41,14 @@ class ExerciseControllerTest {
 
     @Autowired
     MockMvc mvc;
+
     @Autowired
     ObjectMapper mapper;
+
     @MockBean
     ExerciseService exerciseService;
-    private final String BASE_URI = "/exercise";
+
+    String BASE_URI = "/exercise";
 
     @BeforeEach
     void init() {
@@ -81,8 +84,8 @@ class ExerciseControllerTest {
     }
 
     @Test
-    @DisplayName("find")
-    void find() throws Exception {
+    @DisplayName("findById")
+    void findById() throws Exception {
         // given
         long exerciseId = 1L;
         Exercise exercise = ExerciseFactory.exercise();
@@ -107,8 +110,8 @@ class ExerciseControllerTest {
     }
 
     @Test
-    @DisplayName("update")
-    void update() throws Exception {
+    @DisplayName("updateById")
+    void updateById() throws Exception {
         // given
         long exerciseId = 1L;
         UpdateExerciseReq req = ExerciseFactory.updateExerciseReq();
@@ -124,8 +127,8 @@ class ExerciseControllerTest {
     }
 
     @Test
-    @DisplayName("delete")
-    void remove() throws Exception {
+    @DisplayName("deleteById")
+    void deleteById() throws Exception {
         // given
         long exerciseId = 1L;
 

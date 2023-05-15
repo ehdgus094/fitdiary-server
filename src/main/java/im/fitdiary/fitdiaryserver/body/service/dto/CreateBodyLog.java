@@ -11,13 +11,18 @@ import java.time.LocalDateTime;
 public class CreateBodyLog {
 
     private final Long userId;
+
     @Nullable
     private BigDecimal height;
+
     private final BigDecimal weight;
+
     @Nullable
     private final BigDecimal muscleMass;
+
     @Nullable
     private final BigDecimal bodyFat;
+
     @Nullable
     private final LocalDateTime measuredAt;
 

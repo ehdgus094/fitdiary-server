@@ -42,11 +42,14 @@ class AuthUserControllerTest {
 
     @Autowired
     MockMvc mvc;
+
     @Autowired
     ObjectMapper mapper;
+
     @MockBean
     AuthUserService authUserService;
-    private final String BASE_URI = "/auth/user";
+
+    String BASE_URI = "/auth/user";
 
     @BeforeEach
     void init() {

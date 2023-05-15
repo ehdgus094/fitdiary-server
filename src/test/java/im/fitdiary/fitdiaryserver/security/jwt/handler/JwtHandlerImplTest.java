@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.*;
 class JwtHandlerImplTest {
 
     JwtHandlerImpl jwtHandler;
+
     ConfigProperties properties;
 
     @BeforeEach
@@ -27,7 +28,7 @@ class JwtHandlerImplTest {
     @Nested
     @DisplayName("createToken")
     class CreateToken {
-        private String subject;
+        String subject;
 
         @BeforeEach
         void init() {
@@ -65,8 +66,9 @@ class JwtHandlerImplTest {
     @DisplayName("getSubject")
     class GetSubject {
 
-        private String subject;
-        private String token;
+        String subject;
+
+        String token;
 
         @BeforeEach
         void init() {
@@ -110,8 +112,9 @@ class JwtHandlerImplTest {
     @DisplayName("getRoleType")
     class GetRoleType {
 
-        private RoleType roleType;
-        private String token;
+        RoleType roleType;
+
+        String token;
 
         @BeforeEach
         void init() {
@@ -156,7 +159,7 @@ class JwtHandlerImplTest {
     @DisplayName("getExpiration")
     class GetExpiration {
 
-        private String create(Long maxAge) {
+        String create(Long maxAge) {
             properties.getJwt().getUser().getAccess().setMaxAge(maxAge);
             return jwtHandler.createToken(RoleType.ROLE_USER_ACCESS, "subject");
         }

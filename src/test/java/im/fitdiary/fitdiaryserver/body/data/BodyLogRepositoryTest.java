@@ -30,6 +30,7 @@ class BodyLogRepositoryTest {
 
     @Autowired
     BodyLogRepository bodyLogRepository;
+
     @Autowired
     EntityManager em;
 

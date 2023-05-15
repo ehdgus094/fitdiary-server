@@ -8,8 +8,11 @@ import lombok.Getter;
 public class ExerciseRes {
 
     private final Long id;
+
     private final String name;
+
     private final ExerciseCategory category;
+
     private final boolean active;
 
     public ExerciseRes(Exercise exercise) {

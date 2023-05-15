@@ -1,6 +1,7 @@
 package im.fitdiary.fitdiaryserver.exercise.data.entity;
 
 public enum ExerciseCategory {
+
     BACK, CHEST, SHOULDER, ARM, ABS, LEG;
 
     public static ExerciseCategory from(String value) {

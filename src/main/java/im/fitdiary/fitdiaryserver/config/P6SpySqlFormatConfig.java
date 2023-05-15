@@ -42,7 +42,6 @@ public class P6SpySqlFormatConfig implements MessageFormattingStrategy {
                 sql = FormatStyle.BASIC.getFormatter().format(sql);
             }
         }
-
         return sql;
     }
 }

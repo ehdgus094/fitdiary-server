@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 public class BodyLogSliceRes {
 
     private final List<BodyLogRes> content;
+
     private final boolean hasNext;
 
     public BodyLogSliceRes(BodyLogSlice bodyLogSlice) {

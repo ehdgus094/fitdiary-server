@@ -6,6 +6,7 @@ import lombok.Getter;
 public class JwtToken {
 
     private final String accessToken;
+
     private final String refreshToken;
 
     public JwtToken(String accessToken, String refreshToken) {

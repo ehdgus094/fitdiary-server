@@ -13,6 +13,7 @@ import static org.springframework.test.util.ReflectionTestUtils.*;
 public class ValidationTemplate<T> {
 
     private final T dto;
+
     private final Validator validator;
 
     public ValidationTemplate(T dto) {

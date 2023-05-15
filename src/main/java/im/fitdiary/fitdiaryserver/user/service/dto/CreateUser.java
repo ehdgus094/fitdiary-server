@@ -10,9 +10,13 @@ import lombok.Getter;
 public abstract class CreateUser {
 
     private final String loginId;
+
     private final UserLoginType loginType;
+
     private final String name;
+
     private final String birthYmd;
+
     private final Gender gender;
 
     public abstract User toUserEntity();

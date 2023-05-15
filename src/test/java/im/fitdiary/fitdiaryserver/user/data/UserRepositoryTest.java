@@ -27,6 +27,7 @@ class UserRepositoryTest {
 
     @Autowired
     UserRepository userRepository;
+
     @Autowired
     EntityManager em;
 

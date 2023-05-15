@@ -25,6 +25,7 @@ class BodyLogServiceImplTest {
 
     @Mock
     BodyLogRepository bodyLogRepository;
+
     @InjectMocks
     BodyLogServiceImpl bodyLogService;
 
@@ -32,8 +33,9 @@ class BodyLogServiceImplTest {
     @DisplayName("create")
     class Create {
 
-        private CreateBodyLog createBodyLog;
-        private BodyLog foundBodyLog;
+        CreateBodyLog createBodyLog;
+
+        BodyLog foundBodyLog;
 
         @BeforeEach
         void init() {

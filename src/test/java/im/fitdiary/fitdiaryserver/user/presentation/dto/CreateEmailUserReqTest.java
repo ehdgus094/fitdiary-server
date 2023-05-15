@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 class CreateEmailUserReqTest {
 
-    private final ValidationTemplate<CreateEmailUserReq> template =
+    ValidationTemplate<CreateEmailUserReq> template =
             new ValidationTemplate<>(UserFactory.createEmailUserReq());
 
     @Test

@@ -8,7 +8,7 @@ import org.openapitools.jackson.nullable.JsonNullable;
 
 class UpdateExerciseReqTest {
 
-    private final ValidationTemplate<UpdateExerciseReq> template =
+    ValidationTemplate<UpdateExerciseReq> template =
             new ValidationTemplate<>(ExerciseFactory.updateExerciseReq());
 
     @Test

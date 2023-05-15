@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 
 class UpdateBodyLogReqTest {
 
-    private final ValidationTemplate<UpdateBodyLogReq> template =
+    ValidationTemplate<UpdateBodyLogReq> template =
             new ValidationTemplate<>(BodyFactory.updateBodyLogReq());
 
     @Test

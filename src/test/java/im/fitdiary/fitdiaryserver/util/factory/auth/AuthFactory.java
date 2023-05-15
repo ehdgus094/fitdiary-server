@@ -10,10 +10,15 @@ import static org.springframework.test.util.ReflectionTestUtils.*;
 public class AuthFactory {
 
     private static final Long USER_ID = 1L;
+
     private static final String LOGIN_ID = "testId";
+
     private static final String LOGIN_ID_EMAIL = "test@test.com";
+
     private static final String PASSWORD = "1234";
+
     private static final String ACCESS_TOKEN = "accessToken";
+
     private static final String REFRESH_TOKEN = "refreshToken";
 
     public static AuthUser emailUser() {

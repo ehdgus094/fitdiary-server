@@ -7,6 +7,7 @@ public class AuthToken {
 
     @Getter
     private final Long id;
+
     private final RoleType roleType;
 
     protected AuthToken(Long id, RoleType roleType) {

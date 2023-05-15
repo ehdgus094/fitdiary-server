@@ -34,10 +34,13 @@ class AuthUserServiceImplTest {
 
     @Mock
     AuthUserRepository authUserRepository;
+
     @Mock
     JwtHandler jwtHandler;
+
     @Mock
     PasswordEncoder passwordEncoder;
+
     @InjectMocks
     AuthUserServiceImpl authUserService;
 
@@ -49,9 +52,11 @@ class AuthUserServiceImplTest {
         @DisplayName("email")
         class Email {
 
-            private CreateAuthUser createAuthUser;
-            private AuthUser authUser;
-            private String encodedPassword;
+            CreateAuthUser createAuthUser;
+
+            AuthUser authUser;
+
+            String encodedPassword;
 
             @BeforeEach
             void init() {
@@ -97,8 +102,9 @@ class AuthUserServiceImplTest {
         @DisplayName("kakao")
         class Kakao {
 
-            private CreateAuthUser createAuthUser;
-            private AuthUser authUser;
+            CreateAuthUser createAuthUser;
+
+            AuthUser authUser;
 
             @BeforeEach
             void init() {
@@ -146,10 +152,13 @@ class AuthUserServiceImplTest {
         @DisplayName("email")
         class Email {
 
-            private LoginUser loginUser;
-            private String password;
-            private AuthUser authUser;
-            private String token;
+            LoginUser loginUser;
+
+            String password;
+
+            AuthUser authUser;
+
+            String token;
 
             @BeforeEach
             void init() {
@@ -212,9 +221,11 @@ class AuthUserServiceImplTest {
         @DisplayName("kakao")
         class Kakao {
 
-            private LoginUser loginUser;
-            private AuthUser authUser;
-            private String token;
+            LoginUser loginUser;
+
+            AuthUser authUser;
+
+            String token;
 
             @BeforeEach
             void init() {
@@ -259,8 +270,9 @@ class AuthUserServiceImplTest {
     @DisplayName("logoutUser")
     class LogoutUser {
 
-        private Long userId;
-        private AuthUser authUser;
+        Long userId;
+
+        AuthUser authUser;
 
         @BeforeEach
         void init() {
@@ -299,11 +311,15 @@ class AuthUserServiceImplTest {
     @DisplayName("refreshToken")
     class RefreshToken {
 
-        private Long userId;
-        private AuthUser authUser;
-        private String refreshToken;
-        private String newRefreshToken;
-        private String newAccessToken;
+        Long userId;
+
+        AuthUser authUser;
+
+        String refreshToken;
+
+        String newRefreshToken;
+
+        String newAccessToken;
 
         @BeforeEach
         void init() {

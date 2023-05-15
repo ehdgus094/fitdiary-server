@@ -11,6 +11,7 @@ import java.util.Set;
 public class CustomUserDetails implements UserDetails {
 
     private final String id;
+
     private final Set<GrantedAuthority> authorities;
 
     @Override

@@ -26,6 +26,7 @@ class AuthUserRepositoryTest {
 
     @Autowired
     AuthUserRepository authUserRepository;
+
     @Autowired
     EntityManager em;
 

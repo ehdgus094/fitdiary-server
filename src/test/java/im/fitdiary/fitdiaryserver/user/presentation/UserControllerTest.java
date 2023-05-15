@@ -39,11 +39,14 @@ class UserControllerTest {
 
     @Autowired
     MockMvc mvc;
+
     @Autowired
     ObjectMapper mapper;
+
     @MockBean
     UserService userService;
-    private final String BASE_URI = "/user";
+
+    String BASE_URI = "/user";
 
     @BeforeEach
     void init() {
@@ -79,8 +82,8 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("find")
-    void find() throws Exception {
+    @DisplayName("findById")
+    void findById() throws Exception {
         // given
         User user = UserFactory.user();
         UserRes res = new UserRes(user);
@@ -102,8 +105,8 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("update")
-    void update() throws Exception {
+    @DisplayName("updateById")
+    void updateById() throws Exception {
         // given
         UpdateUserReq req = UserFactory.updateUserReq();
 
@@ -118,8 +121,8 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("delete")
-    void remove() throws Exception {
+    @DisplayName("deleteById")
+    void deleteById() throws Exception {
         // when - then
         mvc.perform(delete(BASE_URI))
                 .andExpectAll(

@@ -13,8 +13,11 @@ import static org.springframework.test.util.ReflectionTestUtils.*;
 public class ExerciseFactory {
 
     private static final Long USER_ID = 1L;
+
     private static final String NAME = "test";
+
     private static final ExerciseCategory CATEGORY = ExerciseCategory.CHEST;
+
     private static final boolean ACTIVE = true;
 
     public static Exercise exercise() {

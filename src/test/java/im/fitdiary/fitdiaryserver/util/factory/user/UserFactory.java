@@ -12,10 +12,15 @@ import static org.springframework.test.util.ReflectionTestUtils.*;
 public class UserFactory {
 
     private static final String NAME = "user";
+
     private static final String BIRTH_YMD = "19901010";
+
     private static final Gender GENDER = Gender.MALE;
+
     private static final String EMAIL = "test@test.com";
+
     private static final String LOGIN_ID = "testId";
+
     private static final String PASSWORD = "1234";
 
     public static User user() {

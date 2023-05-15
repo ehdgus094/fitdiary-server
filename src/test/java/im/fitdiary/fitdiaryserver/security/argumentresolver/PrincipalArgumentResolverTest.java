@@ -28,12 +28,16 @@ class PrincipalArgumentResolverTest {
 
     @Mock
     MethodParameter parameter;
+
     @Mock
     ModelAndViewContainer mavContainer;
+
     @Mock
     NativeWebRequest webRequest;
+
     @Mock
     WebDataBinderFactory binderFactory;
+
     PrincipalArgumentResolver resolver;
 
     @BeforeEach

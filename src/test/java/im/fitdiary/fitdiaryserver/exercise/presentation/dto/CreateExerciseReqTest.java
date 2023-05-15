@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 class CreateExerciseReqTest {
 
-    private final ValidationTemplate<CreateExerciseReq> template =
+    ValidationTemplate<CreateExerciseReq> template =
             new ValidationTemplate<>(ExerciseFactory.createExerciseReq());
 
     @Test

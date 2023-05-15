@@ -7,7 +7,9 @@ import org.openapitools.jackson.nullable.JsonNullable;
 public class ExerciseEditor {
 
     private final JsonNullable<String> name;
+
     private final JsonNullable<ExerciseCategory> category;
+
     private final JsonNullable<Boolean> active;
 
     public ExerciseEditor(

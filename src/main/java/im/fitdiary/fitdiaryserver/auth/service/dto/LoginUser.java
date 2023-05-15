@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public abstract class LoginUser {
 
     private final String loginId;
+
     private final UserLoginType loginType;
 
     public abstract boolean hasValidPassword(String passwordFromDb, PasswordEncoder passwordEncoder);

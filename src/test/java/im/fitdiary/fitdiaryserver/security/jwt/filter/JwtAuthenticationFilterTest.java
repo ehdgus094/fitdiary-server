@@ -28,12 +28,16 @@ class JwtAuthenticationFilterTest {
 
     @Mock
     JwtHandler jwtHandler;
+
     @Mock
     HttpServletRequest request;
+
     @Mock
     HttpServletResponse response;
+
     @Mock
     FilterChain chain;
+
     @InjectMocks
     JwtAuthenticationFilter filter;
 
@@ -41,9 +45,11 @@ class JwtAuthenticationFilterTest {
     @DisplayName("doFilterInternal")
     class DoFilterInternal {
 
-        private String token;
-        private String subject;
-        private RoleType roleType;
+        String token;
+
+        String subject;
+
+        RoleType roleType;
 
         @BeforeEach
         void init() {

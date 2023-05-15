@@ -17,11 +17,17 @@ import static org.springframework.test.util.ReflectionTestUtils.*;
 public class BodyFactory {
 
     private static final Long USER_ID = 1L;
+
     private static final BigDecimal HEIGHT = new BigDecimal("180.32");
+
     private static final BigDecimal WEIGHT = new BigDecimal("80.12");
+
     private static final BigDecimal MUSCLE_MASS = new BigDecimal("40.23");
+
     private static final BigDecimal BODY_FAT = new BigDecimal("13.56");
+
     private static final LocalDateTime MEASURED_AT = LocalDateTime.now();
+
     private static final Long MEASURED_AT_TIMESTAMP = 1683707949L;
 
     public static BodyLog bodyLog() {

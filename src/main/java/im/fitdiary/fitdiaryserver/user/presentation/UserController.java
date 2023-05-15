@@ -33,22 +33,22 @@ public class UserController {
 
     @Secured("ROLE_USER_ACCESS")
     @GetMapping
-    public Response find(@Auth AuthToken authToken) {
+    public Response findById(@Auth AuthToken authToken) {
         User user = userService.findById(authToken.getId());
         return Response.success(new UserRes(user));
     }
 
     @Secured("ROLE_USER_ACCESS")
     @PutMapping
-    public Response update(@Auth AuthToken authToken, @RequestBody @Valid UpdateUserReq req) {
-        userService.update(authToken.getId(), req.toEditor());
+    public Response updateById(@Auth AuthToken authToken, @RequestBody @Valid UpdateUserReq req) {
+        userService.updateById(authToken.getId(), req.toEditor());
         return Response.success();
     }
 
     @Secured("ROLE_USER_ACCESS")
     @DeleteMapping
-    public Response delete(@Auth AuthToken authToken) {
-        userService.delete(authToken.getId());
+    public Response deleteById(@Auth AuthToken authToken) {
+        userService.deleteById(authToken.getId());
         return Response.success();
     }
 }

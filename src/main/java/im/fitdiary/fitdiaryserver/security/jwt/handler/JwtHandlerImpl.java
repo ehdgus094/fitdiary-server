@@ -18,6 +18,7 @@ import java.util.Optional;
 public class JwtHandlerImpl implements JwtHandler {
 
     private static final String TYPE = "Bearer ";
+
     private final ConfigProperties properties;
 
     public String createToken(RoleType roleType, String subject) throws NoSuchElementException {

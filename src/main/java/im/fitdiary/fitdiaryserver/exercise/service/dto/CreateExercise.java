@@ -9,8 +9,11 @@ import org.springframework.lang.Nullable;
 public class CreateExercise {
 
     private final Long userId;
+
     private final String name;
+
     private final ExerciseCategory category;
+
     @Nullable
     private final Boolean active;
 

@@ -24,9 +24,9 @@ import static org.springframework.test.util.ReflectionTestUtils.*;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class ExerciseRepositoryTest {
 
-
     @Autowired
     ExerciseRepository exerciseRepository;
+
     @Autowired
     EntityManager em;
 

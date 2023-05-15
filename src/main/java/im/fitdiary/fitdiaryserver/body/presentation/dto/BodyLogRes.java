@@ -10,10 +10,15 @@ import java.math.BigDecimal;
 public class BodyLogRes {
 
     private final Long id;
+
     private final BigDecimal height;
+
     private final BigDecimal weight;
+
     private final BigDecimal muscleMass;
+
     private final BigDecimal bodyFat;
+
     private final Long measuredAt;
 
     public BodyLogRes(BodyLog bodyLog) {

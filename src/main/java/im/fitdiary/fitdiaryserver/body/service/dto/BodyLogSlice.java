@@ -9,6 +9,7 @@ import java.util.List;
 public class BodyLogSlice {
 
     private final List<BodyLog> content;
+
     private final boolean hasNext;
 
     public BodyLogSlice(List<BodyLog> content, boolean hasNext) {

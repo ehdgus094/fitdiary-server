@@ -12,9 +12,14 @@ import im.fitdiary.fitdiaryserver.exception.e409.AuthUserDuplicatedException;
 import java.util.NoSuchElementException;
 
 public interface AuthUserService {
+
     AuthUser create(CreateAuthUser createAuthUser) throws AuthUserDuplicatedException;
+
     JwtToken login(LoginUser loginUser) throws InvalidLoginInfoException, NoSuchElementException;
+
     void logout(Long userId) throws AuthUserNotFoundException;
+
     JwtToken refreshToken(Long userId, String refreshToken) throws UnauthorizedException;
-    void delete(Long userId);
+
+    void deleteByUserId(Long userId);
 }

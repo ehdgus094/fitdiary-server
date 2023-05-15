@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 
 class CreateBodyLogReqTest {
 
-    private final ValidationTemplate<CreateBodyLogReq> template =
+    ValidationTemplate<CreateBodyLogReq> template =
             new ValidationTemplate<>(BodyFactory.createBodyLogReq());
 
     @Test
