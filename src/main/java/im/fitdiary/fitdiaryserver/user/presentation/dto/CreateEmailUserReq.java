@@ -26,7 +26,7 @@ public class CreateEmailUserReq {
 
     @Enum(enumClass = Gender.class, message = "incorrect gender format")
     @NotNull(message = "gender should not be null")
-    private Gender gender;
+    private String gender;
 
     public CreateEmailUser toServiceDto() {
         return new CreateEmailUser(
@@ -34,7 +34,7 @@ public class CreateEmailUserReq {
                 password,
                 name,
                 birthYmd,
-                gender
+                Gender.from(gender)
         );
     }
 }

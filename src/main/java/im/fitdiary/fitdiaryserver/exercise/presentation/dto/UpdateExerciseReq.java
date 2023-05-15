@@ -17,7 +17,7 @@ public class UpdateExerciseReq {
 
     @Enum(enumClass = ExerciseCategory.class, message = "incorrect category format")
     @NotNull(message = "category should not be null")
-    private JsonNullable<ExerciseCategory> category = JsonNullable.undefined();
+    private JsonNullable<String> category = JsonNullable.undefined();
 
     @NotNull(message = "active should not be null")
     private JsonNullable<Boolean> active = JsonNullable.undefined();
@@ -25,7 +25,9 @@ public class UpdateExerciseReq {
     public ExerciseEditor toEditor() {
         return new ExerciseEditor(
                 name,
-                category,
+                category.isPresent()
+                        ? JsonNullable.of(ExerciseCategory.from(category.get()))
+                        : JsonNullable.undefined(),
                 active
         );
     }

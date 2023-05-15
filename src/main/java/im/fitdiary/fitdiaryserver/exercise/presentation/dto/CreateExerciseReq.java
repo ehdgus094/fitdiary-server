@@ -16,7 +16,7 @@ public class CreateExerciseReq {
 
     @Enum(enumClass = ExerciseCategory.class, message = "incorrect category format")
     @NotNull(message = "category should not be null")
-    private ExerciseCategory category;
+    private String category;
 
     private Boolean active;
 
@@ -24,7 +24,7 @@ public class CreateExerciseReq {
         return new CreateExercise(
                 userId,
                 name,
-                category,
+                ExerciseCategory.from(category),
                 active
         );
     }

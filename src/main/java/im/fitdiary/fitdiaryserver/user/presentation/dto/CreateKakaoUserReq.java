@@ -25,7 +25,7 @@ public class CreateKakaoUserReq {
 
     @Enum(enumClass = Gender.class, message = "incorrect gender format")
     @NotNull(message = "gender should not be null")
-    private Gender gender;
+    private String gender;
 
     @NotBlank(message = "email should not be empty")
     @Email(message = "incorrect email format")
@@ -36,7 +36,7 @@ public class CreateKakaoUserReq {
                 loginId,
                 name,
                 birthYmd,
-                gender,
+                Gender.from(gender),
                 email
         );
     }

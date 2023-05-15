@@ -31,7 +31,7 @@ public class CreateExercise {
                 userId,
                 name,
                 category,
-                active != null && active
+                active == null || active
         );
     }
 }
