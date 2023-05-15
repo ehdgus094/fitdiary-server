@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 @DynamicInsert
 @Where(clause = "deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE body_log SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
+@Table(indexes = @Index(columnList = "userId"))
 public class BodyLog extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

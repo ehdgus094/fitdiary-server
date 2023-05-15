@@ -11,13 +11,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"loginType", "loginId"}))
+@Table(indexes = {
+        @Index(columnList = "userId", unique = true),
+        @Index(columnList = "loginType, loginId", unique = true)
+})
 public class AuthUser extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private Long userId;
 
     @Enumerated(EnumType.STRING)

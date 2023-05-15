@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @ToString
 @Where(clause = "deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE exercise SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
+@Table(indexes = @Index(columnList = "userId"))
 public class Exercise extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
