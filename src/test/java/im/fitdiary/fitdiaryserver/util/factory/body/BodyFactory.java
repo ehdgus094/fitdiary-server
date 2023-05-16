@@ -1,7 +1,7 @@
 package im.fitdiary.fitdiaryserver.util.factory.body;
 
 import im.fitdiary.fitdiaryserver.body.data.entity.BodyLog;
-import im.fitdiary.fitdiaryserver.body.data.entity.BodyLogEditor;
+import im.fitdiary.fitdiaryserver.body.data.dto.BodyLogEditor;
 import im.fitdiary.fitdiaryserver.body.presentation.dto.CreateBodyLogReq;
 import im.fitdiary.fitdiaryserver.body.presentation.dto.UpdateBodyLogReq;
 import im.fitdiary.fitdiaryserver.body.service.dto.BodyLogSlice;

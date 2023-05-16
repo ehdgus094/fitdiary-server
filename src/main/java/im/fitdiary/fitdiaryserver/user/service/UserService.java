@@ -4,7 +4,7 @@ import im.fitdiary.fitdiaryserver.exception.e404.UserNotFoundException;
 import im.fitdiary.fitdiaryserver.exception.e409.AuthUserDuplicatedException;
 import im.fitdiary.fitdiaryserver.user.data.entity.User;
 import im.fitdiary.fitdiaryserver.user.service.dto.CreateUser;
-import im.fitdiary.fitdiaryserver.user.data.entity.UserEditor;
+import im.fitdiary.fitdiaryserver.user.data.dto.UserEditor;
 
 public interface UserService {
 

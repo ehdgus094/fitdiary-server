@@ -3,7 +3,6 @@ package im.fitdiary.fitdiaryserver.auth.service.dto;
 import im.fitdiary.fitdiaryserver.auth.data.entity.AuthUser;
 import im.fitdiary.fitdiaryserver.auth.data.entity.UserLoginType;
 import lombok.Getter;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
 public abstract class CreateAuthUser {
@@ -13,8 +12,6 @@ public abstract class CreateAuthUser {
     private final String loginId;
 
     private final UserLoginType loginType;
-
-    public abstract void encodePassword(PasswordEncoder passwordEncoder);
 
     public abstract AuthUser toEntity();
 

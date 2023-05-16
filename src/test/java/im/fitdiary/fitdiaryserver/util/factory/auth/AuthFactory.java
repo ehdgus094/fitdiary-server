@@ -1,6 +1,7 @@
 package im.fitdiary.fitdiaryserver.util.factory.auth;
 
 import im.fitdiary.fitdiaryserver.auth.data.entity.AuthUser;
+import im.fitdiary.fitdiaryserver.auth.data.entity.UserLoginType;
 import im.fitdiary.fitdiaryserver.auth.presentation.dto.LoginEmailUserReq;
 import im.fitdiary.fitdiaryserver.auth.presentation.dto.LoginKakaoUserReq;
 import im.fitdiary.fitdiaryserver.auth.service.dto.*;
@@ -37,12 +38,12 @@ public class AuthFactory {
         return new CreateKakaoAuthUser(USER_ID, LOGIN_ID);
     }
 
-    public static LoginEmailUser loginEmailUser() {
-        return new LoginEmailUser(LOGIN_ID_EMAIL, PASSWORD);
+    public static LoginUser loginEmailUser() {
+        return new LoginUser(LOGIN_ID_EMAIL, UserLoginType.EMAIL, PASSWORD);
     }
 
-    public static LoginKakaoUser loginKakaoUser() {
-        return new LoginKakaoUser(LOGIN_ID);
+    public static LoginUser loginKakaoUser() {
+        return new LoginUser(LOGIN_ID, UserLoginType.KAKAO, null);
     }
 
     public static JwtToken jwtToken() {

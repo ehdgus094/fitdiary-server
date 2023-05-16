@@ -1,5 +1,6 @@
 package im.fitdiary.fitdiaryserver.body.data.entity;
 
+import im.fitdiary.fitdiaryserver.body.data.dto.BodyLogEditor;
 import im.fitdiary.fitdiaryserver.common.entity.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -28,32 +29,35 @@ public class BodyLog extends BaseEntity {
     @Column(nullable = false)
     private Long userId;
 
-    @Setter(AccessLevel.PROTECTED)
     @Column(nullable = false, columnDefinition = "DECIMAL(7,4) UNSIGNED")
     private BigDecimal height; // cm
 
-    @Setter(AccessLevel.PROTECTED)
     @Column(nullable = false, columnDefinition = "DECIMAL(7,4) UNSIGNED")
     private BigDecimal weight; // kg
 
     @Nullable
-    @Setter(AccessLevel.PROTECTED)
     @Column(columnDefinition = "DECIMAL(7,4) UNSIGNED")
     private BigDecimal muscleMass; // kg
 
     @Nullable
-    @Setter(AccessLevel.PROTECTED)
     @Column(columnDefinition = "DECIMAL(5,2) UNSIGNED")
     private BigDecimal bodyFat; // %
 
     @Nullable
-    @Setter(AccessLevel.PROTECTED)
     @Column(nullable = false)
     @ColumnDefault("CURRENT_TIMESTAMP")
     private LocalDateTime measuredAt;
 
     @Getter(AccessLevel.NONE)
     private LocalDateTime deletedAt;
+
+    public void update(BodyLogEditor editor) {
+        if (editor.getHeight().isPresent()) height = editor.getHeight().get();
+        if (editor.getWeight().isPresent()) weight = editor.getWeight().get();
+        if (editor.getMuscleMass().isPresent()) muscleMass = editor.getMuscleMass().get();
+        if (editor.getBodyFat().isPresent()) bodyFat = editor.getBodyFat().get();
+        if (editor.getMeasuredAt().isPresent()) measuredAt = editor.getMeasuredAt().get();
+    }
 
     public static BodyLog create(
             Long userId,

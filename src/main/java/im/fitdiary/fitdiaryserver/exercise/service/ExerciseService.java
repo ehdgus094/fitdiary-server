@@ -2,7 +2,7 @@ package im.fitdiary.fitdiaryserver.exercise.service;
 
 import im.fitdiary.fitdiaryserver.exception.e404.ExerciseNotFoundException;
 import im.fitdiary.fitdiaryserver.exercise.data.entity.Exercise;
-import im.fitdiary.fitdiaryserver.exercise.data.entity.ExerciseEditor;
+import im.fitdiary.fitdiaryserver.exercise.data.dto.ExerciseEditor;
 import im.fitdiary.fitdiaryserver.exercise.service.dto.CreateExercise;
 
 public interface ExerciseService {

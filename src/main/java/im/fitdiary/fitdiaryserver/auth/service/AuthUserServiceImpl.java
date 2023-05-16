@@ -39,8 +39,8 @@ public class AuthUserServiceImpl implements AuthUserService {
                 ).ifPresent(authUser -> {
                     throw new AuthUserDuplicatedException();
                 });
-        createAuthUser.encodePassword(passwordEncoder);
         AuthUser authUser = createAuthUser.toEntity();
+        authUser.encodePassword(passwordEncoder);
         authUserRepository.save(authUser);
         return authUser;
     }
@@ -51,7 +51,7 @@ public class AuthUserServiceImpl implements AuthUserService {
         AuthUser authUser = authUserRepository
                 .findByLoginIdAndLoginType(loginUser.getLoginId(), loginUser.getLoginType())
                 .orElseThrow(InvalidLoginInfoException::new);
-        if (!loginUser.hasValidPassword(authUser.getPassword(), passwordEncoder)) {
+        if (!authUser.isValidPassword(passwordEncoder, loginUser.getPassword())) {
             throw new InvalidLoginInfoException();
         }
 

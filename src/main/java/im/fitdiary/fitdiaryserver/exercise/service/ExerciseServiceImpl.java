@@ -3,7 +3,7 @@ package im.fitdiary.fitdiaryserver.exercise.service;
 import im.fitdiary.fitdiaryserver.exception.e404.ExerciseNotFoundException;
 import im.fitdiary.fitdiaryserver.exercise.data.ExerciseRepository;
 import im.fitdiary.fitdiaryserver.exercise.data.entity.Exercise;
-import im.fitdiary.fitdiaryserver.exercise.data.entity.ExerciseEditor;
+import im.fitdiary.fitdiaryserver.exercise.data.dto.ExerciseEditor;
 import im.fitdiary.fitdiaryserver.exercise.service.dto.CreateExercise;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ public class ExerciseServiceImpl implements ExerciseService {
             throws ExerciseNotFoundException {
         Exercise exercise = exerciseRepository.findByIdAndUserId(exerciseId, userId)
                 .orElseThrow(ExerciseNotFoundException::new);
-        editor.edit(exercise);
+        exercise.update(editor);
     }
 
     @Transactional

@@ -2,19 +2,21 @@ package im.fitdiary.fitdiaryserver.auth.service.dto;
 
 import im.fitdiary.fitdiaryserver.auth.data.entity.UserLoginType;
 import lombok.Getter;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.lang.Nullable;
 
 @Getter
-public abstract class LoginUser {
+public class LoginUser {
 
     private final String loginId;
 
     private final UserLoginType loginType;
 
-    public abstract boolean hasValidPassword(String passwordFromDb, PasswordEncoder passwordEncoder);
+    @Nullable
+    private final String password;
 
-    protected LoginUser(String loginId, UserLoginType loginType) {
+    public LoginUser(String loginId, UserLoginType loginType, @Nullable String password) {
         this.loginId = loginId;
         this.loginType = loginType;
+        this.password = password;
     }
 }

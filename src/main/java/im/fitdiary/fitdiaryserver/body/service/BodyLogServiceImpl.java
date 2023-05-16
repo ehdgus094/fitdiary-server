@@ -2,7 +2,7 @@ package im.fitdiary.fitdiaryserver.body.service;
 
 import im.fitdiary.fitdiaryserver.body.data.BodyLogRepository;
 import im.fitdiary.fitdiaryserver.body.data.entity.BodyLog;
-import im.fitdiary.fitdiaryserver.body.data.entity.BodyLogEditor;
+import im.fitdiary.fitdiaryserver.body.data.dto.BodyLogEditor;
 import im.fitdiary.fitdiaryserver.body.service.dto.BodyLogSlice;
 import im.fitdiary.fitdiaryserver.body.service.dto.CreateBodyLog;
 import im.fitdiary.fitdiaryserver.exception.e404.BodyLogNotFoundException;
@@ -42,7 +42,7 @@ public class BodyLogServiceImpl implements BodyLogService {
             throws BodyLogNotFoundException {
         BodyLog bodyLog = bodyLogRepository.findById(bodyLogId, userId)
                 .orElseThrow(BodyLogNotFoundException::new);
-        editor.edit(bodyLog);
+        bodyLog.update(editor);
     }
 
     @Transactional

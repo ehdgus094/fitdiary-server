@@ -1,4 +1,4 @@
-package im.fitdiary.fitdiaryserver.user.data.entity;
+package im.fitdiary.fitdiaryserver.user.data.dto;
 
 import lombok.Getter;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -10,9 +10,5 @@ public class UserEditor {
 
     public UserEditor(JsonNullable<String> name) {
         this.name = name;
-    }
-
-    public void edit(User user) {
-        if (name.isPresent()) user.setName(name.get());
     }
 }

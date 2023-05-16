@@ -1,6 +1,7 @@
 package im.fitdiary.fitdiaryserver.user.data.entity;
 
 import im.fitdiary.fitdiaryserver.common.entity.BaseEntity;
+import im.fitdiary.fitdiaryserver.user.data.dto.UserEditor;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -19,7 +20,6 @@ public class User extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Setter(AccessLevel.PROTECTED)
     @Column(nullable = false)
     private String name;
 
@@ -35,6 +35,10 @@ public class User extends BaseEntity {
 
     @Getter(AccessLevel.NONE)
     private LocalDateTime deletedAt;
+
+    public void update(UserEditor editor) {
+        if (editor.getName().isPresent()) name = editor.getName().get();
+    }
 
     public static User create(String name, String birthYmd, Gender gender, String email) {
         return User.builder()

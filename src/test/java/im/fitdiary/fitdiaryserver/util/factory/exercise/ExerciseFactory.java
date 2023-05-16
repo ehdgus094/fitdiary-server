@@ -2,7 +2,7 @@ package im.fitdiary.fitdiaryserver.util.factory.exercise;
 
 import im.fitdiary.fitdiaryserver.exercise.data.entity.Exercise;
 import im.fitdiary.fitdiaryserver.exercise.data.entity.ExerciseCategory;
-import im.fitdiary.fitdiaryserver.exercise.data.entity.ExerciseEditor;
+import im.fitdiary.fitdiaryserver.exercise.data.dto.ExerciseEditor;
 import im.fitdiary.fitdiaryserver.exercise.data.entity.ExerciseLog;
 import im.fitdiary.fitdiaryserver.exercise.presentation.dto.CreateExerciseLogReq;
 import im.fitdiary.fitdiaryserver.exercise.presentation.dto.CreateExerciseReq;

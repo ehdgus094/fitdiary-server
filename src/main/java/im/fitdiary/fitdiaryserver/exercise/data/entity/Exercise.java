@@ -1,6 +1,7 @@
 package im.fitdiary.fitdiaryserver.exercise.data.entity;
 
 import im.fitdiary.fitdiaryserver.common.entity.BaseEntity;
+import im.fitdiary.fitdiaryserver.exercise.data.dto.ExerciseEditor;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -23,21 +24,24 @@ public class Exercise extends BaseEntity {
     @Column(nullable = false)
     private Long userId;
 
-    @Setter(AccessLevel.PROTECTED)
     @Column(nullable = false)
     private String name;
 
-    @Setter(AccessLevel.PROTECTED)
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ExerciseCategory category;
 
-    @Setter(AccessLevel.PROTECTED)
     @Column(nullable = false)
     private boolean active;
 
     @Getter(AccessLevel.NONE)
     private LocalDateTime deletedAt;
+
+    public void update(ExerciseEditor editor) {
+        if (editor.getName().isPresent()) name = editor.getName().get();
+        if (editor.getCategory().isPresent()) category = editor.getCategory().get();
+        if (editor.getActive().isPresent()) active = editor.getActive().get();
+    }
 
     public static Exercise create(Long userId, String name, ExerciseCategory category, boolean active) {
         return Exercise.builder()

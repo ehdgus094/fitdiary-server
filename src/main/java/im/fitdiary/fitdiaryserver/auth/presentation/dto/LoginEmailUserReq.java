@@ -1,6 +1,7 @@
 package im.fitdiary.fitdiaryserver.auth.presentation.dto;
 
-import im.fitdiary.fitdiaryserver.auth.service.dto.LoginEmailUser;
+import im.fitdiary.fitdiaryserver.auth.data.entity.UserLoginType;
+import im.fitdiary.fitdiaryserver.auth.service.dto.LoginUser;
 import lombok.Getter;
 
 import javax.validation.constraints.Email;
@@ -16,7 +17,7 @@ public class LoginEmailUserReq {
     @NotBlank(message = "password should not be empty")
     private String password;
 
-    public LoginEmailUser toServiceDto() {
-        return new LoginEmailUser(loginId, password);
+    public LoginUser toServiceDto() {
+        return new LoginUser(loginId, UserLoginType.EMAIL, password);
     }
 }

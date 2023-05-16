@@ -1,5 +1,6 @@
-package im.fitdiary.fitdiaryserver.exercise.data.entity;
+package im.fitdiary.fitdiaryserver.exercise.data.dto;
 
+import im.fitdiary.fitdiaryserver.exercise.data.entity.ExerciseCategory;
 import lombok.Getter;
 import org.openapitools.jackson.nullable.JsonNullable;
 
@@ -20,11 +21,5 @@ public class ExerciseEditor {
         this.name = name;
         this.category = category;
         this.active = active;
-    }
-
-    public void edit(Exercise exercise) {
-        if (name.isPresent()) exercise.setName(name.get());
-        if (category.isPresent()) exercise.setCategory(category.get());
-        if (active.isPresent()) exercise.setActive(active.get());
     }
 }

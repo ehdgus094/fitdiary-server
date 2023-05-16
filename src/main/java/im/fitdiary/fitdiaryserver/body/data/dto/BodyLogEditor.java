@@ -1,4 +1,4 @@
-package im.fitdiary.fitdiaryserver.body.data.entity;
+package im.fitdiary.fitdiaryserver.body.data.dto;
 
 import lombok.Getter;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -31,13 +31,5 @@ public class BodyLogEditor {
         this.muscleMass = muscleMass;
         this.bodyFat = bodyFat;
         this.measuredAt = measuredAt;
-    }
-
-    public void edit(BodyLog bodyLog) {
-        if (height.isPresent()) bodyLog.setHeight(height.get());
-        if (weight.isPresent()) bodyLog.setWeight(weight.get());
-        if (muscleMass.isPresent()) bodyLog.setMuscleMass(muscleMass.get());
-        if (bodyFat.isPresent()) bodyLog.setBodyFat(bodyFat.get());
-        if (measuredAt.isPresent()) bodyLog.setMeasuredAt(measuredAt.get());
     }
 }

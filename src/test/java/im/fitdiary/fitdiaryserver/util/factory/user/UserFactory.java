@@ -2,7 +2,7 @@ package im.fitdiary.fitdiaryserver.util.factory.user;
 
 import im.fitdiary.fitdiaryserver.user.data.entity.Gender;
 import im.fitdiary.fitdiaryserver.user.data.entity.User;
-import im.fitdiary.fitdiaryserver.user.data.entity.UserEditor;
+import im.fitdiary.fitdiaryserver.user.data.dto.UserEditor;
 import im.fitdiary.fitdiaryserver.user.presentation.dto.*;
 import im.fitdiary.fitdiaryserver.user.service.dto.*;
 import org.openapitools.jackson.nullable.JsonNullable;

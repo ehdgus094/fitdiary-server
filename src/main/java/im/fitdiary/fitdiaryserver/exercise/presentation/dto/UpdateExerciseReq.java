@@ -2,7 +2,7 @@ package im.fitdiary.fitdiaryserver.exercise.presentation.dto;
 
 import im.fitdiary.fitdiaryserver.common.validation.Enum;
 import im.fitdiary.fitdiaryserver.exercise.data.entity.ExerciseCategory;
-import im.fitdiary.fitdiaryserver.exercise.data.entity.ExerciseEditor;
+import im.fitdiary.fitdiaryserver.exercise.data.dto.ExerciseEditor;
 import lombok.Getter;
 import org.openapitools.jackson.nullable.JsonNullable;
 

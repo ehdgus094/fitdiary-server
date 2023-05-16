@@ -3,6 +3,7 @@ package im.fitdiary.fitdiaryserver.auth.data.entity;
 import im.fitdiary.fitdiaryserver.common.entity.BaseEntity;
 import lombok.*;
 import org.springframework.lang.Nullable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -36,6 +37,19 @@ public class AuthUser extends BaseEntity {
 
     @Nullable
     private String refreshToken;
+
+    public void encodePassword(PasswordEncoder passwordEncoder) {
+        if (loginType.equals(UserLoginType.EMAIL)) {
+            password = passwordEncoder.encode(password);
+        } else {
+            password = null;
+        }
+    }
+
+    public boolean isValidPassword(PasswordEncoder passwordEncoder, String inputPassword) {
+        if (!loginType.equals(UserLoginType.EMAIL)) return true;
+        return passwordEncoder.matches(inputPassword, password);
+    }
 
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
