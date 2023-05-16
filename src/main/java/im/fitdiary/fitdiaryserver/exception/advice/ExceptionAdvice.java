@@ -4,7 +4,6 @@ import im.fitdiary.fitdiaryserver.common.dto.Response;
 import im.fitdiary.fitdiaryserver.exception.e401.BaseUnauthorizedException;
 import im.fitdiary.fitdiaryserver.exception.e404.NotFoundException;
 import im.fitdiary.fitdiaryserver.exception.e409.ConflictException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
@@ -20,14 +19,13 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import javax.validation.ConstraintViolationException;
 
-@Slf4j
 @RestControllerAdvice
 public class ExceptionAdvice {
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Response exception(Exception e) {
-        log.error(e.toString());
+        e.printStackTrace();
         return Response.failure(e.getMessage());
     }
 
