@@ -12,7 +12,7 @@ public class LoginKakaoUserReq {
     @NotBlank(message = "loginId should not be empty")
     private String loginId;
 
-    public LoginUser toServiceDto() {
+    public LoginUser toDto() {
         return new LoginUser(loginId, UserLoginType.KAKAO, null);
     }
 }

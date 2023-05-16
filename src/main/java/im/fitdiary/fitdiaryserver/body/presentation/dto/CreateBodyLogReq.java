@@ -33,7 +33,7 @@ public class CreateBodyLogReq {
     @PastOrPresentTimestamp(message = "measuredAt must be past or present")
     private Long measuredAt;
 
-    public CreateBodyLog toServiceDto(Long userId) {
+    public CreateBodyLog toDto(Long userId) {
         return new CreateBodyLog(
                 userId,
                 height,

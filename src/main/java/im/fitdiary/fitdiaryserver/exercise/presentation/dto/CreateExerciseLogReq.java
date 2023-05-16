@@ -15,7 +15,7 @@ public class CreateExerciseLogReq {
     @Max(value = 86400, message = "duration should not be over than 86400") // 1일
     private Integer duration;
 
-    public CreateExerciseLog toServiceDto(Long userId) {
+    public CreateExerciseLog toDto(Long userId) {
         return new CreateExerciseLog(userId, duration);
     }
 }

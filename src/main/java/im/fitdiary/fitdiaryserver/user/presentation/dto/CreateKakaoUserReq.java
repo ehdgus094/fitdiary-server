@@ -31,7 +31,7 @@ public class CreateKakaoUserReq {
     @Email(message = "incorrect email format")
     private String email;
 
-    public CreateKakaoUser toServiceDto() {
+    public CreateKakaoUser toDto() {
         return new CreateKakaoUser(
                 loginId,
                 name,

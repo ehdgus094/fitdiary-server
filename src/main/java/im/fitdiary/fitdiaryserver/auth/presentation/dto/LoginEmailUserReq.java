@@ -17,7 +17,7 @@ public class LoginEmailUserReq {
     @NotBlank(message = "password should not be empty")
     private String password;
 
-    public LoginUser toServiceDto() {
+    public LoginUser toDto() {
         return new LoginUser(loginId, UserLoginType.EMAIL, password);
     }
 }

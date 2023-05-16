@@ -20,7 +20,7 @@ public class CreateExerciseReq {
 
     private Boolean active;
 
-    public CreateExercise toServiceDto(Long userId) {
+    public CreateExercise toDto(Long userId) {
         return new CreateExercise(
                 userId,
                 name,

@@ -27,7 +27,7 @@ public class BodyLogController {
     @Secured("ROLE_USER_ACCESS")
     @PostMapping
     public Response create(@Auth AuthToken authToken, @RequestBody @Valid CreateBodyLogReq req) {
-        BodyLog bodyLog = bodyLogService.create(req.toServiceDto(authToken.getId()));
+        BodyLog bodyLog = bodyLogService.create(req.toDto(authToken.getId()));
         return Response.success(new BodyLogRes(bodyLog));
     }
 

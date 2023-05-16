@@ -24,13 +24,13 @@ public class AuthUserController {
 
     @PostMapping("/login/email")
     public Response loginEmailUser(@RequestBody @Valid LoginEmailUserReq req) {
-        JwtToken token = authUserService.login(req.toServiceDto());
+        JwtToken token = authUserService.login(req.toDto());
         return Response.success(new LoginUserRes(token));
     }
 
     @PostMapping("/login/kakao")
     public Response loginKakaoUser(@RequestBody @Valid LoginKakaoUserReq req) {
-        JwtToken token = authUserService.login(req.toServiceDto());
+        JwtToken token = authUserService.login(req.toDto());
         return Response.success(new LoginUserRes(token));
     }
 

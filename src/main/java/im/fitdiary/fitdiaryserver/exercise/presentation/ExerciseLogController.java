@@ -23,7 +23,7 @@ public class ExerciseLogController {
     @Secured("ROLE_USER_ACCESS")
     @PostMapping
     public Response create(@Auth AuthToken authToken, @RequestBody @Valid CreateExerciseLogReq req) {
-        ExerciseLog exerciseLog = exerciseLogService.create(req.toServiceDto(authToken.getId()));
+        ExerciseLog exerciseLog = exerciseLogService.create(req.toDto(authToken.getId()));
         return Response.success(new ExerciseLogRes(exerciseLog));
     }
 

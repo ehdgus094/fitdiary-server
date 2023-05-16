@@ -28,7 +28,7 @@ public class CreateEmailUserReq {
     @NotNull(message = "gender should not be null")
     private String gender;
 
-    public CreateEmailUser toServiceDto() {
+    public CreateEmailUser toDto() {
         return new CreateEmailUser(
                 loginId,
                 password,

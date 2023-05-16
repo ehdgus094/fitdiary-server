@@ -21,13 +21,13 @@ public class UserController {
 
     @PostMapping("/email")
     public Response createEmail(@RequestBody @Valid CreateEmailUserReq req) {
-        userService.create(req.toServiceDto());
+        userService.create(req.toDto());
         return Response.success();
     }
 
     @PostMapping("/kakao")
     public Response createKakao(@RequestBody @Valid CreateKakaoUserReq req) {
-        userService.create(req.toServiceDto());
+        userService.create(req.toDto());
         return Response.success();
     }
 

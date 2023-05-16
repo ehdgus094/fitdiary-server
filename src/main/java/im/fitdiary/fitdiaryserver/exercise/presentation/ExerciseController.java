@@ -24,7 +24,7 @@ public class ExerciseController {
     @Secured("ROLE_USER_ACCESS")
     @PostMapping
     public Response create(@Auth AuthToken authToken, @RequestBody @Valid CreateExerciseReq req) {
-        Exercise exercise = exerciseService.create(req.toServiceDto(authToken.getId()));
+        Exercise exercise = exerciseService.create(req.toDto(authToken.getId()));
         return Response.success(new ExerciseRes(exercise));
     }
 
