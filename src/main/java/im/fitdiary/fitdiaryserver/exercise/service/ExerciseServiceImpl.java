@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class ExerciseServiceImpl implements ExerciseService {
@@ -26,6 +28,11 @@ public class ExerciseServiceImpl implements ExerciseService {
     public Exercise findById(Long exerciseId, Long userId) throws ExerciseNotFoundException {
         return exerciseRepository.findByIdAndUserId(exerciseId, userId)
                 .orElseThrow(ExerciseNotFoundException::new);
+    }
+
+    @Transactional(readOnly = true)
+    public long countByIdIn(List<Long> exerciseIds, Long userId) {
+        return exerciseRepository.countByIdInAndUserId(exerciseIds, userId);
     }
 
     @Transactional
