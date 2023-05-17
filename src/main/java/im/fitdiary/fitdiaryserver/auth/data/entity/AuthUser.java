@@ -39,7 +39,7 @@ public class AuthUser extends BaseEntity {
     private String refreshToken;
 
     public void encodePassword(PasswordEncoder passwordEncoder) {
-        if (loginType.equals(UserLoginType.EMAIL)) {
+        if (UserLoginType.EMAIL.equals(loginType)) {
             password = passwordEncoder.encode(password);
         } else {
             password = null;
@@ -47,7 +47,7 @@ public class AuthUser extends BaseEntity {
     }
 
     public boolean isValidPassword(PasswordEncoder passwordEncoder, String inputPassword) {
-        if (!loginType.equals(UserLoginType.EMAIL)) return true;
+        if (!UserLoginType.EMAIL.equals(loginType)) return true;
         return passwordEncoder.matches(inputPassword, password);
     }
 

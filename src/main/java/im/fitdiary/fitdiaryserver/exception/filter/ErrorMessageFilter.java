@@ -32,7 +32,7 @@ public class ErrorMessageFilter implements Filter {
         } finally {
             Mode mode = properties.getMode();
             byte[] content = responseWrapper.getContentAsByteArray();
-            if (mode != null && mode.equals(Mode.PROD)) {
+            if (Mode.PROD.equals(mode)) {
                 int status = ((HttpServletResponse) response).getStatus();
                 if (status == 400) {
                     content = mapper.writeValueAsBytes(Response.failure("bad request"));
