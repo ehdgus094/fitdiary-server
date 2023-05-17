@@ -59,7 +59,7 @@ class CreateExerciseLogDetailReqTest {
     @DisplayName("유효성 검사 SupportCount")
     void validateSupportCount() {
         template.failure("supportCount", null);
-        template.failure("supportCount", 0);
+        template.failure("supportCount", -1);
         template.failure("supportCount", 10001);
     }
 }
