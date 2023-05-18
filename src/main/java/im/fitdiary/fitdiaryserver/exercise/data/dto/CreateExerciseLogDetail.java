@@ -11,8 +11,6 @@ public class CreateExerciseLogDetail {
 
     private final boolean warmUp;
 
-    private final int intervals;
-
     private final BigDecimal weight;
 
     private final int count;
@@ -22,14 +20,12 @@ public class CreateExerciseLogDetail {
     public CreateExerciseLogDetail(
             Long exerciseId,
             boolean warmUp,
-            int intervals,
             BigDecimal weight,
             int count,
             int supportCount
     ) {
         this.exerciseId = exerciseId;
         this.warmUp = warmUp;
-        this.intervals = intervals;
         this.weight = weight;
         this.count = count;
         this.supportCount = supportCount;

@@ -33,7 +33,7 @@ public class BodyLogServiceImpl implements BodyLogService {
 
     @Transactional(readOnly = true)
     public BodyLog findById(Long bodyLogId, Long userId) throws BodyLogNotFoundException {
-        return bodyLogRepository.findById(bodyLogId, userId)
+        return bodyLogRepository.findByIdAndUserId(bodyLogId, userId)
                 .orElseThrow(BodyLogNotFoundException::new);
     }
 
@@ -52,7 +52,7 @@ public class BodyLogServiceImpl implements BodyLogService {
 
     @Transactional
     public void deleteById(Long bodyLogId, Long userId) {
-        bodyLogRepository.findById(bodyLogId, userId)
+        bodyLogRepository.findByIdAndUserId(bodyLogId, userId)
                 .ifPresent(bodyLogRepository::delete);
     }
 }

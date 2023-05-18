@@ -121,19 +121,4 @@ class BodyLogRepositoryTest {
         assertThat(page_2.getContent()).hasSize(1);
         assertThat(page_2.hasNext()).isFalse();
     }
-
-    @Test
-    @DisplayName("findById")
-    void findById() {
-        // given
-        BodyLog bodyLog = BodyFactory.bodyLog();
-        bodyLogRepository.save(bodyLog);
-
-        // when
-        Optional<BodyLog> foundBodyLog =
-                bodyLogRepository.findById(bodyLog.getId(), bodyLog.getUserId());
-
-        // then
-        assertThat(foundBodyLog).isPresent();
-    }
 }

@@ -32,14 +32,6 @@ class CreateExerciseLogDetailReqTest {
     }
 
     @Test
-    @DisplayName("유효성 검사 Intervals")
-    void validateIntervals() {
-        template.failure("intervals", null);
-        template.failure("intervals", 0);
-        template.failure("intervals", 86401);
-    }
-
-    @Test
     @DisplayName("유효성 검사 Weight")
     void validateWeight() {
         template.failure("weight", null);

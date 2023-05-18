@@ -131,7 +131,7 @@ class BodyLogServiceImplTest {
             assertThat(createdBodyLog.getWeight()).isEqualTo(createBodyLog.getWeight());
             assertThat(createdBodyLog.getMuscleMass()).isEqualTo(createBodyLog.getMuscleMass());
             assertThat(createdBodyLog.getBodyFat()).isEqualTo(createBodyLog.getBodyFat());
-            assertThat(createdBodyLog.getMeasuredAt()).isNull();
+            assertThat(createdBodyLog.getMeasuredAt()).isNotNull();
         }
 
         @Test

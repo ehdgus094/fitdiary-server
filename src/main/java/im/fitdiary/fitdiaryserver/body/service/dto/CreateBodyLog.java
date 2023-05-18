@@ -53,7 +53,7 @@ public class CreateBodyLog {
                 weight,
                 muscleMass,
                 bodyFat,
-                measuredAt
+                measuredAt == null ? LocalDateTime.now() : measuredAt
         );
     }
 }

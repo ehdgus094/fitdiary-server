@@ -1,6 +1,7 @@
 package im.fitdiary.fitdiaryserver.util.factory.exercise;
 
 import im.fitdiary.fitdiaryserver.exercise.data.dto.CreateExerciseLogDetail;
+import im.fitdiary.fitdiaryserver.exercise.data.dto.ExerciseLogDetailEditor;
 import im.fitdiary.fitdiaryserver.exercise.data.entity.Exercise;
 import im.fitdiary.fitdiaryserver.exercise.data.entity.ExerciseCategory;
 import im.fitdiary.fitdiaryserver.exercise.data.dto.ExerciseEditor;
@@ -12,6 +13,7 @@ import im.fitdiary.fitdiaryserver.exercise.service.dto.CreateExerciseLog;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,9 +31,11 @@ public class ExerciseFactory {
 
     private static final int DURATION = 7200;
 
-    private static final boolean WARM_UP = false;
+    private static final LocalDateTime MEASURED_AT = LocalDateTime.now();
 
-    private static final int INTERVALS = 60;
+    private static final Long MEASURED_AT_TIMESTAMP = 1683707949L;
+
+    private static final boolean WARM_UP = false;
 
     private static final BigDecimal WEIGHT = new BigDecimal("100");
 
@@ -42,6 +46,10 @@ public class ExerciseFactory {
     private static final long EXERCISE_LOG_ID = 1L;
 
     private static final long EXERCISE_ID = 1L;
+
+    private static final int SEQUENCE = 0;
+
+    private static final long EXERCISE_LOG_DETAIL_ID = 1L;
 
     public static Exercise exercise() {
         return Exercise.create(
@@ -55,7 +63,8 @@ public class ExerciseFactory {
     public static ExerciseLog exerciseLog() {
         return ExerciseLog.create(
                 USER_ID,
-                DURATION
+                DURATION,
+                MEASURED_AT
         );
     }
 
@@ -69,7 +78,6 @@ public class ExerciseFactory {
                 exerciseLog,
                 sequence,
                 WARM_UP,
-                INTERVALS,
                 WEIGHT,
                 COUNT,
                 SUPPORT_COUNT
@@ -84,19 +92,28 @@ public class ExerciseFactory {
         );
     }
 
+    public static ExerciseLogDetailEditor exerciseLogDetailEditor() {
+        return new ExerciseLogDetailEditor(
+                JsonNullable.of(SEQUENCE),
+                JsonNullable.of(WARM_UP),
+                JsonNullable.of(WEIGHT),
+                JsonNullable.of(COUNT),
+                JsonNullable.of(SUPPORT_COUNT)
+        );
+    }
+
     public static CreateExercise createExercise() {
         return new CreateExercise(USER_ID, NAME, CATEGORY, ACTIVE);
     }
 
     public static CreateExerciseLog createExerciseLog() {
-        return new CreateExerciseLog(USER_ID, DURATION);
+        return new CreateExerciseLog(USER_ID, DURATION, MEASURED_AT);
     }
 
     public static CreateExerciseLogDetail createExerciseLogDetail(Long exerciseId) {
         return new CreateExerciseLogDetail(
                 exerciseId,
                 WARM_UP,
-                INTERVALS,
                 WEIGHT,
                 COUNT,
                 SUPPORT_COUNT
@@ -122,6 +139,7 @@ public class ExerciseFactory {
     public static CreateExerciseLogReq createExerciseLogReq() {
         CreateExerciseLogReq req = new CreateExerciseLogReq();
         setField(req, "duration", DURATION);
+        setField(req, "measuredAt", MEASURED_AT_TIMESTAMP);
         return req;
     }
 
@@ -138,10 +156,29 @@ public class ExerciseFactory {
         CreateExerciseLogDetailReq req = new CreateExerciseLogDetailReq();
         setField(req, "exerciseId", EXERCISE_ID);
         setField(req, "warmUp", WARM_UP);
-        setField(req, "intervals", INTERVALS);
         setField(req, "weight", WEIGHT);
         setField(req, "count", COUNT);
         setField(req, "supportCount", SUPPORT_COUNT);
+        return req;
+    }
+
+    public static UpdateExerciseLogDetailListReq updateExerciseLogDetailListReq() {
+        UpdateExerciseLogDetailListReq req = new UpdateExerciseLogDetailListReq();
+        setField(req, "exerciseLogId", EXERCISE_LOG_ID);
+        List<UpdateExerciseLogDetailReq> data = new ArrayList<>();
+        data.add(updateExerciseLogDetailReq());
+        setField(req, "data", data);
+        return req;
+    }
+
+    public static UpdateExerciseLogDetailReq updateExerciseLogDetailReq() {
+        UpdateExerciseLogDetailReq req = new UpdateExerciseLogDetailReq();
+        setField(req, "exerciseLogDetailId", EXERCISE_LOG_DETAIL_ID);
+        setField(req, "sequence", JsonNullable.of(SEQUENCE));
+        setField(req, "warmUp", JsonNullable.of(WARM_UP));
+        setField(req, "weight", JsonNullable.of(WEIGHT));
+        setField(req, "count", JsonNullable.of(COUNT));
+        setField(req, "supportCount", JsonNullable.of(SUPPORT_COUNT));
         return req;
     }
 }

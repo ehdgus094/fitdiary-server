@@ -38,8 +38,7 @@ public class ExerciseServiceImpl implements ExerciseService {
     @Transactional
     public void updateById(Long exerciseId, Long userId, ExerciseEditor editor)
             throws ExerciseNotFoundException {
-        Exercise exercise = exerciseRepository.findByIdAndUserId(exerciseId, userId)
-                .orElseThrow(ExerciseNotFoundException::new);
+        Exercise exercise = findById(exerciseId, userId);
         exercise.update(editor);
     }
 

@@ -19,11 +19,6 @@ public class CreateExerciseLogDetailReq {
     @NotNull(message = "warmUp should not be null")
     private Boolean warmUp;
 
-    @NotNull(message = "intervals should not be null")
-    @Positive(message = "intervals should be positive")
-    @Max(value = 86400, message = "intervals should not be over than 86400") // 1일
-    private Integer intervals;
-
     @NotNull(message = "weight should not be null")
     @Positive(message = "weight should be positive")
     @Max(value = 999, message = "weight should not be over than 999")
@@ -40,6 +35,6 @@ public class CreateExerciseLogDetailReq {
     private Integer supportCount;
 
     public CreateExerciseLogDetail toDto() {
-        return new CreateExerciseLogDetail(exerciseId, warmUp, intervals, weight, count, supportCount);
+        return new CreateExerciseLogDetail(exerciseId, warmUp, weight, count, supportCount);
     }
 }

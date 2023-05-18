@@ -26,25 +26,32 @@ public class ExerciseLog extends BaseEntity {
     @Column(nullable = false, columnDefinition = "MEDIUMINT UNSIGNED")
     private int duration; // 운동시간 seconds
 
+    @Column(nullable = false)
+    private LocalDateTime measuredAt;
+
     @Getter(AccessLevel.NONE)
     private LocalDateTime deletedAt;
 
     public static ExerciseLog create(
             Long userId,
-            int duration
+            int duration,
+            LocalDateTime measuredAt
     ) {
         return ExerciseLog.builder()
                 .userId(userId)
                 .duration(duration)
+                .measuredAt(measuredAt)
                 .build();
     }
 
     @Builder
     private ExerciseLog(
             Long userId,
-            int duration
+            int duration,
+            LocalDateTime measuredAt
     ) {
         this.userId = userId;
         this.duration = duration;
+        this.measuredAt = measuredAt;
     }
 }

@@ -95,7 +95,9 @@ class ExerciseLogControllerTest {
                         jsonPath("$.data.id")
                                 .value(res.getId()),
                         jsonPath("$.data.duration")
-                                .value(res.getDuration())
+                                .value(res.getDuration()),
+                        jsonPath("$.data.measuredAt")
+                                .value(res.getMeasuredAt())
                 )
                 .andDo(print());
     }

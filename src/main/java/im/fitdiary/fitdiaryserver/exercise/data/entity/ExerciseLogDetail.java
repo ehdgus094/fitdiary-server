@@ -25,15 +25,11 @@ public class ExerciseLogDetail {
     @ManyToOne(fetch = FetchType.LAZY)
     private ExerciseLog exerciseLog;
 
-    @Getter(AccessLevel.NONE)
     @Column(nullable = false, columnDefinition = "SMALLINT UNSIGNED")
     private int sequence; // 운동 순서
 
     @Column(nullable = false)
     private boolean warmUp;
-
-    @Column(nullable = false, columnDefinition = "SMALLINT UNSIGNED")
-    private int intervals; // seconds
 
     @Column(nullable = false, columnDefinition = "DECIMAL(5,2) UNSIGNED")
     private BigDecimal weight; // kg
@@ -52,7 +48,6 @@ public class ExerciseLogDetail {
             ExerciseLog exerciseLog,
             int sequence,
             boolean warmUp,
-            int intervals,
             BigDecimal weight,
             int count,
             int supportCount
@@ -62,7 +57,6 @@ public class ExerciseLogDetail {
                 .exerciseLog(exerciseLog)
                 .sequence(sequence)
                 .warmUp(warmUp)
-                .intervals(intervals)
                 .weight(weight)
                 .count(count)
                 .supportCount(supportCount)
@@ -75,7 +69,6 @@ public class ExerciseLogDetail {
             ExerciseLog exerciseLog,
             int sequence,
             boolean warmUp,
-            int intervals,
             BigDecimal weight,
             int count,
             int supportCount
@@ -84,7 +77,6 @@ public class ExerciseLogDetail {
         this.exerciseLog = exerciseLog;
         this.sequence = sequence;
         this.warmUp = warmUp;
-        this.intervals = intervals;
         this.weight = weight;
         this.count = count;
         this.supportCount = supportCount;

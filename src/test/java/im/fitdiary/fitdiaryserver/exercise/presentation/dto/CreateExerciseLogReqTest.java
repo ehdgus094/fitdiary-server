@@ -23,4 +23,11 @@ class CreateExerciseLogReqTest {
         template.failure("duration", 0);
         template.failure("duration", 86401);
     }
+
+    @Test
+    @DisplayName("유효성 검사 MeasuredAt")
+    void validateMeasuredAt() {
+        template.success("measuredAt", null);
+        template.failure("measuredAt", 10000000000L);
+    }
 }

@@ -3,8 +3,6 @@ package im.fitdiary.fitdiaryserver.body.data.entity;
 import im.fitdiary.fitdiaryserver.body.data.dto.BodyLogEditor;
 import im.fitdiary.fitdiaryserver.common.entity.BaseEntity;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.lang.Nullable;
@@ -17,7 +15,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString
-@DynamicInsert
 @Where(clause = "deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE body_log SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
 @Table(indexes = @Index(columnList = "userId"))
@@ -43,9 +40,7 @@ public class BodyLog extends BaseEntity {
     @Column(columnDefinition = "DECIMAL(5,2) UNSIGNED")
     private BigDecimal bodyFat; // %
 
-    @Nullable
     @Column(nullable = false)
-    @ColumnDefault("CURRENT_TIMESTAMP")
     private LocalDateTime measuredAt;
 
     @Getter(AccessLevel.NONE)
@@ -65,7 +60,7 @@ public class BodyLog extends BaseEntity {
             BigDecimal weight,
             @Nullable BigDecimal muscleMass,
             @Nullable BigDecimal bodyFat,
-            @Nullable LocalDateTime measuredAt
+            LocalDateTime measuredAt
     ) {
         return BodyLog.builder()
                 .userId(userId)
@@ -84,7 +79,7 @@ public class BodyLog extends BaseEntity {
             BigDecimal weight,
             @Nullable BigDecimal muscleMass,
             @Nullable BigDecimal bodyFat,
-            @Nullable LocalDateTime measuredAt
+            LocalDateTime measuredAt
     ) {
         this.userId = userId;
         this.height = height;
