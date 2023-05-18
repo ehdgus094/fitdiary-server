@@ -12,6 +12,8 @@ public interface BodyLogService {
 
     BodyLog create(CreateBodyLog createBodyLog) throws PreviousHeightNotFound;
 
+    BodyLog findById(Long bodyLogId, Long userId) throws BodyLogNotFoundException;
+
     BodyLogSlice findRecent(Pageable pageable, Long userId);
 
     void updateById(Long bodyLogId, Long userId, BodyLogEditor editor) throws BodyLogNotFoundException;

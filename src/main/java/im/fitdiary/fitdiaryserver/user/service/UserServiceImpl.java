@@ -35,8 +35,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public void updateById(Long userId, UserEditor editor) throws UserNotFoundException {
-        User user = userRepository.findById(userId)
-                .orElseThrow(UserNotFoundException::new);
+        User user = findById(userId);
         user.update(editor);
     }
 

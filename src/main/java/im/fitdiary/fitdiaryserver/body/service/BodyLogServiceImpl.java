@@ -32,6 +32,12 @@ public class BodyLogServiceImpl implements BodyLogService {
     }
 
     @Transactional(readOnly = true)
+    public BodyLog findById(Long bodyLogId, Long userId) throws BodyLogNotFoundException {
+        return bodyLogRepository.findById(bodyLogId, userId)
+                .orElseThrow(BodyLogNotFoundException::new);
+    }
+
+    @Transactional(readOnly = true)
     public BodyLogSlice findRecent(Pageable pageable, Long userId) {
         Slice<BodyLog> bodyLogs = bodyLogRepository.findRecent(pageable, userId);
         return new BodyLogSlice(bodyLogs.getContent(), bodyLogs.hasNext());
@@ -40,8 +46,7 @@ public class BodyLogServiceImpl implements BodyLogService {
     @Transactional
     public void updateById(Long bodyLogId, Long userId, BodyLogEditor editor)
             throws BodyLogNotFoundException {
-        BodyLog bodyLog = bodyLogRepository.findById(bodyLogId, userId)
-                .orElseThrow(BodyLogNotFoundException::new);
+        BodyLog bodyLog = findById(bodyLogId, userId);
         bodyLog.update(editor);
     }
 
