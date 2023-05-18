@@ -10,7 +10,7 @@ public interface BodyLogRepositoryCustom {
 
     Optional<BodyLog> findLatestOne(Long userId);
 
-    Slice<BodyLog> searchLatest(Pageable pageable, Long userId);
+    Slice<BodyLog> findRecent(Pageable pageable, Long userId);
 
     Optional<BodyLog> findById(Long bodyLogId, Long userId);
 }

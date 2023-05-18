@@ -89,15 +89,15 @@ class BodyLogControllerTest {
     }
 
     @Test
-    @DisplayName("searchLatest")
-    void searchLatest() throws Exception {
+    @DisplayName("findRecent")
+    void findRecent() throws Exception {
         // given
         BodyLogSlice bodyLogSlice = BodyFactory.bodyLogSlice();
-        given(bodyLogService.searchLatest(any(), any()))
+        given(bodyLogService.findRecent(any(), any()))
                 .willReturn(bodyLogSlice);
 
         // when - then
-        mvc.perform(get(BASE_URI + "/search-latest"))
+        mvc.perform(get(BASE_URI + "/recent"))
                 .andExpectAll(
                         status().isOk(),
                         jsonPath("$.data.content")

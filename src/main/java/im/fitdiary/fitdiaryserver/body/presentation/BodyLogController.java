@@ -32,9 +32,9 @@ public class BodyLogController {
     }
 
     @Secured("ROLE_USER_ACCESS")
-    @GetMapping("/search-latest")
-    public Response searchLatest(@Auth AuthToken authToken, Pageable pageable) {
-        BodyLogSlice bodyLogSlice = bodyLogService.searchLatest(pageable, authToken.getId());
+    @GetMapping("/recent")
+    public Response findRecent(@Auth AuthToken authToken, Pageable pageable) {
+        BodyLogSlice bodyLogSlice = bodyLogService.findRecent(pageable, authToken.getId());
         return Response.success(new BodyLogSliceRes(bodyLogSlice));
     }
 

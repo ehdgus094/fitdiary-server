@@ -97,8 +97,8 @@ class BodyLogRepositoryTest {
     }
 
     @Test
-    @DisplayName("searchLatest")
-    void searchLatest() {
+    @DisplayName("findRecent")
+    void findRecent() {
         // given
         LocalDateTime now = LocalDateTime.now();
         List<BodyLog> bodyLogs = new ArrayList<>();
@@ -111,9 +111,9 @@ class BodyLogRepositoryTest {
 
         // when
         Slice<BodyLog> page_1 = bodyLogRepository
-                .searchLatest(PageRequest.of(0, 19), bodyLogs.get(0).getUserId());
+                .findRecent(PageRequest.of(0, 19), bodyLogs.get(0).getUserId());
         Slice<BodyLog> page_2 = bodyLogRepository
-                .searchLatest(PageRequest.of(1, 19), bodyLogs.get(0).getUserId());
+                .findRecent(PageRequest.of(1, 19), bodyLogs.get(0).getUserId());
 
         // then
         assertThat(page_1.getContent()).hasSize(19);

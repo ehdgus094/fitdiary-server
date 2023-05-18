@@ -12,7 +12,7 @@ public interface BodyLogService {
 
     BodyLog create(CreateBodyLog createBodyLog) throws PreviousHeightNotFound;
 
-    BodyLogSlice searchLatest(Pageable pageable, Long userId);
+    BodyLogSlice findRecent(Pageable pageable, Long userId);
 
     void updateById(Long bodyLogId, Long userId, BodyLogEditor editor) throws BodyLogNotFoundException;
 

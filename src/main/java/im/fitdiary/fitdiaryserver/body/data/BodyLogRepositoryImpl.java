@@ -27,7 +27,7 @@ public class BodyLogRepositoryImpl implements BodyLogRepositoryCustom {
         return Optional.ofNullable(foundBodyLog);
     }
 
-    public Slice<BodyLog> searchLatest(Pageable pageable, Long userId) {
+    public Slice<BodyLog> findRecent(Pageable pageable, Long userId) {
         List<BodyLog> content = queryFactory
                 .select(bodyLog)
                 .from(bodyLog)
