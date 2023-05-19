@@ -1,6 +1,7 @@
 package im.fitdiary.fitdiaryserver.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import im.fitdiary.fitdiaryserver.exception.filter.ErrorMessageFilter;
 import im.fitdiary.fitdiaryserver.security.argumentresolver.PrincipalArgumentResolver;
 import org.openapitools.jackson.nullable.JsonNullableModule;
@@ -33,6 +34,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer customizer() {
-        return builder -> builder.modules(new JsonNullableModule());
+        return builder -> builder.modules(new JsonNullableModule(), new JavaTimeModule());
     }
 }
