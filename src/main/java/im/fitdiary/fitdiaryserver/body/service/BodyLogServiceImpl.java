@@ -7,6 +7,7 @@ import im.fitdiary.fitdiaryserver.body.service.dto.BodyLogSlice;
 import im.fitdiary.fitdiaryserver.body.service.dto.CreateBodyLog;
 import im.fitdiary.fitdiaryserver.exception.e404.BodyLogNotFoundException;
 import im.fitdiary.fitdiaryserver.exception.e404.PreviousHeightNotFound;
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -19,6 +20,7 @@ public class BodyLogServiceImpl implements BodyLogService {
 
     private final BodyLogRepository bodyLogRepository;
 
+    @Timed("custom.log.body")
     @Transactional
     public BodyLog create(CreateBodyLog createBodyLog) throws PreviousHeightNotFound {
         if (createBodyLog.getHeight() == null) {

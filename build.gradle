@@ -9,6 +9,7 @@ plugins {
 	id 'org.springframework.boot' version '2.7.11'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 	id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
+	id 'com.gorylenko.gradle-git-properties' version '2.4.1' // actuator info에 git info 추가
 }
 
 group = 'im.fitdiary'
@@ -30,9 +31,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0'
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 	implementation 'org.openapitools:jackson-databind-nullable:0.2.6' // request dto에서 undefined 사용 위함
+	implementation 'io.micrometer:micrometer-registry-prometheus'
 	// querydsl start
 	implementation 'com.google.code.findbugs:jsr305:3.0.2' // @Nullable로 인한 querydsl compile warning 해결
 	implementation "com.querydsl:querydsl-jpa:${querydslVersion}"
@@ -47,6 +50,11 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+// actuator info에 buildInfo 추가
+springBoot {
+	buildInfo()
 }
 
 // querydsl start
