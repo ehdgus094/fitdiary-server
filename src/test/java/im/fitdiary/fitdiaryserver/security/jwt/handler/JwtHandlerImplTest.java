@@ -3,27 +3,29 @@ package im.fitdiary.fitdiaryserver.security.jwt.handler;
 import im.fitdiary.fitdiaryserver.config.ConfigProperties;
 import im.fitdiary.fitdiaryserver.exception.e401.UnauthorizedException;
 import im.fitdiary.fitdiaryserver.security.RoleType;
-import im.fitdiary.fitdiaryserver.util.factory.configproperties.ConfigPropertiesFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Answers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.BDDMockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class JwtHandlerImplTest {
 
+    @InjectMocks
     JwtHandlerImpl jwtHandler;
 
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     ConfigProperties properties;
-
-    @BeforeEach
-    void init() {
-        properties = ConfigPropertiesFactory.create();
-        jwtHandler = new JwtHandlerImpl(properties);
-    }
 
     @Nested
     @DisplayName("createToken")
@@ -38,6 +40,12 @@ class JwtHandlerImplTest {
         @Test
         @DisplayName("userAccessToken")
         void userAccessToken() {
+            // given
+            given(properties.getJwt().getUser().getAccess().getSecret())
+                    .willReturn("secret");
+            given(properties.getJwt().getUser().getAccess().getMaxAge())
+                    .willReturn(100L);
+
             // when
             String token = jwtHandler.createToken(RoleType.ROLE_USER_ACCESS, subject);
 
@@ -51,6 +59,11 @@ class JwtHandlerImplTest {
         @Test
         @DisplayName("userRefreshToken")
         void userRefreshToken() {
+            given(properties.getJwt().getUser().getRefresh().getSecret())
+                    .willReturn("secret");
+            given(properties.getJwt().getUser().getRefresh().getMaxAge())
+                    .willReturn(100L);
+
             // when
             String token = jwtHandler.createToken(RoleType.ROLE_USER_REFRESH, subject);
 
@@ -72,6 +85,10 @@ class JwtHandlerImplTest {
 
         @BeforeEach
         void init() {
+            given(properties.getJwt().getUser().getAccess().getSecret())
+                    .willReturn("secret");
+            given(properties.getJwt().getUser().getAccess().getMaxAge())
+                    .willReturn(100L);
             subject = "subject";
             token = jwtHandler.createToken(RoleType.ROLE_USER_ACCESS, subject);
         }
@@ -118,6 +135,10 @@ class JwtHandlerImplTest {
 
         @BeforeEach
         void init() {
+            given(properties.getJwt().getUser().getAccess().getSecret())
+                    .willReturn("secret");
+            given(properties.getJwt().getUser().getAccess().getMaxAge())
+                    .willReturn(100L);
             roleType = RoleType.ROLE_USER_ACCESS;
             String subject = "subject";
             token = jwtHandler.createToken(roleType, subject);
@@ -159,8 +180,11 @@ class JwtHandlerImplTest {
     @DisplayName("getExpiration")
     class GetExpiration {
 
-        String create(Long maxAge) {
-            properties.getJwt().getUser().getAccess().setMaxAge(maxAge);
+        String create(long maxAge) {
+            given(properties.getJwt().getUser().getAccess().getSecret())
+                    .willReturn("secret");
+            given(properties.getJwt().getUser().getAccess().getMaxAge())
+                    .willReturn(maxAge);
             return jwtHandler.createToken(RoleType.ROLE_USER_ACCESS, "subject");
         }
 

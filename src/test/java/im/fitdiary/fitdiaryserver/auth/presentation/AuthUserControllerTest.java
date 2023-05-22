@@ -7,7 +7,6 @@ import im.fitdiary.fitdiaryserver.auth.presentation.dto.LoginUserRes;
 import im.fitdiary.fitdiaryserver.auth.presentation.dto.RefreshTokenUserRes;
 import im.fitdiary.fitdiaryserver.auth.service.AuthUserService;
 import im.fitdiary.fitdiaryserver.auth.service.dto.JwtToken;
-import im.fitdiary.fitdiaryserver.config.ConfigProperties;
 import im.fitdiary.fitdiaryserver.security.jwt.filter.JwtAuthenticationFilter;
 import im.fitdiary.fitdiaryserver.util.TestUtils;
 import im.fitdiary.fitdiaryserver.util.factory.auth.AuthFactory;
@@ -16,7 +15,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
@@ -37,7 +35,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
                 classes = JwtAuthenticationFilter.class
         )
 )
-@EnableConfigurationProperties(value = ConfigProperties.class)
 class AuthUserControllerTest {
 
     @Autowired

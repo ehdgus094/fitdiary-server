@@ -5,15 +5,13 @@ import lombok.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-@Getter @Setter
-@Builder // 테스트 객체 생성용
-@AllArgsConstructor // 테스트 객체 생성용
-@NoArgsConstructor
+@Getter
+@AllArgsConstructor
 public class TokenProperties {
 
     @NotEmpty
-    private String secret;
+    private final String secret;
 
     @NotNull
-    private Long maxAge;
+    private final Long maxAge;
 }

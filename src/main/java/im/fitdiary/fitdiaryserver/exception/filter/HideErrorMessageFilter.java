@@ -2,8 +2,6 @@ package im.fitdiary.fitdiaryserver.exception.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import im.fitdiary.fitdiaryserver.common.dto.Response;
-import im.fitdiary.fitdiaryserver.config.ConfigProperties;
-import im.fitdiary.fitdiaryserver.config.properties.Mode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
@@ -12,9 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RequiredArgsConstructor
-public class ErrorMessageFilter implements Filter {
+public class HideErrorMessageFilter implements Filter {
 
-    private final ConfigProperties properties;
     private final ObjectMapper mapper;
 
     @Override
@@ -30,15 +27,12 @@ public class ErrorMessageFilter implements Filter {
         try {
             chain.doFilter(request, responseWrapper);
         } finally {
-            Mode mode = properties.getMode();
             byte[] content = responseWrapper.getContentAsByteArray();
-            if (Mode.PROD.equals(mode)) {
-                int status = ((HttpServletResponse) response).getStatus();
-                if (status == 400) {
-                    content = mapper.writeValueAsBytes(Response.failure("bad request"));
-                } else if (status == 500) {
-                    content = mapper.writeValueAsBytes(Response.failure("internal server error"));
-                }
+            int status = ((HttpServletResponse) response).getStatus();
+            if (status == 400) {
+                content = mapper.writeValueAsBytes(Response.failure("bad request"));
+            } else if (status == 500) {
+                content = mapper.writeValueAsBytes(Response.failure("internal server error"));
             }
             response.getOutputStream().write(content);
         }

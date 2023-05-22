@@ -2,13 +2,11 @@ package im.fitdiary.fitdiaryserver.config.properties;
 
 import lombok.*;
 
-@Getter @Setter
-@Builder // 테스트 객체 생성용
-@AllArgsConstructor // 테스트 객체 생성용
-@NoArgsConstructor
+@Getter
+@AllArgsConstructor
 public class JwtProfile {
 
-    private TokenProperties access;
+    private final TokenProperties access;
 
-    private TokenProperties refresh;
+    private final TokenProperties refresh;
 }

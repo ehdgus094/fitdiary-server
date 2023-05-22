@@ -1,7 +1,6 @@
 package im.fitdiary.fitdiaryserver.exercise.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import im.fitdiary.fitdiaryserver.config.ConfigProperties;
 import im.fitdiary.fitdiaryserver.exercise.data.entity.ExerciseLog;
 import im.fitdiary.fitdiaryserver.exercise.presentation.dto.CreateExerciseLogReq;
 import im.fitdiary.fitdiaryserver.exercise.presentation.dto.ExerciseLogRes;
@@ -14,7 +13,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
@@ -35,7 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                 classes = JwtAuthenticationFilter.class
         )
 )
-@EnableConfigurationProperties(value = ConfigProperties.class)
 class ExerciseLogControllerTest {
 
     @Autowired
