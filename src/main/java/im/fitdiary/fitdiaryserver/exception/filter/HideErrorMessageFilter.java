@@ -15,11 +15,6 @@ public class HideErrorMessageFilter implements Filter {
     private final ObjectMapper mapper;
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        Filter.super.init(filterConfig);
-    }
-
-    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         ContentCachingResponseWrapper responseWrapper =
@@ -36,10 +31,5 @@ public class HideErrorMessageFilter implements Filter {
             }
             response.getOutputStream().write(content);
         }
-    }
-
-    @Override
-    public void destroy() {
-        Filter.super.destroy();
     }
 }
