@@ -41,19 +41,19 @@
     </appender>
 
     <appender
-            name="ROLLING_ERROR"
+            name="ROLLING_WARN"
             class="ch.qos.logback.core.rolling.RollingFileAppender"
     >
-        <file>${LOG_PATH}/error.log</file>
+        <file>${LOG_PATH}/warn.log</file>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>ERROR</level>
+            <level>WARN</level>
         </filter>
         <encoder>
             <pattern>${FILE_PATTERN}</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>
-                ${LOG_PATH}/%d{yyyy-MM, aux}/error/error.%d{yyyy-MM-dd}.%i.log.gz
+                ${LOG_PATH}/%d{yyyy-MM, aux}/warn/warn.%d{yyyy-MM-dd}.%i.log.gz
             </fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP"
@@ -71,9 +71,9 @@
         <logger name="im.fitdiary.fitdiaryserver" level="DEBUG" additivity="false">
             <appender-ref ref="STDOUT" />
         </logger>
-        <logger name="org.mariadb.jdbc" level="DEBUG" additivity="false">
-            <appender-ref ref="STDOUT" />
-        </logger>
+<!--        <logger name="org.mariadb.jdbc" level="DEBUG" additivity="false">-->
+<!--            <appender-ref ref="STDOUT" />-->
+<!--        </logger>-->
     </springProfile>
 
     <springProfile name="dev">
@@ -83,7 +83,7 @@
         <logger name="im.fitdiary.fitdiaryserver" level="INFO" additivity="false">
             <appender-ref ref="STDOUT" />
             <appender-ref ref="ROLLING_INFO" />
-            <appender-ref ref="ROLLING_ERROR" />
+            <appender-ref ref="ROLLING_WARN" />
         </logger>
     </springProfile>
 
@@ -91,7 +91,7 @@
 <!--        에러 로그 시 알림 구현-->
         <logger name="im.fitdiary.fitdiaryserver" level="INFO" additivity="false">
             <appender-ref ref="ROLLING_INFO" />
-            <appender-ref ref="ROLLING_ERROR" />
+            <appender-ref ref="ROLLING_WARN" />
         </logger>
     </springProfile>
 </configuration>
