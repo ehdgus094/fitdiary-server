@@ -10,6 +10,12 @@
     />
     <property name="LOG_PATH" value="./logs" />
 
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>${CONSOLE_PATTERN}</Pattern>
+        </layout>
+    </appender>
+
     <appender
             name="ROLLING_INFO"
             class="ch.qos.logback.core.rolling.RollingFileAppender"
@@ -59,11 +65,6 @@
     </appender>
 
     <springProfile name="local">
-        <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-            <layout class="ch.qos.logback.classic.PatternLayout">
-                <Pattern>${CONSOLE_PATTERN}</Pattern>
-            </layout>
-        </appender>
         <root level="INFO">
             <appender-ref ref="STDOUT" />
         </root>
@@ -76,7 +77,11 @@
     </springProfile>
 
     <springProfile name="dev">
+        <root level="INFO">
+            <appender-ref ref="STDOUT" />
+        </root>
         <logger name="im.fitdiary.fitdiaryserver" level="INFO" additivity="false">
+            <appender-ref ref="STDOUT" />
             <appender-ref ref="ROLLING_INFO" />
             <appender-ref ref="ROLLING_ERROR" />
         </logger>
