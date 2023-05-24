@@ -3,10 +3,12 @@ package im.fitdiary.fitdiaryserver.body.presentation.dto;
 import im.fitdiary.fitdiaryserver.body.data.entity.BodyLog;
 import im.fitdiary.fitdiaryserver.common.converter.TimeConverter;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 
 @Getter
+@ToString
 public class BodyLogRes {
 
     private final Long id;

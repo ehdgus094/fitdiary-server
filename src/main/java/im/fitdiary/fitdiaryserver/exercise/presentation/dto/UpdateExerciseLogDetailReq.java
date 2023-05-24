@@ -2,6 +2,7 @@ package im.fitdiary.fitdiaryserver.exercise.presentation.dto;
 
 import im.fitdiary.fitdiaryserver.exercise.data.dto.ExerciseLogDetailEditor;
 import lombok.Getter;
+import lombok.ToString;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import javax.validation.constraints.Max;
@@ -11,6 +12,7 @@ import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 @Getter
+@ToString
 public class UpdateExerciseLogDetailReq {
 
     @NotNull(message = "exerciseLogDetailId should not be null")

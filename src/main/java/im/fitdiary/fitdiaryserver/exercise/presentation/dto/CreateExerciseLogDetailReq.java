@@ -2,6 +2,7 @@ package im.fitdiary.fitdiaryserver.exercise.presentation.dto;
 
 import im.fitdiary.fitdiaryserver.exercise.data.dto.CreateExerciseLogDetail;
 import lombok.Getter;
+import lombok.ToString;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -10,6 +11,7 @@ import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 @Getter
+@ToString
 public class CreateExerciseLogDetailReq {
 
     @NotNull(message = "exerciseId should not be null")

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@ToString(exclude = {"exercise", "exerciseLog"})
+@ToString(exclude = {"exercise", "exerciseLog", "deletedAt"})
 @Where(clause = "deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE exercise_log_detail SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
 public class ExerciseLogDetail {

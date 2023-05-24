@@ -7,6 +7,7 @@ import im.fitdiary.fitdiaryserver.body.presentation.dto.CreateBodyLogReq;
 import im.fitdiary.fitdiaryserver.body.presentation.dto.UpdateBodyLogReq;
 import im.fitdiary.fitdiaryserver.body.service.BodyLogService;
 import im.fitdiary.fitdiaryserver.body.service.dto.BodyLogSlice;
+import im.fitdiary.fitdiaryserver.common.aop.annotation.BaseMethodLogging;
 import im.fitdiary.fitdiaryserver.common.dto.Response;
 import im.fitdiary.fitdiaryserver.security.argumentresolver.Auth;
 import im.fitdiary.fitdiaryserver.security.argumentresolver.AuthToken;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@BaseMethodLogging
 @RequiredArgsConstructor
 @RequestMapping("/body/log")
 @RestController

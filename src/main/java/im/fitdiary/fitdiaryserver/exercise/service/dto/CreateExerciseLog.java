@@ -2,11 +2,13 @@ package im.fitdiary.fitdiaryserver.exercise.service.dto;
 
 import im.fitdiary.fitdiaryserver.exercise.data.entity.ExerciseLog;
 import lombok.Getter;
+import lombok.ToString;
 import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
 
 @Getter
+@ToString
 public class CreateExerciseLog {
 
     private final Long userId;

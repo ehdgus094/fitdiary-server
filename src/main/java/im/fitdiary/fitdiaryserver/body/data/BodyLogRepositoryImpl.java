@@ -2,6 +2,7 @@ package im.fitdiary.fitdiaryserver.body.data;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import im.fitdiary.fitdiaryserver.body.data.entity.BodyLog;
+import im.fitdiary.fitdiaryserver.common.aop.annotation.BaseMethodLogging;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 import static im.fitdiary.fitdiaryserver.body.data.entity.QBodyLog.*;
 
+@BaseMethodLogging
 @RequiredArgsConstructor
 public class BodyLogRepositoryImpl implements BodyLogRepositoryCustom {
 

@@ -1,5 +1,6 @@
 package im.fitdiary.fitdiaryserver.exercise.service;
 
+import im.fitdiary.fitdiaryserver.common.aop.annotation.BaseMethodLogging;
 import im.fitdiary.fitdiaryserver.exception.e404.ExerciseNotFoundException;
 import im.fitdiary.fitdiaryserver.exercise.data.ExerciseRepository;
 import im.fitdiary.fitdiaryserver.exercise.data.entity.Exercise;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@BaseMethodLogging
 @RequiredArgsConstructor
 @Service
 public class ExerciseServiceImpl implements ExerciseService {

@@ -3,8 +3,10 @@ package im.fitdiary.fitdiaryserver.exercise.presentation.dto;
 import im.fitdiary.fitdiaryserver.common.converter.TimeConverter;
 import im.fitdiary.fitdiaryserver.exercise.data.entity.ExerciseLog;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class ExerciseLogRes {
 
     private final Long id;

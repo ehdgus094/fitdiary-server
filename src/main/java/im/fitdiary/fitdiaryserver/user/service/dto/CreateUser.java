@@ -5,8 +5,10 @@ import im.fitdiary.fitdiaryserver.auth.service.dto.CreateAuthUser;
 import im.fitdiary.fitdiaryserver.user.data.entity.Gender;
 import im.fitdiary.fitdiaryserver.user.data.entity.User;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public abstract class CreateUser {
 
     private final String loginId;

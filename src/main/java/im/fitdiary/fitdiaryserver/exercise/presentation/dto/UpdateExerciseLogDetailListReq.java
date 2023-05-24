@@ -1,6 +1,7 @@
 package im.fitdiary.fitdiaryserver.exercise.presentation.dto;
 
 import lombok.Getter;
+import lombok.ToString;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -9,6 +10,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @Getter
+@ToString
 public class UpdateExerciseLogDetailListReq {
 
     @NotNull(message = "exerciseLogId should not be null")

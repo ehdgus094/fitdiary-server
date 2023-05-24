@@ -2,8 +2,10 @@ package im.fitdiary.fitdiaryserver.user.presentation.dto;
 
 import im.fitdiary.fitdiaryserver.user.data.entity.User;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class UserRes {
 
     private final String name;

@@ -1,5 +1,6 @@
 package im.fitdiary.fitdiaryserver.exercise.service;
 
+import im.fitdiary.fitdiaryserver.common.aop.annotation.BaseMethodLogging;
 import im.fitdiary.fitdiaryserver.exception.e404.ExerciseLogDetailNotFoundException;
 import im.fitdiary.fitdiaryserver.exception.e404.ExerciseLogNotFoundException;
 import im.fitdiary.fitdiaryserver.exception.e404.ExerciseNotFoundException;
@@ -18,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@BaseMethodLogging
 @RequiredArgsConstructor
 @Service
 public class ExerciseLogDetailServiceImpl implements ExerciseLogDetailService {

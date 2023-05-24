@@ -5,6 +5,7 @@ import im.fitdiary.fitdiaryserver.body.data.entity.BodyLog;
 import im.fitdiary.fitdiaryserver.body.data.dto.BodyLogEditor;
 import im.fitdiary.fitdiaryserver.body.service.dto.BodyLogSlice;
 import im.fitdiary.fitdiaryserver.body.service.dto.CreateBodyLog;
+import im.fitdiary.fitdiaryserver.common.aop.annotation.BaseMethodLogging;
 import im.fitdiary.fitdiaryserver.exception.e404.BodyLogNotFoundException;
 import im.fitdiary.fitdiaryserver.exception.e404.PreviousHeightNotFound;
 import io.micrometer.core.annotation.Timed;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@BaseMethodLogging
 @RequiredArgsConstructor
 @Service
 public class BodyLogServiceImpl implements BodyLogService {

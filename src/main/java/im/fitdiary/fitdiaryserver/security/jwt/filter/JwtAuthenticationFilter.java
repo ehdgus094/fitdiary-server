@@ -6,6 +6,7 @@ import im.fitdiary.fitdiaryserver.security.jwt.handler.JwtHandler;
 import im.fitdiary.fitdiaryserver.security.CustomAuthenticationToken;
 import im.fitdiary.fitdiaryserver.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,9 +18,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -28,20 +29,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        extractToken(request).ifPresent(token -> {
+        String authenticated = null;
+        String token = request.getHeader("Authorization");
+
+        if (token != null) {
             try {
                 String subject = jwtHandler.getSubject(token);
                 RoleType roleType = jwtHandler.getRoleType(token);
                 SecurityContextHolder
                         .getContext()
                         .setAuthentication(createAuthentication(subject, roleType.toString()));
+                authenticated = roleType.toString();
             } catch (UnauthorizedException ignored) {}
-        });
-        chain.doFilter(request, response);
-    }
+        }
 
-    private Optional<String> extractToken(ServletRequest request) {
-        return Optional.ofNullable(((HttpServletRequest) request).getHeader("Authorization"));
+        log.debug("authenticated: {}", authenticated);
+        chain.doFilter(request, response);
     }
 
     private CustomAuthenticationToken createAuthentication(String id, String roleType) {

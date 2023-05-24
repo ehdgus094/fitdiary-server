@@ -1,11 +1,13 @@
 package im.fitdiary.fitdiaryserver.exercise.data.dto;
 
 import lombok.Getter;
+import lombok.ToString;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import java.math.BigDecimal;
 
 @Getter
+@ToString
 public class ExerciseLogDetailEditor {
 
     private final JsonNullable<Integer> sequence;

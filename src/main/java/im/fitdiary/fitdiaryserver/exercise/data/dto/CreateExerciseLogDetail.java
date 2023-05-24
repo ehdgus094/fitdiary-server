@@ -1,10 +1,12 @@
 package im.fitdiary.fitdiaryserver.exercise.data.dto;
 
 import lombok.Getter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 
 @Getter
+@ToString
 public class CreateExerciseLogDetail {
 
     private final Long exerciseId;

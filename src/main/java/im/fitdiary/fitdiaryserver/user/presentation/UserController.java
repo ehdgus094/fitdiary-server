@@ -1,5 +1,6 @@
 package im.fitdiary.fitdiaryserver.user.presentation;
 
+import im.fitdiary.fitdiaryserver.common.aop.annotation.BaseMethodLogging;
 import im.fitdiary.fitdiaryserver.common.dto.Response;
 import im.fitdiary.fitdiaryserver.security.argumentresolver.Auth;
 import im.fitdiary.fitdiaryserver.security.argumentresolver.AuthToken;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@BaseMethodLogging
 @RequiredArgsConstructor
 @RequestMapping("/user")
 @RestController

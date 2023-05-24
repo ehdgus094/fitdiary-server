@@ -2,9 +2,11 @@ package im.fitdiary.fitdiaryserver.exercise.data.dto;
 
 import im.fitdiary.fitdiaryserver.exercise.data.entity.ExerciseCategory;
 import lombok.Getter;
+import lombok.ToString;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 @Getter
+@ToString
 public class ExerciseEditor {
 
     private final JsonNullable<String> name;

@@ -3,17 +3,20 @@ package im.fitdiary.fitdiaryserver.config;
 import com.p6spy.engine.logging.Category;
 import com.p6spy.engine.spy.P6SpyOptions;
 import com.p6spy.engine.spy.appender.MessageFormattingStrategy;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.engine.jdbc.internal.FormatStyle;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
 import java.util.Locale;
 
+@Slf4j
 @Configuration
 public class P6SpySqlFormatConfig implements MessageFormattingStrategy {
 
     @PostConstruct
     public void setLogMessageFormat() {
+        log.debug("LogMessageFormat configured");
         P6SpyOptions.getActiveInstance().setLogMessageFormat(this.getClass().getName());
     }
 

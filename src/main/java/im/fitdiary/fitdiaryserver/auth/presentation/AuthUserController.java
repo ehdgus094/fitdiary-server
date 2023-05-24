@@ -6,6 +6,7 @@ import im.fitdiary.fitdiaryserver.auth.presentation.dto.LoginUserRes;
 import im.fitdiary.fitdiaryserver.auth.presentation.dto.RefreshTokenUserRes;
 import im.fitdiary.fitdiaryserver.auth.service.AuthUserService;
 import im.fitdiary.fitdiaryserver.auth.service.dto.JwtToken;
+import im.fitdiary.fitdiaryserver.common.aop.annotation.BaseMethodLogging;
 import im.fitdiary.fitdiaryserver.common.dto.Response;
 import im.fitdiary.fitdiaryserver.security.argumentresolver.Auth;
 import im.fitdiary.fitdiaryserver.security.argumentresolver.AuthToken;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@BaseMethodLogging
 @RequiredArgsConstructor
 @RequestMapping("/auth/user")
 @RestController

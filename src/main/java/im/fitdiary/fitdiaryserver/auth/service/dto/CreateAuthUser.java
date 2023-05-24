@@ -3,8 +3,10 @@ package im.fitdiary.fitdiaryserver.auth.service.dto;
 import im.fitdiary.fitdiaryserver.auth.data.entity.AuthUser;
 import im.fitdiary.fitdiaryserver.auth.data.entity.UserLoginType;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public abstract class CreateAuthUser {
 
     private final Long userId;

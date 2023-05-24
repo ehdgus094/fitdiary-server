@@ -1,5 +1,6 @@
 package im.fitdiary.fitdiaryserver.exercise.presentation;
 
+import im.fitdiary.fitdiaryserver.common.aop.annotation.BaseMethodLogging;
 import im.fitdiary.fitdiaryserver.common.dto.Response;
 import im.fitdiary.fitdiaryserver.exercise.data.entity.Exercise;
 import im.fitdiary.fitdiaryserver.exercise.presentation.dto.CreateExerciseReq;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@BaseMethodLogging
 @RequiredArgsConstructor
 @RequestMapping("/exercise")
 @RestController

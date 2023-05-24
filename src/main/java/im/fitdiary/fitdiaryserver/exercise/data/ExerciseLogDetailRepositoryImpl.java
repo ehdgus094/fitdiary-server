@@ -1,6 +1,7 @@
 package im.fitdiary.fitdiaryserver.exercise.data;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import im.fitdiary.fitdiaryserver.common.aop.annotation.BaseMethodLogging;
 import im.fitdiary.fitdiaryserver.exercise.data.dto.CreateExerciseLogDetail;
 import im.fitdiary.fitdiaryserver.exercise.data.dto.ExerciseLogDetailEditor;
 import im.fitdiary.fitdiaryserver.exercise.data.entity.ExerciseLog;
@@ -19,6 +20,7 @@ import java.util.Map;
 import static im.fitdiary.fitdiaryserver.exercise.data.entity.QExerciseLog.*;
 import static im.fitdiary.fitdiaryserver.exercise.data.entity.QExerciseLogDetail.*;
 
+@BaseMethodLogging
 @RequiredArgsConstructor
 public class ExerciseLogDetailRepositoryImpl implements ExerciseLogDetailRepositoryCustom {
 

@@ -4,6 +4,7 @@ import im.fitdiary.fitdiaryserver.body.service.dto.CreateBodyLog;
 import im.fitdiary.fitdiaryserver.common.converter.TimeConverter;
 import im.fitdiary.fitdiaryserver.common.validation.PastOrPresentTimestamp;
 import lombok.Getter;
+import lombok.ToString;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
@@ -11,6 +12,7 @@ import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 @Getter
+@ToString
 public class CreateBodyLogReq {
 
     @Max(value = 250, message = "height should not be over than 250")

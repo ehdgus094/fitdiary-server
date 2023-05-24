@@ -2,10 +2,12 @@ package im.fitdiary.fitdiaryserver.exercise.presentation.dto;
 
 import im.fitdiary.fitdiaryserver.exercise.data.entity.ExerciseLogDetail;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 
 @Getter
+@ToString
 public class ExerciseLogDetailRes {
 
     private final Long id;

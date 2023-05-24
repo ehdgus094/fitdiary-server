@@ -4,12 +4,14 @@ import im.fitdiary.fitdiaryserver.common.validation.Enum;
 import im.fitdiary.fitdiaryserver.exercise.data.entity.ExerciseCategory;
 import im.fitdiary.fitdiaryserver.exercise.data.dto.ExerciseEditor;
 import lombok.Getter;
+import lombok.ToString;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
+@ToString
 public class UpdateExerciseReq {
 
     @NotBlank(message = "name should not be empty")

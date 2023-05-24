@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@ToString
+@ToString(exclude = "deletedAt")
 @Where(clause = "deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE exercise SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
 @Table(indexes = @Index(columnList = "userId"))

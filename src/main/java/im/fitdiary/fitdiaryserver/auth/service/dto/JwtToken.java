@@ -1,8 +1,10 @@
 package im.fitdiary.fitdiaryserver.auth.service.dto;
 
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class JwtToken {
 
     private final String accessToken;

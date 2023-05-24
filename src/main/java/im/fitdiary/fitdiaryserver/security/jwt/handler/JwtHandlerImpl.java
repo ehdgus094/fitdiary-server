@@ -1,5 +1,6 @@
 package im.fitdiary.fitdiaryserver.security.jwt.handler;
 
+import im.fitdiary.fitdiaryserver.common.aop.annotation.BaseMethodLogging;
 import im.fitdiary.fitdiaryserver.config.ConfigProperties;
 import im.fitdiary.fitdiaryserver.exception.e401.UnauthorizedException;
 import im.fitdiary.fitdiaryserver.security.RoleType;
@@ -13,6 +14,7 @@ import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+@BaseMethodLogging
 @RequiredArgsConstructor
 @Service
 public class JwtHandlerImpl implements JwtHandler {

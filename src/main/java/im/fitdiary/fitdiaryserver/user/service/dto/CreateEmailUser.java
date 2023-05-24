@@ -5,7 +5,9 @@ import im.fitdiary.fitdiaryserver.auth.service.dto.CreateAuthUser;
 import im.fitdiary.fitdiaryserver.auth.service.dto.CreateEmailAuthUser;
 import im.fitdiary.fitdiaryserver.user.data.entity.Gender;
 import im.fitdiary.fitdiaryserver.user.data.entity.User;
+import lombok.ToString;
 
+@ToString(callSuper = true)
 public class CreateEmailUser extends CreateUser {
 
     private final String password;

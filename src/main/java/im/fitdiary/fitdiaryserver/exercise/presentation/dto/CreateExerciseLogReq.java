@@ -4,12 +4,14 @@ import im.fitdiary.fitdiaryserver.common.converter.TimeConverter;
 import im.fitdiary.fitdiaryserver.common.validation.PastOrPresentTimestamp;
 import im.fitdiary.fitdiaryserver.exercise.service.dto.CreateExerciseLog;
 import lombok.Getter;
+import lombok.ToString;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 @Getter
+@ToString
 public class CreateExerciseLogReq {
 
     @NotNull(message = "duration should not be null")

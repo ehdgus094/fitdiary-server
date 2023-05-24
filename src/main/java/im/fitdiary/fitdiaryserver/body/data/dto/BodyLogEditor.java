@@ -1,12 +1,14 @@
 package im.fitdiary.fitdiaryserver.body.data.dto;
 
 import lombok.Getter;
+import lombok.ToString;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
+@ToString
 public class BodyLogEditor {
 
     private final JsonNullable<BigDecimal> height;

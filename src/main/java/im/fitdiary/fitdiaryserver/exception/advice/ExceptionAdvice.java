@@ -4,6 +4,7 @@ import im.fitdiary.fitdiaryserver.common.dto.Response;
 import im.fitdiary.fitdiaryserver.exception.e401.BaseUnauthorizedException;
 import im.fitdiary.fitdiaryserver.exception.e404.NotFoundException;
 import im.fitdiary.fitdiaryserver.exception.e409.ConflictException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
@@ -19,25 +20,38 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import javax.validation.ConstraintViolationException;
 
+@Slf4j
 @RestControllerAdvice
 public class ExceptionAdvice {
+
+    private static final String BASE_LOG_MESSAGE = "response failure: {}";
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Response exception(Exception e) {
-        e.printStackTrace();
+        log.error("", e);
+        return Response.failure(e.getMessage());
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Response constraintViolation(ConstraintViolationException e) {
+        // db 제약조건 에러
+        log.error(BASE_LOG_MESSAGE, e.getMessage());
         return Response.failure(e.getMessage());
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public Response accessDenied() {
+    public Response accessDenied(AccessDeniedException e) {
+        log.info(BASE_LOG_MESSAGE, e.getMessage());
         return Response.failure("unauthorized");
     }
 
     @ExceptionHandler(MissingRequestHeaderException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public Response missingRequestHeader() {
+    public Response missingRequestHeader(MissingRequestHeaderException e) {
+        log.warn(BASE_LOG_MESSAGE, e.getMessage());
         return Response.failure("unauthorized");
     }
 
@@ -51,55 +65,56 @@ public class ExceptionAdvice {
             builder.append(SEPARATOR);
         }
         builder.delete(builder.lastIndexOf(SEPARATOR), builder.length());
+        log.warn(BASE_LOG_MESSAGE, builder);
         return Response.failure(builder.toString());
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Response httpMessageNotReadable(HttpMessageNotReadableException e) {
+        log.warn(BASE_LOG_MESSAGE, e.getMessage());
         return Response.failure(e.getMessage());
     }
 
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Response httpMediaTypeNotSupported(HttpMediaTypeNotSupportedException e) {
-        return Response.failure(e.getMessage());
-    }
-
-    @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Response constraintViolation(ConstraintViolationException e) {
-        // db 제약조건 에러
+        log.warn(BASE_LOG_MESSAGE, e.getMessage());
         return Response.failure(e.getMessage());
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Response httpRequestMethodNotSupported(HttpRequestMethodNotSupportedException e) {
+        log.warn(BASE_LOG_MESSAGE, e.getMessage());
         return Response.failure(e.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Response methodArgumentTypeMismatch(MethodArgumentTypeMismatchException e) {
+        log.warn(BASE_LOG_MESSAGE, e.getMessage());
         return Response.failure(e.getMessage());
     }
 
     @ExceptionHandler(BaseUnauthorizedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public Response unauthorized(BaseUnauthorizedException e) {
+        log.info(BASE_LOG_MESSAGE, e.getMessage());
         return Response.failure(e.getMessage());
     }
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Response notFound(NotFoundException e) {
+        log.info(BASE_LOG_MESSAGE, e.getMessage());
         return Response.failure(e.getMessage());
     }
 
     @ExceptionHandler(ConflictException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public Response duplicated(ConflictException e) {
+    public Response conflict(ConflictException e) {
+        log.info(BASE_LOG_MESSAGE, e.getMessage());
         return Response.failure(e.getMessage());
     }
 }

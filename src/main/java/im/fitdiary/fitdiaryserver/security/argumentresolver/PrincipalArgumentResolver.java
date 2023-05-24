@@ -3,6 +3,7 @@ package im.fitdiary.fitdiaryserver.security.argumentresolver;
 import im.fitdiary.fitdiaryserver.security.CustomAuthenticationToken;
 import im.fitdiary.fitdiaryserver.security.CustomUserDetails;
 import im.fitdiary.fitdiaryserver.security.RoleType;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,12 +16,15 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class PrincipalArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(Auth.class)
+        boolean result = parameter.hasParameterAnnotation(Auth.class)
                 && parameter.getParameterType().equals(AuthToken.class);
+        log.debug("supportsParameter: {}", result);
+        return result;
     }
 
     @Override
@@ -30,6 +34,8 @@ public class PrincipalArgumentResolver implements HandlerMethodArgumentResolver 
             NativeWebRequest webRequest,
             WebDataBinderFactory binderFactory
     ) throws Exception {
+        AuthToken authToken = null;
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof CustomAuthenticationToken) {
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -39,8 +45,9 @@ public class PrincipalArgumentResolver implements HandlerMethodArgumentResolver 
                     new ArrayList<>(userDetails.getAuthorities());
             RoleType roleType = RoleType.from(grantedAuthorities.get(0).getAuthority());
 
-            return new AuthToken(id, roleType);
+            authToken = new AuthToken(id, roleType);
         }
-        return null;
+        log.debug("resolveArgument call with converted principal {}", authToken);
+        return authToken;
     }
 }

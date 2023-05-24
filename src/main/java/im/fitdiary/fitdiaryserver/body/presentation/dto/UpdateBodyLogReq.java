@@ -4,6 +4,7 @@ import im.fitdiary.fitdiaryserver.body.data.dto.BodyLogEditor;
 import im.fitdiary.fitdiaryserver.common.converter.TimeConverter;
 import im.fitdiary.fitdiaryserver.common.validation.PastOrPresentTimestamp;
 import lombok.Getter;
+import lombok.ToString;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import javax.validation.constraints.Max;
@@ -12,6 +13,7 @@ import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 @Getter
+@ToString
 public class UpdateBodyLogReq {
 
     @NotNull(message = "height should not be null")

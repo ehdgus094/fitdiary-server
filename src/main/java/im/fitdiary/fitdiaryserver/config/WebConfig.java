@@ -2,6 +2,7 @@ package im.fitdiary.fitdiaryserver.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import im.fitdiary.fitdiaryserver.common.aop.annotation.ConfigurationLogging;
 import im.fitdiary.fitdiaryserver.common.filter.MDCLoggingFilter;
 import im.fitdiary.fitdiaryserver.common.interceptor.RequestInfoLoggingInterceptor;
 import im.fitdiary.fitdiaryserver.exception.filter.HideErrorMessageFilter;
@@ -16,10 +17,9 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
-import java.util.TimeZone;
 
+@ConfigurationLogging
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
@@ -33,11 +33,6 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new RequestInfoLoggingInterceptor())
                 .order(1)
                 .addPathPatterns("/**");
-    }
-
-    @PostConstruct
-    public void setDefaultTimeZone() {
-        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
     }
 
     @Bean
@@ -60,7 +55,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public Jackson2ObjectMapperBuilderCustomizer customizer() {
+    public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
         return builder -> builder.modules(new JsonNullableModule(), new JavaTimeModule());
     }
 }

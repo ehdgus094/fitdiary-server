@@ -5,6 +5,7 @@ import im.fitdiary.fitdiaryserver.auth.data.entity.AuthUser;
 import im.fitdiary.fitdiaryserver.auth.service.dto.JwtToken;
 import im.fitdiary.fitdiaryserver.auth.service.dto.CreateAuthUser;
 import im.fitdiary.fitdiaryserver.auth.service.dto.LoginUser;
+import im.fitdiary.fitdiaryserver.common.aop.annotation.BaseMethodLogging;
 import im.fitdiary.fitdiaryserver.exception.e401.InvalidLoginInfoException;
 import im.fitdiary.fitdiaryserver.exception.e401.UnauthorizedException;
 import im.fitdiary.fitdiaryserver.exception.e404.AuthUserNotFoundException;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 
+@BaseMethodLogging
 @RequiredArgsConstructor
 @Service
 public class AuthUserServiceImpl implements AuthUserService {

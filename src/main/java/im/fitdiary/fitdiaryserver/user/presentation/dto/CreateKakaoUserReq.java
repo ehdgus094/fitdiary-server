@@ -4,6 +4,7 @@ import im.fitdiary.fitdiaryserver.common.validation.Enum;
 import im.fitdiary.fitdiaryserver.user.data.entity.Gender;
 import im.fitdiary.fitdiaryserver.user.service.dto.CreateKakaoUser;
 import lombok.Getter;
+import lombok.ToString;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Getter
+@ToString
 public class CreateKakaoUserReq {
 
     @NotBlank(message = "loginId should not be empty")

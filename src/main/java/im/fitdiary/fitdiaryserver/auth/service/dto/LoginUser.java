@@ -2,9 +2,11 @@ package im.fitdiary.fitdiaryserver.auth.service.dto;
 
 import im.fitdiary.fitdiaryserver.auth.data.entity.UserLoginType;
 import lombok.Getter;
+import lombok.ToString;
 import org.springframework.lang.Nullable;
 
 @Getter
+@ToString
 public class LoginUser {
 
     private final String loginId;

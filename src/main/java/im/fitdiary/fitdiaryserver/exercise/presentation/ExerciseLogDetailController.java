@@ -1,5 +1,6 @@
 package im.fitdiary.fitdiaryserver.exercise.presentation;
 
+import im.fitdiary.fitdiaryserver.common.aop.annotation.BaseMethodLogging;
 import im.fitdiary.fitdiaryserver.common.dto.Response;
 import im.fitdiary.fitdiaryserver.exercise.data.entity.ExerciseLogDetail;
 import im.fitdiary.fitdiaryserver.exercise.presentation.dto.*;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.stream.Collectors;
 
+@BaseMethodLogging
 @RequiredArgsConstructor
 @RequestMapping("/exercise/log/detail")
 @RestController

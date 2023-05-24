@@ -2,7 +2,9 @@ package im.fitdiary.fitdiaryserver.security.argumentresolver;
 
 import im.fitdiary.fitdiaryserver.security.RoleType;
 import lombok.Getter;
+import lombok.ToString;
 
+@ToString
 public class AuthToken {
 
     @Getter

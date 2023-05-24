@@ -2,12 +2,14 @@ package im.fitdiary.fitdiaryserver.body.service.dto;
 
 import im.fitdiary.fitdiaryserver.body.data.entity.BodyLog;
 import lombok.Getter;
+import lombok.ToString;
 import org.springframework.lang.Nullable;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
+@ToString
 public class CreateBodyLog {
 
     private final Long userId;
