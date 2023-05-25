@@ -5,6 +5,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -22,17 +23,27 @@ public class BaseMethodLoggingAspect {
 
     @Around("methodPointcut() || classPointcut()")
     public Object execute(ProceedingJoinPoint joinPoint) throws Throwable {
-        log.debug("{}.{} call with param: {}",
+        log.debug("[{}.{}] call with param: {}",
                 joinPoint.getSignature().toShortString().split("\\.")[0],
                 joinPoint.getSignature().getName(),
                 Arrays.toString(joinPoint.getArgs())
         );
+
+        String returnType = ((MethodSignature) joinPoint.getSignature()).getReturnType().getName();
+
         Object result = joinPoint.proceed();
-        log.debug("{}.{} ends with return value: {}",
-                joinPoint.getSignature().toShortString().split("\\.")[0],
-                joinPoint.getSignature().getName(),
-                result
-        );
+        if (returnType.equals("void")) {
+            log.debug("[{}.{}] completed",
+                    joinPoint.getSignature().toShortString().split("\\.")[0],
+                    joinPoint.getSignature().getName()
+            );
+        } else {
+            log.debug("[{}.{}] completed with return value: {}",
+                    joinPoint.getSignature().toShortString().split("\\.")[0],
+                    joinPoint.getSignature().getName(),
+                    result
+            );
+        }
         return result;
     }
 }
