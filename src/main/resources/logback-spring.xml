@@ -2,7 +2,7 @@
 <configuration>
     <property
             name="FILE_PATTERN"
-            value="[%d{HH:mm:ss}:%-3relative] [%X{traceId:-null}] %-5level %logger{36} - %msg%n"
+            value="[%d{yyyy-MM-dd HH:mm:ss}:%-3relative] [%X{traceId:-null}] %-5level %logger{36} - %msg%n"
     />
     <property
             name="CONSOLE_PATTERN"
