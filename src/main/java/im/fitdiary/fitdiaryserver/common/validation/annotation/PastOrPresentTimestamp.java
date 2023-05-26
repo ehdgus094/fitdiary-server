@@ -1,4 +1,6 @@
-package im.fitdiary.fitdiaryserver.common.validation;
+package im.fitdiary.fitdiaryserver.common.validation.annotation;
+
+import im.fitdiary.fitdiaryserver.common.validation.PastOrPresentTimestampValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -7,18 +9,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = EnumValidator.class)
+@Constraint(validatedBy = PastOrPresentTimestampValidator.class)
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Enum {
+public @interface PastOrPresentTimestamp {
 
     String message() default "Invalid value. This is not permitted.";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
-
-    Class<? extends java.lang.Enum<?>> enumClass();
-
-    boolean ignoreCase() default true;
 }

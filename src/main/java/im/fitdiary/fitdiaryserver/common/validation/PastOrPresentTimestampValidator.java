@@ -1,6 +1,7 @@
 package im.fitdiary.fitdiaryserver.common.validation;
 
 import im.fitdiary.fitdiaryserver.common.converter.TimeConverter;
+import im.fitdiary.fitdiaryserver.common.validation.annotation.PastOrPresentTimestamp;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

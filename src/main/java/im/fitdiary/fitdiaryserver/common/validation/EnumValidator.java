@@ -1,5 +1,7 @@
 package im.fitdiary.fitdiaryserver.common.validation;
 
+import im.fitdiary.fitdiaryserver.common.validation.annotation.Enum;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 

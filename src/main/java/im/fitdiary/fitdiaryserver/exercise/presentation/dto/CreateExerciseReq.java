@@ -1,6 +1,6 @@
 package im.fitdiary.fitdiaryserver.exercise.presentation.dto;
 
-import im.fitdiary.fitdiaryserver.common.validation.Enum;
+import im.fitdiary.fitdiaryserver.common.validation.annotation.Enum;
 import im.fitdiary.fitdiaryserver.exercise.data.entity.ExerciseCategory;
 import im.fitdiary.fitdiaryserver.exercise.service.dto.CreateExercise;
 import lombok.Getter;

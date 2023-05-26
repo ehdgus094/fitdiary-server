@@ -1,7 +1,7 @@
 package im.fitdiary.fitdiaryserver.exercise.presentation.dto;
 
 import im.fitdiary.fitdiaryserver.common.converter.TimeConverter;
-import im.fitdiary.fitdiaryserver.common.validation.PastOrPresentTimestamp;
+import im.fitdiary.fitdiaryserver.common.validation.annotation.PastOrPresentTimestamp;
 import im.fitdiary.fitdiaryserver.exercise.service.dto.CreateExerciseLog;
 import lombok.Getter;
 import lombok.ToString;

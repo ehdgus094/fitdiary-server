@@ -2,7 +2,7 @@ package im.fitdiary.fitdiaryserver.body.presentation.dto;
 
 import im.fitdiary.fitdiaryserver.body.data.dto.BodyLogEditor;
 import im.fitdiary.fitdiaryserver.common.converter.TimeConverter;
-import im.fitdiary.fitdiaryserver.common.validation.PastOrPresentTimestamp;
+import im.fitdiary.fitdiaryserver.common.validation.annotation.PastOrPresentTimestamp;
 import lombok.Getter;
 import lombok.ToString;
 import org.openapitools.jackson.nullable.JsonNullable;

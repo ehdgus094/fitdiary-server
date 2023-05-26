@@ -1,6 +1,6 @@
 package im.fitdiary.fitdiaryserver.user.presentation.dto;
 
-import im.fitdiary.fitdiaryserver.common.validation.Enum;
+import im.fitdiary.fitdiaryserver.common.validation.annotation.Enum;
 import im.fitdiary.fitdiaryserver.user.data.entity.Gender;
 import im.fitdiary.fitdiaryserver.user.service.dto.CreateEmailUser;
 import lombok.Getter;
