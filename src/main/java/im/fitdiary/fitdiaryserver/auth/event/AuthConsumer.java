@@ -51,9 +51,10 @@ public class AuthConsumer {
         userDeleted(userId, acknowledgment);
     }
 
+    @Transactional
     @KafkaListener(topics = TOPIC_USER_DELETED + "-" + GROUP_ID + "-fail-dlt", groupId = GROUP_ID)
     public void userDeletedFailDlt(Long userId, Acknowledgment acknowledgment) {
         // 여기까지 왔다면 서버에 일시적인 문제가 아닌 큰 장애가 생겼다고 가정하고 문제 해결 후 수동으로 처리
-        acknowledgment.acknowledge();
+        userDeleted(userId, acknowledgment);
     }
 }
