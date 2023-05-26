@@ -16,26 +16,26 @@ import java.math.BigDecimal;
 @ToString
 public class UpdateBodyLogReq {
 
-    @NotNull(message = "height should not be null")
-    @Max(value = 250, message = "height should not be over than 250")
-    @Positive(message = "height should be positive")
+    @NotNull
+    @Max(250)
+    @Positive
     private JsonNullable<BigDecimal> height = JsonNullable.undefined();
 
-    @NotNull(message = "weight should not be null")
-    @Max(value = 1000, message = "weight should not be over than 1000")
-    @Positive(message = "weight should be positive")
+    @NotNull
+    @Max(1000)
+    @Positive
     private JsonNullable<BigDecimal> weight = JsonNullable.undefined();
 
-    @Max(value = 200, message = "muscleMass should not be over than 200")
-    @Positive(message = "muscleMass should be positive")
+    @Max(200)
+    @Positive
     private JsonNullable<BigDecimal> muscleMass = JsonNullable.undefined();
 
-    @Max(value = 100, message = "bodyFat should not be over than 100")
-    @Positive(message = "bodyFat should be positive")
+    @Max(100)
+    @Positive
     private JsonNullable<BigDecimal> bodyFat = JsonNullable.undefined();
 
-    @NotNull(message = "measuredAt should not be null")
-    @PastOrPresentTimestamp(message = "measuredAt must be past or present")
+    @NotNull
+    @PastOrPresentTimestamp
     private JsonNullable<Long> measuredAt = JsonNullable.undefined();
 
     public BodyLogEditor toEditor() {

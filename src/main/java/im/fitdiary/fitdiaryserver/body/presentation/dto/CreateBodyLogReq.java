@@ -15,24 +15,24 @@ import java.math.BigDecimal;
 @ToString
 public class CreateBodyLogReq {
 
-    @Max(value = 250, message = "height should not be over than 250")
-    @Positive(message = "height should be positive")
+    @Max(250)
+    @Positive
     private BigDecimal height;
 
-    @NotNull(message = "weight should not be null")
-    @Max(value = 1000, message = "weight should not be over than 1000")
-    @Positive(message = "weight should be positive")
+    @NotNull
+    @Max(1000)
+    @Positive
     private BigDecimal weight;
 
-    @Max(value = 200, message = "muscleMass should not be over than 200")
-    @Positive(message = "muscleMass should be positive")
+    @Max(200)
+    @Positive
     private BigDecimal muscleMass;
 
-    @Max(value = 100, message = "bodyFat should not be over than 100")
-    @Positive(message = "bodyFat should be positive")
+    @Max(100)
+    @Positive
     private BigDecimal bodyFat;
 
-    @PastOrPresentTimestamp(message = "measuredAt must be past or present")
+    @PastOrPresentTimestamp
     private Long measuredAt;
 
     public CreateBodyLog toDto(Long userId) {

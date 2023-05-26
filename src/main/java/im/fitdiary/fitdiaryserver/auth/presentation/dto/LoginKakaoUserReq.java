@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @ToString
 public class LoginKakaoUserReq {
 
-    @NotBlank(message = "loginId should not be empty")
+    @NotBlank
     private String loginId;
 
     public LoginUser toDto() {

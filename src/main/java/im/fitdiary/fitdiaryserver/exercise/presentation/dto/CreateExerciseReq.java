@@ -13,11 +13,11 @@ import javax.validation.constraints.NotNull;
 @ToString
 public class CreateExerciseReq {
 
-    @NotBlank(message = "name should not be empty")
+    @NotBlank
     private String name;
 
-    @Enum(enumClass = ExerciseCategory.class, message = "incorrect category format")
-    @NotNull(message = "category should not be null")
+    @Enum(enumClass = ExerciseCategory.class)
+    @NotNull
     private String category;
 
     private Boolean active;

@@ -13,12 +13,12 @@ import java.util.List;
 @ToString
 public class UpdateExerciseLogDetailListReq {
 
-    @NotNull(message = "exerciseLogId should not be null")
-    @Positive(message = "exerciseLogId should be positive")
+    @NotNull
+    @Positive
     private Long exerciseLogId;
 
-    @NotNull(message = "data should not be null")
-    @Size(min = 1, max = 100, message = "data size should be between 1 and 100")
+    @NotNull
+    @Size(min = 1, max = 100)
     @Valid
     private List<UpdateExerciseLogDetailReq> data;
 }

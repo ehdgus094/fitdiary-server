@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @ToString
 public class UpdateUserReq {
 
-    @NotBlank(message = "name should not be empty")
+    @NotBlank
     private JsonNullable<String> name = JsonNullable.undefined();
 
     public UserEditor toEditor() {

@@ -4,11 +4,15 @@ import im.fitdiary.fitdiaryserver.common.dto.Response;
 import im.fitdiary.fitdiaryserver.exception.e401.BaseUnauthorizedException;
 import im.fitdiary.fitdiaryserver.exception.e404.NotFoundException;
 import im.fitdiary.fitdiaryserver.exception.e409.ConflictException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
+import org.springframework.context.NoSuchMessageException;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -19,12 +23,19 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.validation.ConstraintViolationException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 @Slf4j
+@RequiredArgsConstructor
 @RestControllerAdvice
 public class ExceptionAdvice {
 
     private static final String BASE_LOG_MESSAGE = "response failure: {}";
+
+    private final MessageSource messageSource;
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -61,11 +72,26 @@ public class ExceptionAdvice {
         // Bean Validation
         final String SEPARATOR = " | ";
         StringBuilder builder = new StringBuilder();
-        for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
-            builder.append(fieldError.getDefaultMessage());
+
+        List<ObjectError> allErrors = e.getBindingResult().getAllErrors();
+        for (ObjectError error : allErrors) {
+            String message = Arrays.stream(Objects.requireNonNull(error.getCodes()))
+                    .map(code -> {
+                        Object[] arguments = error.getArguments();
+                        Locale locale = LocaleContextHolder.getLocale();
+                        try {
+                            return messageSource.getMessage(code, arguments, locale);
+                        } catch (NoSuchMessageException ex) {
+                            return null;
+                        }
+                    }).filter(Objects::nonNull)
+                    .findFirst()
+                    .orElse(error.getDefaultMessage());
+            builder.append(message);
             builder.append(SEPARATOR);
         }
         builder.delete(builder.lastIndexOf(SEPARATOR), builder.length());
+
         log.warn(BASE_LOG_MESSAGE, builder);
         return Response.failure(builder.toString());
     }

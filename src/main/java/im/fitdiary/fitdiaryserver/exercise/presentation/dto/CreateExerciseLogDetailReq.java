@@ -14,26 +14,26 @@ import java.math.BigDecimal;
 @ToString
 public class CreateExerciseLogDetailReq {
 
-    @NotNull(message = "exerciseId should not be null")
-    @Positive(message = "exerciseId should be positive")
+    @NotNull
+    @Positive
     private Long exerciseId;
 
-    @NotNull(message = "warmUp should not be null")
+    @NotNull
     private Boolean warmUp;
 
-    @NotNull(message = "weight should not be null")
-    @Positive(message = "weight should be positive")
-    @Max(value = 999, message = "weight should not be over than 999")
+    @NotNull
+    @Positive
+    @Max(999)
     private BigDecimal weight;
 
-    @NotNull(message = "count should not be null")
-    @Positive(message = "count should be positive")
-    @Max(value = 10000, message = "count should not be over than 10000")
+    @NotNull
+    @Positive
+    @Max(10000)
     private Integer count;
 
-    @NotNull(message = "supportCount should not be null")
-    @Min(value = 0, message = "supportCount should not be less than 0")
-    @Max(value = 10000, message = "supportCount should not be over than 10000")
+    @NotNull
+    @Min(0)
+    @Max(10000)
     private Integer supportCount;
 
     public CreateExerciseLogDetail toDto() {

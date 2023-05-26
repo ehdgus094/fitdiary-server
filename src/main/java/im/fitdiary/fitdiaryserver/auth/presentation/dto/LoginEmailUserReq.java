@@ -12,11 +12,11 @@ import javax.validation.constraints.NotBlank;
 @ToString
 public class LoginEmailUserReq {
 
-    @NotBlank(message = "loginId should not be empty")
-    @Email(message = "incorrect email format")
+    @NotBlank
+    @Email
     private String loginId;
 
-    @NotBlank(message = "password should not be empty")
+    @NotBlank
     private String password;
 
     public LoginUser toDto() {

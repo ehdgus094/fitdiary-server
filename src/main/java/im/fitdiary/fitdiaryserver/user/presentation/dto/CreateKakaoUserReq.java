@@ -15,22 +15,22 @@ import javax.validation.constraints.Pattern;
 @ToString
 public class CreateKakaoUserReq {
 
-    @NotBlank(message = "loginId should not be empty")
+    @NotBlank
     private String loginId;
 
-    @NotBlank(message = "name should not be empty")
+    @NotBlank
     private String name;
 
-    @Pattern(regexp = "^(19\\d{2}|20\\d{2})(0[1-9]|1[0-2])(0[1-9]|[1-2]\\d|3[0-1])$", message = "incorrect birthYmd format")
-    @NotNull(message = "birthYmd should not be null")
+    @Pattern(regexp = "^(19\\d{2}|20\\d{2})(0[1-9]|1[0-2])(0[1-9]|[1-2]\\d|3[0-1])$")
+    @NotNull
     private String birthYmd;
 
-    @Enum(enumClass = Gender.class, message = "incorrect gender format")
-    @NotNull(message = "gender should not be null")
+    @Enum(enumClass = Gender.class)
+    @NotNull
     private String gender;
 
-    @NotBlank(message = "email should not be empty")
-    @Email(message = "incorrect email format")
+    @NotBlank
+    @Email
     private String email;
 
     public CreateKakaoUser toDto() {

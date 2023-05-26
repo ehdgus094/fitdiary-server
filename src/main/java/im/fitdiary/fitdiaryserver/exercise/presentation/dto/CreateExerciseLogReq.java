@@ -14,12 +14,12 @@ import javax.validation.constraints.Positive;
 @ToString
 public class CreateExerciseLogReq {
 
-    @NotNull(message = "duration should not be null")
-    @Positive(message = "duration should be positive")
-    @Max(value = 86400, message = "duration should not be over than 86400") // 1일
+    @NotNull
+    @Positive
+    @Max(86400) // 1일
     private Integer duration;
 
-    @PastOrPresentTimestamp(message = "measuredAt must be past or present")
+    @PastOrPresentTimestamp
     private Long measuredAt;
 
     public CreateExerciseLog toDto(Long userId) {

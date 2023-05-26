@@ -14,14 +14,14 @@ import javax.validation.constraints.NotNull;
 @ToString
 public class UpdateExerciseReq {
 
-    @NotBlank(message = "name should not be empty")
+    @NotBlank
     private JsonNullable<String> name = JsonNullable.undefined();
 
-    @Enum(enumClass = ExerciseCategory.class, message = "incorrect category format")
-    @NotNull(message = "category should not be null")
+    @Enum(enumClass = ExerciseCategory.class)
+    @NotNull
     private JsonNullable<String> category = JsonNullable.undefined();
 
-    @NotNull(message = "active should not be null")
+    @NotNull
     private JsonNullable<Boolean> active = JsonNullable.undefined();
 
     public ExerciseEditor toEditor() {
