@@ -5,6 +5,7 @@ import im.fitdiary.fitdiaryserver.exception.e404.UserNotFoundException;
 import im.fitdiary.fitdiaryserver.exception.e409.AuthUserDuplicatedException;
 import im.fitdiary.fitdiaryserver.user.data.entity.User;
 import im.fitdiary.fitdiaryserver.user.data.UserRepository;
+import im.fitdiary.fitdiaryserver.user.event.UserProducer;
 import im.fitdiary.fitdiaryserver.user.service.dto.CreateUser;
 import im.fitdiary.fitdiaryserver.util.factory.user.UserFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,6 +30,9 @@ class UserServiceImplTest {
 
     @Mock
     AuthUserService authUserService;
+
+    @Mock
+    UserProducer userProducer;
 
     @InjectMocks
     UserServiceImpl userService;

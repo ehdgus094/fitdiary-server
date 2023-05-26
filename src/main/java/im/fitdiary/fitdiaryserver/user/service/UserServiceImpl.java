@@ -6,6 +6,7 @@ import im.fitdiary.fitdiaryserver.exception.e404.UserNotFoundException;
 import im.fitdiary.fitdiaryserver.exception.e409.AuthUserDuplicatedException;
 import im.fitdiary.fitdiaryserver.user.data.entity.User;
 import im.fitdiary.fitdiaryserver.user.data.UserRepository;
+import im.fitdiary.fitdiaryserver.user.event.UserProducer;
 import im.fitdiary.fitdiaryserver.user.service.dto.CreateUser;
 import im.fitdiary.fitdiaryserver.user.data.dto.UserEditor;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     private final AuthUserService authUserService;
+
+    private final UserProducer userProducer;
 
     @Transactional
     public User create(CreateUser createUser) throws AuthUserDuplicatedException {
@@ -45,7 +48,7 @@ public class UserServiceImpl implements UserService {
     public void deleteById(Long userId) {
         userRepository.findById(userId).ifPresent(user -> {
             userRepository.delete(user);
-            authUserService.deleteByUserId(userId);
+            userProducer.userDeleted(user.getId());
         });
     }
 }
