@@ -1,5 +1,6 @@
 package im.fitdiary.fitdiaryserver.security;
 
+import im.fitdiary.fitdiaryserver.common.filter.InitRequestLoggingFilter;
 import im.fitdiary.fitdiaryserver.security.jwt.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter filter;
+    private final JwtAuthenticationFilter authFilter;
+
+    private final InitRequestLoggingFilter requestLoggingFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -37,7 +40,8 @@ public class SecurityConfig {
                     .anyRequest()
                         .permitAll()
                 .and()
-                    .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
+                    .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
+                    .addFilterBefore(requestLoggingFilter, JwtAuthenticationFilter.class)
                 .build();
     }
 }

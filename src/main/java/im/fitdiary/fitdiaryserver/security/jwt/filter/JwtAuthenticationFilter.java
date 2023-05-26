@@ -29,21 +29,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        String authenticated = null;
+        String subject = null;
+        RoleType roleType = null;
         String token = request.getHeader("Authorization");
 
         if (token != null) {
             try {
-                String subject = jwtHandler.getSubject(token);
-                RoleType roleType = jwtHandler.getRoleType(token);
+                subject = jwtHandler.getSubject(token);
+                roleType = jwtHandler.getRoleType(token);
                 SecurityContextHolder
                         .getContext()
                         .setAuthentication(createAuthentication(subject, roleType.toString()));
-                authenticated = roleType.toString();
             } catch (UnauthorizedException ignored) {}
         }
 
-        log.debug("authenticated: {}", authenticated);
+        log.info("authenticated: [roleType={}, id={}]", roleType, subject);
         chain.doFilter(request, response);
     }
 
