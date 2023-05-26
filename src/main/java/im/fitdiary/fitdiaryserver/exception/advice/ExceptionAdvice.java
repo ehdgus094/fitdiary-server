@@ -33,14 +33,6 @@ public class ExceptionAdvice {
         return Response.failure(e.getMessage());
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Response constraintViolation(ConstraintViolationException e) {
-        // db 제약조건 에러
-        log.error(BASE_LOG_MESSAGE, e.getMessage());
-        return Response.failure(e.getMessage());
-    }
-
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public Response accessDenied(AccessDeniedException e) {
@@ -55,9 +47,18 @@ public class ExceptionAdvice {
         return Response.failure("unauthorized");
     }
 
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response constraintViolation(ConstraintViolationException e) {
+        // Bean Validation
+        log.warn(BASE_LOG_MESSAGE, e.getMessage());
+        return Response.failure(e.getMessage());
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Response methodArgumentNotValid(MethodArgumentNotValidException e) {
+        // Bean Validation
         final String SEPARATOR = " | ";
         StringBuilder builder = new StringBuilder();
         for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
