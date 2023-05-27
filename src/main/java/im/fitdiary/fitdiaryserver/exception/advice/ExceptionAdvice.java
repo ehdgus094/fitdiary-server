@@ -41,7 +41,10 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Response exception(Exception e) {
         log.error("", e);
-        return Response.failure(e.getMessage());
+        String message =
+                "[배포모드에서는 에러 메시지가 생략됩니다] " +
+                e.getMessage();
+        return Response.failure(message);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
@@ -91,8 +94,8 @@ public class ExceptionAdvice {
             builder.append(SEPARATOR);
         }
         builder.delete(builder.lastIndexOf(SEPARATOR), builder.length());
-
         log.warn(BASE_LOG_MESSAGE, builder);
+        builder.insert(0, "[배포모드에서는 에러 메시지가 생략됩니다] ");
         return Response.failure(builder.toString());
     }
 
