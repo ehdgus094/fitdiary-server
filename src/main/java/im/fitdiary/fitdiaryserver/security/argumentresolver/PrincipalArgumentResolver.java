@@ -47,7 +47,7 @@ public class PrincipalArgumentResolver implements HandlerMethodArgumentResolver 
 
             authToken = new AuthToken(id, roleType);
         }
-        log.debug("resolveArgument call with converted principal {}", authToken);
+        log.debug("principal resolved: {}", authToken);
         return authToken;
     }
 }
