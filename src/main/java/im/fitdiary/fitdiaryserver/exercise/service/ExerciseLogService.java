@@ -25,4 +25,6 @@ public interface ExerciseLogService {
     void deleteById(Long exerciseLogId, Long userId);
 
     void deleteDetailById(Long exerciseLogDetailId, Long userId);
+
+    void deleteByUserId(Long userId);
 }

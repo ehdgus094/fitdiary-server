@@ -18,4 +18,6 @@ public interface ExerciseService {
     void updateById(Long exerciseId, Long userId, ExerciseEditor editor) throws ExerciseNotFoundException;
 
     void deleteById(Long exerciseId, Long userId);
+
+    void deleteByUserId(Long userId);
 }

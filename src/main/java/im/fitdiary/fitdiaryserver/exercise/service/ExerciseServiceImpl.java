@@ -49,4 +49,9 @@ public class ExerciseServiceImpl implements ExerciseService {
         exerciseRepository.findByIdAndUserId(exerciseId, userId)
                 .ifPresent(exerciseRepository::delete);
     }
+
+    @Transactional
+    public void deleteByUserId(Long userId) {
+        exerciseRepository.deleteByUserId(userId);
+    }
 }

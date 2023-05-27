@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 @BaseMethodLogging
-public interface ExerciseLogRepository extends JpaRepository<ExerciseLog, Long> {
+public interface ExerciseLogRepository extends JpaRepository<ExerciseLog, Long>, ExerciseLogRepositoryCustom {
 
     Optional<ExerciseLog> findByIdAndUserId(Long exerciseLogId, Long userId);
 }

@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 
+import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +20,8 @@ import static im.fitdiary.fitdiaryserver.body.data.entity.QBodyLog.*;
 public class BodyLogRepositoryImpl implements BodyLogRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
+
+    private final EntityManager em;
 
     public Optional<BodyLog> findLatestOne(Long userId) {
         BodyLog foundBodyLog = queryFactory
@@ -46,5 +50,15 @@ public class BodyLogRepositoryImpl implements BodyLogRepositoryCustom {
         }
 
         return new SliceImpl<>(content, pageable, hasNext);
+    }
+
+    public void deleteByUserId(Long userId) {
+        queryFactory
+                .update(bodyLog)
+                .set(bodyLog.deletedAt, LocalDateTime.now())
+                .where(bodyLog.userId.eq(userId))
+                .execute();
+        em.flush();
+        em.clear();
     }
 }

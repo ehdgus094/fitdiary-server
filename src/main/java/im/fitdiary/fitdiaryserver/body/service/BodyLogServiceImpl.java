@@ -59,4 +59,9 @@ public class BodyLogServiceImpl implements BodyLogService {
         bodyLogRepository.findByIdAndUserId(bodyLogId, userId)
                 .ifPresent(bodyLogRepository::delete);
     }
+
+    @Transactional
+    public void deleteByUserId(Long userId) {
+        bodyLogRepository.deleteByUserId(userId);
+    }
 }

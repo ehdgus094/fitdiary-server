@@ -19,4 +19,6 @@ public interface BodyLogService {
     void updateById(Long bodyLogId, Long userId, BodyLogEditor editor) throws BodyLogNotFoundException;
 
     void deleteById(Long bodyLogId, Long userId);
+
+    void deleteByUserId(Long userId);
 }

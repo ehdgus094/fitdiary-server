@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @BaseMethodLogging
-public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
+public interface ExerciseRepository extends JpaRepository<Exercise, Long>, ExerciseRepositoryCustom {
 
     Optional<Exercise> findByIdAndUserId(Long exerciseId, Long userId);
 

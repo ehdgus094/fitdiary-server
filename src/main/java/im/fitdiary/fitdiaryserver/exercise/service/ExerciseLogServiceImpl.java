@@ -88,8 +88,8 @@ public class ExerciseLogServiceImpl implements ExerciseLogService {
     @Transactional
     public void deleteById(Long exerciseLogId, Long userId) {
         exerciseLogRepository.findByIdAndUserId(exerciseLogId, userId).ifPresent(exerciseLog -> {
-            exerciseLogRepository.delete(exerciseLog);
             exerciseLogDetailRepository.deleteByExerciseLog(exerciseLog);
+            exerciseLogRepository.delete(exerciseLog);
         });
     }
 
@@ -100,5 +100,10 @@ public class ExerciseLogServiceImpl implements ExerciseLogService {
             exerciseLogDetailRepository.deleteSequence(detail);
             exerciseLogDetailRepository.delete(detail);
         } catch (ExerciseLogDetailNotFoundException ignored) {}
+    }
+
+    @Transactional
+    public void deleteByUserId(Long userId) {
+        exerciseLogRepository.deleteWithDetailsByUserId(userId);
     }
 }
