@@ -15,4 +15,6 @@ public interface ExerciseLogDetailRepositoryCustom {
     void bulkUpdate(ExerciseLog exerciseLog, Map<Long, ExerciseLogDetailEditor> editors);
 
     void deleteSequence(ExerciseLogDetail detail);
+
+    void deleteByExerciseLog(ExerciseLog exerciseLog);
 }

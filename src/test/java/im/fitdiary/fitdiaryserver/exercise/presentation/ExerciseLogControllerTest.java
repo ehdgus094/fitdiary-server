@@ -1,9 +1,10 @@
 package im.fitdiary.fitdiaryserver.exercise.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import im.fitdiary.fitdiaryserver.exercise.data.entity.Exercise;
 import im.fitdiary.fitdiaryserver.exercise.data.entity.ExerciseLog;
-import im.fitdiary.fitdiaryserver.exercise.presentation.dto.CreateExerciseLogReq;
-import im.fitdiary.fitdiaryserver.exercise.presentation.dto.ExerciseLogRes;
+import im.fitdiary.fitdiaryserver.exercise.data.entity.ExerciseLogDetail;
+import im.fitdiary.fitdiaryserver.exercise.presentation.dto.*;
 import im.fitdiary.fitdiaryserver.exercise.service.ExerciseLogService;
 import im.fitdiary.fitdiaryserver.security.jwt.filter.JwtAuthenticationFilter;
 import im.fitdiary.fitdiaryserver.util.TestUtils;
@@ -76,6 +77,22 @@ class ExerciseLogControllerTest {
     }
 
     @Test
+    @DisplayName("createDetailsBulk")
+    void createDetailsBulk() throws Exception {
+        // given
+        CreateExerciseLogDetailListReq req = ExerciseFactory.createExerciseLogDetailListReq();
+
+        // when - then
+        mvc.perform(post(BASE_URI + "/detail")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(req)))
+                .andExpectAll(
+                        status().isOk()
+                )
+                .andDo(print());
+    }
+
+    @Test
     @DisplayName("findById")
     void findById() throws Exception {
         // given
@@ -100,6 +117,54 @@ class ExerciseLogControllerTest {
     }
 
     @Test
+    @DisplayName("findDetailById")
+    void findDetailById() throws Exception {
+        // given
+        long exerciseLogDetailId = 1L;
+        Exercise exercise = ExerciseFactory.exercise();
+        ExerciseLog exerciseLog = ExerciseFactory.exerciseLog();
+        ExerciseLogDetail detail = ExerciseFactory.exerciseLogDetail(exercise, exerciseLog, 0);
+        ExerciseLogDetailRes res = new ExerciseLogDetailRes(detail);
+        given(exerciseLogService.findDetailById(any(), anyLong()))
+                .willReturn(detail);
+
+        // when - then
+        mvc.perform(get(BASE_URI + "/detail/" + exerciseLogDetailId))
+                .andExpectAll(
+                        status().isOk(),
+                        jsonPath("$.data.id")
+                                .value(res.getId()),
+                        jsonPath("$.data.sequence")
+                                .value(res.getSequence()),
+                        jsonPath("$.data.warmUp")
+                                .value(res.isWarmUp()),
+                        jsonPath("$.data.weight")
+                                .value(res.getWeight()),
+                        jsonPath("$.data.count")
+                                .value(res.getCount()),
+                        jsonPath("$.data.supportCount")
+                                .value(res.getSupportCount())
+                )
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("updateDetailsBulk")
+    void updateDetailsBulk() throws Exception {
+        // given
+        UpdateExerciseLogDetailListReq req = ExerciseFactory.updateExerciseLogDetailListReq();
+
+        // when - then
+        mvc.perform(put(BASE_URI + "/detail")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(req)))
+                .andExpectAll(
+                        status().isOk()
+                )
+                .andDo(print());
+    }
+
+    @Test
     @DisplayName("deleteById")
     void deleteById() throws Exception {
         // given
@@ -107,6 +172,20 @@ class ExerciseLogControllerTest {
 
         // when - then
         mvc.perform(delete(BASE_URI + "/" + exerciseLogId))
+                .andExpectAll(
+                        status().isOk()
+                )
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("deleteDetailById")
+    void deleteDetailById() throws Exception {
+        // given
+        long exerciseLogDetailId = 1L;
+
+        // when - then
+        mvc.perform(delete(BASE_URI + "/detail/" + exerciseLogDetailId))
                 .andExpectAll(
                         status().isOk()
                 )

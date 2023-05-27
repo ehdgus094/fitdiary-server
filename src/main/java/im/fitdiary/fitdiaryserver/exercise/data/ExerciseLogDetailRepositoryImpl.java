@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import javax.persistence.EntityManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -144,6 +145,16 @@ public class ExerciseLogDetailRepositoryImpl implements ExerciseLogDetailReposit
                 .update(exerciseLogDetail)
                 .set(exerciseLogDetail.sequence, exerciseLogDetail.sequence.add(-1))
                 .where(exerciseLogDetail.sequence.gt(detail.getSequence()))
+                .execute();
+        em.flush();
+        em.clear();
+    }
+
+    public void deleteByExerciseLog(ExerciseLog exerciseLog) {
+        queryFactory
+                .update(exerciseLogDetail)
+                .set(exerciseLogDetail.deletedAt, LocalDateTime.now())
+                .where(exerciseLogDetail.exerciseLog.eq(exerciseLog))
                 .execute();
         em.flush();
         em.clear();
