@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property
+            name="FILE_PATTERN"
+            value="[%d{yyyy-MM-dd HH:mm:ss}:%-3relative] [%X{traceId:-null}] %-5level %logger{36} - %msg%n"
+    />
+    <property
+            name="CONSOLE_PATTERN"
+            value="[%d{HH:mm:ss}:%-3relative] [%thread] [%X{traceId:-null}] %-5level %logger{36} - %msg%n"
+    />
+    <property name="LOG_PATH" value="./logs" />
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>${CONSOLE_PATTERN}</Pattern>
+        </layout>
+    </appender>
+
+    <appender
+            name="ROLLING_INFO"
+            class="ch.qos.logback.core.rolling.RollingFileAppender"
+    >
+        <file>${LOG_PATH}/info.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <encoder>
+            <pattern>${FILE_PATTERN}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>
+                ${LOG_PATH}/%d{yyyy-MM, aux}/info/info.%d{yyyy-MM-dd}.%i.log.gz
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP"
+            >
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>180</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <appender
+            name="ROLLING_WARN"
+            class="ch.qos.logback.core.rolling.RollingFileAppender"
+    >
+        <file>${LOG_PATH}/warn.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
+        <encoder>
+            <pattern>${FILE_PATTERN}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>
+                ${LOG_PATH}/%d{yyyy-MM, aux}/warn/warn.%d{yyyy-MM-dd}.%i.log.gz
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP"
+            >
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>180</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <springProfile name="local">
+        <root level="INFO">
+            <appender-ref ref="STDOUT" />
+        </root>
+        <logger name="im.fitdiary.server" level="DEBUG" additivity="false">
+            <appender-ref ref="STDOUT" />
+        </logger>
+<!--        <logger name="org.mariadb.jdbc" level="DEBUG" additivity="false">-->
+<!--            <appender-ref ref="STDOUT" />-->
+<!--        </logger>-->
+    </springProfile>
+
+    <springProfile name="dev">
+        <root level="INFO">
+            <appender-ref ref="STDOUT" />
+        </root>
+        <logger name="im.fitdiary.server" level="INFO" additivity="false">
+            <appender-ref ref="STDOUT" />
+            <appender-ref ref="ROLLING_INFO" />
+            <appender-ref ref="ROLLING_WARN" />
+        </logger>
+    </springProfile>
+
+    <springProfile name="prod">
+<!--        에러 로그 시 알림 구현-->
+        <logger name="im.fitdiary.server" level="INFO" additivity="false">
+            <appender-ref ref="ROLLING_INFO" />
+            <appender-ref ref="ROLLING_WARN" />
+        </logger>
+    </springProfile>
+</configuration>

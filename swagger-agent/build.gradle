@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+}
+
+group = 'im.fitdiary'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'net.bytebuddy:byte-buddy:1.14.4'
+}
+
+jar {
+    manifest {
+        attributes(
+                "Premain-Class": "im.fitdiary.swaggeragent.SwaggerAgent",
+                "Can-Redefine-Classes": true,
+                "Can-Retransform-Classes": true
+        )
+    }
+}

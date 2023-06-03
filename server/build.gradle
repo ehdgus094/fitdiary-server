@@ -1,0 +1,81 @@
+buildscript {
+    ext {
+        querydslVersion = "5.0.0"
+    }
+}
+
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.11'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
+    id 'com.gorylenko.gradle-git-properties' version '2.4.1' // actuator info에 git info 추가
+}
+
+group = 'im.fitdiary'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.kafka:spring-kafka'
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    implementation 'org.openapitools:jackson-databind-nullable:0.2.6' // request dto에서 undefined 사용 위함
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+    implementation 'net.bytebuddy:byte-buddy:1.14.4'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
+    // querydsl start
+    implementation 'com.google.code.findbugs:jsr305:3.0.2' // @Nullable로 인한 querydsl compile warning 해결
+    implementation "com.querydsl:querydsl-jpa:${querydslVersion}"
+    annotationProcessor "com.querydsl:querydsl-apt:${querydslVersion}"
+    // querydsl end
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+//    compileOnly project(':swagger-processor')
+//    annotationProcessor project(':swagger-processor')
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// actuator info에 buildInfo 추가
+springBoot {
+    buildInfo()
+}
+
+// querydsl start
+def querydslDir = "$buildDir/generated/querydsl"
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+sourceSets {
+    main.java.srcDir querydslDir
+}
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+}
+// querydsl end
