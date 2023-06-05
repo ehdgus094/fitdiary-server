@@ -3,6 +3,7 @@ package im.fitdiary.server.body.presentation.dto;
 import im.fitdiary.server.body.data.dto.BodyLogEditor;
 import im.fitdiary.server.common.converter.TimeConverter;
 import im.fitdiary.server.common.validation.annotation.PastOrPresentTimestamp;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.ToString;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -14,6 +15,7 @@ import java.math.BigDecimal;
 
 @Getter
 @ToString
+@Schema
 public class UpdateBodyLogReq {
 
     @NotNull
@@ -22,7 +24,7 @@ public class UpdateBodyLogReq {
     private JsonNullable<BigDecimal> height = JsonNullable.undefined();
 
     @NotNull
-    @Max(1000)
+    @Max(999)
     @Positive
     private JsonNullable<BigDecimal> weight = JsonNullable.undefined();
 

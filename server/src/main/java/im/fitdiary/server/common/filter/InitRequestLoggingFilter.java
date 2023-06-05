@@ -2,7 +2,6 @@ package im.fitdiary.server.common.filter;
 
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.*;
@@ -12,7 +11,6 @@ import java.io.IOException;
 import java.util.UUID;
 
 @Slf4j
-@Component
 public class InitRequestLoggingFilter extends OncePerRequestFilter {
 
     @Override

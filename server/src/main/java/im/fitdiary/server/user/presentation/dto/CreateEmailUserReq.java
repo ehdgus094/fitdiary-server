@@ -3,6 +3,7 @@ package im.fitdiary.server.user.presentation.dto;
 import im.fitdiary.server.common.validation.annotation.Enum;
 import im.fitdiary.server.user.data.entity.Gender;
 import im.fitdiary.server.user.service.dto.CreateEmailUser;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -10,6 +11,7 @@ import javax.validation.constraints.*;
 
 @Getter
 @ToString
+@Schema
 public class CreateEmailUserReq {
 
     @NotBlank

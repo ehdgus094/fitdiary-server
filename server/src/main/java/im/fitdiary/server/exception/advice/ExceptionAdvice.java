@@ -1,6 +1,6 @@
 package im.fitdiary.server.exception.advice;
 
-import im.fitdiary.server.common.dto.Response;
+import im.fitdiary.server.exception.dto.FailureResponse;
 import im.fitdiary.server.exception.e401.BaseUnauthorizedException;
 import im.fitdiary.server.exception.e404.NotFoundException;
 import im.fitdiary.server.exception.e409.ConflictException;
@@ -39,39 +39,39 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Response exception(Exception e) {
+    public FailureResponse exception(Exception e) {
         log.error("", e);
         String message =
                 "[배포모드에서는 에러 메시지가 생략됩니다] " +
                 e.getMessage();
-        return Response.failure(message);
+        return new FailureResponse(message);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public Response accessDenied(AccessDeniedException e) {
+    public FailureResponse accessDenied(AccessDeniedException e) {
         log.info(BASE_LOG_MESSAGE, e.getMessage());
-        return Response.failure("unauthorized");
+        return new FailureResponse("unauthorized");
     }
 
     @ExceptionHandler(MissingRequestHeaderException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public Response missingRequestHeader(MissingRequestHeaderException e) {
+    public FailureResponse missingRequestHeader(MissingRequestHeaderException e) {
         log.warn(BASE_LOG_MESSAGE, e.getMessage());
-        return Response.failure("unauthorized");
+        return new FailureResponse("unauthorized");
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Response constraintViolation(ConstraintViolationException e) {
+    public FailureResponse constraintViolation(ConstraintViolationException e) {
         // Bean Validation
         log.warn(BASE_LOG_MESSAGE, e.getMessage());
-        return Response.failure(e.getMessage());
+        return new FailureResponse(e.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Response methodArgumentNotValid(MethodArgumentNotValidException e) {
+    public FailureResponse methodArgumentNotValid(MethodArgumentNotValidException e) {
         // Bean Validation
         final String SEPARATOR = " | ";
         StringBuilder builder = new StringBuilder();
@@ -96,55 +96,55 @@ public class ExceptionAdvice {
         builder.delete(builder.lastIndexOf(SEPARATOR), builder.length());
         log.warn(BASE_LOG_MESSAGE, builder);
         builder.insert(0, "[배포모드에서는 에러 메시지가 생략됩니다] ");
-        return Response.failure(builder.toString());
+        return new FailureResponse(builder.toString());
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Response httpMessageNotReadable(HttpMessageNotReadableException e) {
+    public FailureResponse httpMessageNotReadable(HttpMessageNotReadableException e) {
         log.warn(BASE_LOG_MESSAGE, e.getMessage());
-        return Response.failure(e.getMessage());
+        return new FailureResponse(e.getMessage());
     }
 
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Response httpMediaTypeNotSupported(HttpMediaTypeNotSupportedException e) {
+    public FailureResponse httpMediaTypeNotSupported(HttpMediaTypeNotSupportedException e) {
         log.warn(BASE_LOG_MESSAGE, e.getMessage());
-        return Response.failure(e.getMessage());
+        return new FailureResponse(e.getMessage());
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Response httpRequestMethodNotSupported(HttpRequestMethodNotSupportedException e) {
+    public FailureResponse httpRequestMethodNotSupported(HttpRequestMethodNotSupportedException e) {
         log.warn(BASE_LOG_MESSAGE, e.getMessage());
-        return Response.failure(e.getMessage());
+        return new FailureResponse(e.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Response methodArgumentTypeMismatch(MethodArgumentTypeMismatchException e) {
+    public FailureResponse methodArgumentTypeMismatch(MethodArgumentTypeMismatchException e) {
         log.warn(BASE_LOG_MESSAGE, e.getMessage());
-        return Response.failure(e.getMessage());
+        return new FailureResponse(e.getMessage());
     }
 
     @ExceptionHandler(BaseUnauthorizedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public Response unauthorized(BaseUnauthorizedException e) {
+    public FailureResponse unauthorized(BaseUnauthorizedException e) {
         log.info(BASE_LOG_MESSAGE, e.getMessage());
-        return Response.failure(e.getMessage());
+        return new FailureResponse(e.getMessage());
     }
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Response notFound(NotFoundException e) {
+    public FailureResponse notFound(NotFoundException e) {
         log.info(BASE_LOG_MESSAGE, e.getMessage());
-        return Response.failure(e.getMessage());
+        return new FailureResponse(e.getMessage());
     }
 
     @ExceptionHandler(ConflictException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public Response conflict(ConflictException e) {
+    public FailureResponse conflict(ConflictException e) {
         log.info(BASE_LOG_MESSAGE, e.getMessage());
-        return Response.failure(e.getMessage());
+        return new FailureResponse(e.getMessage());
     }
 }

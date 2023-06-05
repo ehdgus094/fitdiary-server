@@ -34,7 +34,7 @@ class UpdateBodyLogReqTest {
         template.success("weight", JsonNullable.undefined());
         template.failure("weight", JsonNullable.of(null));
         template.failure("weight", JsonNullable.of(new BigDecimal("0")));
-        template.failure("weight", JsonNullable.of(new BigDecimal("1001")));
+        template.failure("weight", JsonNullable.of(new BigDecimal("1000")));
     }
 
     @Test

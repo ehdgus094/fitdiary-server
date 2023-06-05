@@ -7,29 +7,19 @@ import lombok.ToString;
 @Getter
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Response {
+public class Response <T> {
 
     private final boolean success;
 
-    private final String message;
+    private final T data;
 
-    private final Object data;
-
-    public static Response success() {
-        return new Response(true, null, null);
-    }
-
-    public static Response success(Object data) {
-        return new Response(true, null, data);
-    }
-
-    public static Response failure(String message) {
-        return new Response(false, message, null);
-    }
-
-    private Response(boolean success, String message, Object data) {
-        this.success = success;
-        this.message = message;
+    public Response(T data) {
+        this.success = true;
         this.data = data;
+    }
+
+    public Response() {
+        this.success = true;
+        this.data = null;
     }
 }

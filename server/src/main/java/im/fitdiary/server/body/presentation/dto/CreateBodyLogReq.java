@@ -20,7 +20,7 @@ public class CreateBodyLogReq {
     private BigDecimal height;
 
     @NotNull
-    @Max(1000)
+    @Max(999)
     @Positive
     private BigDecimal weight;
 

@@ -31,7 +31,7 @@ class CreateBodyLogReqTest {
     void validateWeight() {
         template.failure("weight", null);
         template.failure("weight", new BigDecimal("0"));
-        template.failure("weight", new BigDecimal("1001"));
+        template.failure("weight", new BigDecimal("1000"));
     }
 
     @Test

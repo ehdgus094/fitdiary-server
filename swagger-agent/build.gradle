@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 group = 'im.fitdiary'
@@ -12,9 +13,11 @@ repositories {
 
 dependencies {
     implementation 'net.bytebuddy:byte-buddy:1.14.4'
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.9'
 }
 
 jar {
+    finalizedBy shadowJar
     manifest {
         attributes(
                 "Premain-Class": "im.fitdiary.swaggeragent.SwaggerAgent",

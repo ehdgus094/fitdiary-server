@@ -1,6 +1,7 @@
 package im.fitdiary.server.exercise.presentation.dto;
 
 import im.fitdiary.server.exercise.data.dto.ExerciseLogDetailEditor;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.ToString;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
 
 @Getter
 @ToString
+@Schema
 public class UpdateExerciseLogDetailReq {
 
     @NotNull

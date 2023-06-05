@@ -2,6 +2,7 @@ package im.fitdiary.server.security;
 
 import im.fitdiary.server.common.filter.InitRequestLoggingFilter;
 import im.fitdiary.server.security.jwt.filter.JwtAuthenticationFilter;
+import im.fitdiary.server.security.jwt.handler.JwtHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -19,9 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter authFilter;
-
-    private final InitRequestLoggingFilter requestLoggingFilter;
+    private final JwtHandler jwtHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -30,7 +29,11 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().mvcMatchers("/actuator/**");
+        return web -> web.ignoring().mvcMatchers(
+                "/actuator/**",
+                "/swagger-ui/**",
+                "/api-docs/**"
+        );
     }
 
     @Bean
@@ -46,8 +49,8 @@ public class SecurityConfig {
                     .anyRequest()
                         .permitAll()
                 .and()
-                    .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
-                    .addFilterBefore(requestLoggingFilter, JwtAuthenticationFilter.class)
+                    .addFilterBefore(new JwtAuthenticationFilter(jwtHandler), UsernamePasswordAuthenticationFilter.class)
+                    .addFilterBefore(new InitRequestLoggingFilter(), JwtAuthenticationFilter.class)
                 .build();
     }
 }
