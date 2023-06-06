@@ -11,6 +11,7 @@ import org.openapitools.jackson.nullable.JsonNullable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.test.util.ReflectionTestUtils.*;
 
@@ -56,7 +57,7 @@ public class BodyFactory {
     }
 
     public static BodyLogSlice bodyLogSlice() {
-        ArrayList<BodyLog> bodyLogs = new ArrayList<>();
+        List<BodyLog> bodyLogs = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             bodyLogs.add(bodyLog());
         }
