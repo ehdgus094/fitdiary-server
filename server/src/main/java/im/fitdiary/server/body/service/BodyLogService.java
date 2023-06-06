@@ -14,7 +14,7 @@ public interface BodyLogService {
 
     BodyLog findById(Long bodyLogId, Long userId) throws BodyLogNotFoundException;
 
-    BodyLogSlice findRecent(Pageable pageable, Long userId);
+    BodyLogSlice find(Pageable pageable, Long userId);
 
     void updateById(Long bodyLogId, Long userId, BodyLogEditor editor) throws BodyLogNotFoundException;
 

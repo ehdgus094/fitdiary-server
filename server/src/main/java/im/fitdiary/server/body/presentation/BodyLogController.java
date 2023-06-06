@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Tag(name = "BodyLog")
+@Tag(name = "Body - Log")
 @BaseMethodLogging
 @RequiredArgsConstructor
-@RequestMapping("/body/log")
+@RequestMapping("/body/logs")
 @RestController
 public class BodyLogController {
 
@@ -39,9 +39,9 @@ public class BodyLogController {
     }
 
     @Secured("ROLE_USER_ACCESS")
-    @GetMapping("/recent")
-    public Response<BodyLogSliceRes> findRecent(@Auth AuthToken authToken, Pageable pageable) {
-        BodyLogSlice bodyLogSlice = bodyLogService.findRecent(pageable, authToken.getId());
+    @GetMapping
+    public Response<BodyLogSliceRes> find(@Auth AuthToken authToken, Pageable pageable) {
+        BodyLogSlice bodyLogSlice = bodyLogService.find(pageable, authToken.getId());
         return new Response<>(new BodyLogSliceRes(bodyLogSlice));
     }
 

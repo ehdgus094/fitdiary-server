@@ -1,8 +1,10 @@
 package im.fitdiary.server.body.data;
 
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import im.fitdiary.server.body.data.entity.BodyLog;
 import im.fitdiary.server.common.aop.annotation.BaseMethodLogging;
+import im.fitdiary.server.common.querydsl.QuerydslUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -33,12 +35,15 @@ public class BodyLogRepositoryImpl implements BodyLogRepositoryCustom {
         return Optional.ofNullable(foundBodyLog);
     }
 
-    public Slice<BodyLog> findRecent(Pageable pageable, Long userId) {
+    public Slice<BodyLog> find(Pageable pageable, Long userId) {
+        OrderSpecifier<?>[] orderSpecifiers =
+                QuerydslUtil.getOrderSpecifiers(bodyLog, pageable);
+
         List<BodyLog> content = queryFactory
                 .select(bodyLog)
                 .from(bodyLog)
                 .where(bodyLog.userId.eq(userId))
-                .orderBy(bodyLog.measuredAt.desc())
+                .orderBy(orderSpecifiers)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + (long) 1)
                 .fetch();

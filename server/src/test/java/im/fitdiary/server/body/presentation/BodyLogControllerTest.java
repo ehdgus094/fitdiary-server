@@ -46,7 +46,7 @@ class BodyLogControllerTest {
     @MockBean
     BodyLogService bodyLogService;
 
-    String BASE_URI = "/body/log";
+    String BASE_URI = "/body/logs";
 
     @BeforeEach
     void init() {
@@ -86,15 +86,15 @@ class BodyLogControllerTest {
     }
 
     @Test
-    @DisplayName("findRecent")
-    void findRecent() throws Exception {
+    @DisplayName("find")
+    void find() throws Exception {
         // given
         BodyLogSlice bodyLogSlice = BodyFactory.bodyLogSlice();
-        given(bodyLogService.findRecent(any(), any()))
+        given(bodyLogService.find(any(), any()))
                 .willReturn(bodyLogSlice);
 
         // when - then
-        mvc.perform(get(BASE_URI + "/recent"))
+        mvc.perform(get(BASE_URI))
                 .andExpectAll(
                         status().isOk(),
                         jsonPath("$.data.content")

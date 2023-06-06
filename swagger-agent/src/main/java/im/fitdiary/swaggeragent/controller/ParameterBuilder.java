@@ -3,6 +3,7 @@ package im.fitdiary.swaggeragent.controller;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import net.bytebuddy.description.annotation.AnnotationDescription;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.method.ParameterDescription;
@@ -18,11 +19,14 @@ public class ParameterBuilder {
 
     private final TypeDescription requestHeaderType;
 
+    private final TypeDescription pageableType;
+
     private final MethodDescription.InDefinedShape method;
 
     public ParameterBuilder(TypePool typePool, MethodDescription.InDefinedShape method) {
         authType = typePool.describe("im.fitdiary.server.security.argumentresolver.Auth").resolve();
         requestHeaderType = typePool.describe("org.springframework.web.bind.annotation.RequestHeader").resolve();
+        pageableType = typePool.describe("org.springframework.data.domain.Pageable").resolve();
         this.method = method;
     }
 
@@ -40,6 +44,10 @@ public class ParameterBuilder {
                     parameterList.add(createRequestHeaderParameter(header));
                 }
             }
+
+            if (parameter.getType().asErasure().equals(pageableType)) {
+                parameterList.add(createPageableParameter(parameter.getName()));
+            }
         }
 
         return AnnotationDescription.Builder
@@ -51,6 +59,26 @@ public class ParameterBuilder {
                 )
                 .build()
                 .prepare(Parameters.class)
+                .load();
+    }
+
+    private Parameter createPageableParameter(String parameterName) {
+        return AnnotationDescription.Builder
+                .ofType(Parameter.class)
+                .define("name", parameterName)
+                .defineAnnotationArray(
+                        "examples",
+                        ExampleObject.class,
+                        AnnotationDescription.Builder
+                                .ofType(ExampleObject.class)
+                                .define("name", "Pageable")
+                                .define("value", "{\"page\": 0, \"size\": 1, \"sort\": [\"fieldName,asc\"]}")
+                                .build()
+                                .prepare(ExampleObject.class)
+                                .load()
+                )
+                .build()
+                .prepare(Parameter.class)
                 .load();
     }
 

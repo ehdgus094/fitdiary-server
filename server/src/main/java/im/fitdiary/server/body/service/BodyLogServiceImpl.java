@@ -42,8 +42,8 @@ public class BodyLogServiceImpl implements BodyLogService {
     }
 
     @Transactional(readOnly = true)
-    public BodyLogSlice findRecent(Pageable pageable, Long userId) {
-        Slice<BodyLog> bodyLogs = bodyLogRepository.findRecent(pageable, userId);
+    public BodyLogSlice find(Pageable pageable, Long userId) {
+        Slice<BodyLog> bodyLogs = bodyLogRepository.find(pageable, userId);
         return new BodyLogSlice(bodyLogs.getContent(), bodyLogs.hasNext());
     }
 
