@@ -45,7 +45,7 @@ class ExerciseControllerTest {
     @MockBean
     ExerciseService exerciseService;
 
-    String BASE_URI = "/exercise";
+    String BASE_URI = "/exercise/exercises";
 
     @BeforeEach
     void init() {

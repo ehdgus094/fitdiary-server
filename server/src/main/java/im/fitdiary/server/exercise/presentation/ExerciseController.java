@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Tag(name = "Exercise")
+@Tag(name = "Exercise - Exercise")
 @BaseMethodLogging
 @RequiredArgsConstructor
-@RequestMapping("/exercise")
+@RequestMapping("/exercise/exercises")
 @RestController
 public class ExerciseController {
 
