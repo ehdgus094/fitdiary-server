@@ -26,7 +26,7 @@ public class ExerciseLogDetail {
     private ExerciseLog exerciseLog;
 
     @Column(nullable = false, columnDefinition = "SMALLINT UNSIGNED")
-    private int sequence; // 운동 순서
+    private int sequence; // 운동 순서 0 부터
 
     @Column(nullable = false)
     private boolean warmUp;

@@ -4,6 +4,8 @@ import im.fitdiary.server.exercise.data.dto.CreateExerciseLogDetail;
 import im.fitdiary.server.exercise.data.dto.ExerciseLogDetailEditor;
 import im.fitdiary.server.exercise.data.entity.ExerciseLog;
 import im.fitdiary.server.exercise.data.entity.ExerciseLogDetail;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 import java.util.List;
 import java.util.Map;
@@ -14,7 +16,7 @@ public interface ExerciseLogDetailRepositoryCustom {
 
     void bulkUpdate(ExerciseLog exerciseLog, Map<Long, ExerciseLogDetailEditor> editors);
 
-    void deleteSequence(ExerciseLogDetail detail);
+    Slice<ExerciseLogDetail> find(Pageable pageable, ExerciseLog exerciseLog);
 
-    void deleteByExerciseLog(ExerciseLog exerciseLog);
+    void deleteSequence(ExerciseLogDetail detail);
 }

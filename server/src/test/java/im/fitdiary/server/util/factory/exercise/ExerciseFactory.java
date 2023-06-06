@@ -10,6 +10,7 @@ import im.fitdiary.server.exercise.data.entity.ExerciseLogDetail;
 import im.fitdiary.server.exercise.presentation.dto.*;
 import im.fitdiary.server.exercise.service.dto.CreateExercise;
 import im.fitdiary.server.exercise.service.dto.CreateExerciseLog;
+import im.fitdiary.server.exercise.service.dto.ExerciseLogDetailSlice;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import java.math.BigDecimal;
@@ -118,6 +119,16 @@ public class ExerciseFactory {
                 COUNT,
                 SUPPORT_COUNT
         );
+    }
+
+    public static ExerciseLogDetailSlice exerciseLogDetailSlice() {
+        List<ExerciseLogDetail> exerciseLogDetails = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            Exercise exercise = exercise();
+            ExerciseLog exerciseLog = exerciseLog();
+            exerciseLogDetails.add(exerciseLogDetail(exercise, exerciseLog, i));
+        }
+        return new ExerciseLogDetailSlice(exerciseLogDetails, false);
     }
 
     public static CreateExerciseReq createExerciseReq() {

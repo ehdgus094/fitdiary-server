@@ -80,7 +80,7 @@ class ExerciseLogDetailRepositoryTest {
     void softDelete() {
         // given
         ExerciseLogDetail detail =
-                ExerciseFactory.exerciseLogDetail(exercise, exerciseLog, 1);
+                ExerciseFactory.exerciseLogDetail(exercise, exerciseLog, 0);
         exerciseLogDetailRepository.save(detail);
         em.flush();
         em.clear();

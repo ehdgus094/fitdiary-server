@@ -1,19 +1,23 @@
 package im.fitdiary.server.exercise.data;
 
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import im.fitdiary.server.common.aop.annotation.BaseMethodLogging;
+import im.fitdiary.server.common.querydsl.QuerydslUtil;
 import im.fitdiary.server.exercise.data.dto.CreateExerciseLogDetail;
 import im.fitdiary.server.exercise.data.dto.ExerciseLogDetailEditor;
 import im.fitdiary.server.exercise.data.entity.ExerciseLog;
 import im.fitdiary.server.exercise.data.entity.ExerciseLogDetail;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.persistence.EntityManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -140,21 +144,33 @@ public class ExerciseLogDetailRepositoryImpl implements ExerciseLogDetailReposit
         }
     }
 
+    public Slice<ExerciseLogDetail> find(Pageable pageable, ExerciseLog exerciseLog) {
+        OrderSpecifier<?>[] orderSpecifiers =
+                QuerydslUtil.getOrderSpecifiers(exerciseLogDetail, pageable);
+
+        List<ExerciseLogDetail> content = queryFactory
+                .select(exerciseLogDetail)
+                .from(exerciseLogDetail)
+                .where(exerciseLogDetail.exerciseLog.eq(exerciseLog))
+                .orderBy(orderSpecifiers)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize() + (long) 1)
+                .fetch();
+
+        boolean hasNext = false;
+        if (content.size() > pageable.getPageSize()) {
+            content.remove(pageable.getPageSize());
+            hasNext = true;
+        }
+
+        return new SliceImpl<>(content, pageable, hasNext);
+    }
+
     public void deleteSequence(ExerciseLogDetail detail) {
         queryFactory
                 .update(exerciseLogDetail)
                 .set(exerciseLogDetail.sequence, exerciseLogDetail.sequence.add(-1))
                 .where(exerciseLogDetail.sequence.gt(detail.getSequence()))
-                .execute();
-        em.flush();
-        em.clear();
-    }
-
-    public void deleteByExerciseLog(ExerciseLog exerciseLog) {
-        queryFactory
-                .update(exerciseLogDetail)
-                .set(exerciseLogDetail.deletedAt, LocalDateTime.now())
-                .where(exerciseLogDetail.exerciseLog.eq(exerciseLog))
                 .execute();
         em.flush();
         em.clear();
