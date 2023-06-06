@@ -19,7 +19,7 @@ import javax.validation.Valid;
 @Tag(name = "User")
 @BaseMethodLogging
 @RequiredArgsConstructor
-@RequestMapping("/user")
+@RequestMapping("/users")
 @RestController
 public class UserController {
 

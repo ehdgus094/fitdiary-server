@@ -43,7 +43,7 @@ class UserControllerTest {
     @MockBean
     UserService userService;
 
-    String BASE_URI = "/user";
+    String BASE_URI = "/users";
 
     @BeforeEach
     void init() {

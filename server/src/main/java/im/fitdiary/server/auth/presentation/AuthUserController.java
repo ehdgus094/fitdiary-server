@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.NoSuchElementException;
 
-@Tag(name = "AuthUser")
+@Tag(name = "Auth - User")
 @BaseMethodLogging
 @RequiredArgsConstructor
 @RequestMapping("/auth/user")
