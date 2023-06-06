@@ -42,7 +42,7 @@ public class KafkaFailStrategyListenerBuilder {
         try {
             builder = new ByteBuddy()
                     .subclass(Object.class, ConstructorStrategy.Default.NO_CONSTRUCTORS)
-                    .name(consumerClass.getName() + "FailStrategyListener")
+                    .name(consumerClass.getName() + "$FailStrategyListener")
                     .defineField(FIELD_NAME, consumerClass, Visibility.PRIVATE, FieldManifestation.FINAL)
                     .defineConstructor(Visibility.PUBLIC)
                     .withParameters(consumerClass)
