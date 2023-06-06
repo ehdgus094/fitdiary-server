@@ -28,7 +28,8 @@ public class ControllerAdviceTransformer implements AgentBuilder.Transformer {
                 .prepare(Hidden.class)
                 .load()
         );
-        logger.success(typeDescription);
+
+        logger.log("[SUCCESS] - " + typeDescription.getSimpleName() + " successfully modified");
         return builder;
     }
 }

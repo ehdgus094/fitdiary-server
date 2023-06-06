@@ -1,4 +1,4 @@
-package im.fitdiary.swaggeragent.controller;
+package im.fitdiary.swaggeragent.controller.annotation;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
@@ -15,7 +15,9 @@ public class SecurityRequirementBuilder {
 
     private final MethodDescription.InDefinedShape method;
 
-    public SecurityRequirementBuilder(TypePool typePool, MethodDescription.InDefinedShape method) {
+    public SecurityRequirementBuilder(MethodDescription.InDefinedShape method, ClassLoader classLoader) {
+        TypePool typePool = TypePool.Default.of(classLoader);
+
         securedType = typePool.describe("org.springframework.security.access.annotation.Secured").resolve();
         this.method = method;
     }

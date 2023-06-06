@@ -1,4 +1,4 @@
-package im.fitdiary.swaggeragent.dto;
+package im.fitdiary.swaggeragent.dto.annotation;
 
 import im.fitdiary.swaggeragent.logger.Logger;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -8,6 +8,7 @@ import net.bytebuddy.description.type.TypeDefinition;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.description.type.TypeList;
 import net.bytebuddy.pool.TypePool;
+import net.bytebuddy.utility.nullability.MaybeNull;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -26,11 +27,11 @@ public class SchemaBuilder {
 
     private final ClassLoader classLoader;
 
-    public SchemaBuilder(
-            TypePool typePool,
-            FieldDescription.InDefinedShape field,
-            ClassLoader classLoader
-    ) {
+    private boolean annotationRequired = false;
+
+    public SchemaBuilder(FieldDescription.InDefinedShape field, ClassLoader classLoader) {
+        TypePool typePool = TypePool.Default.of(classLoader);
+
         jsonNullableType =
                 typePool.describe("org.openapitools.jackson.nullable.JsonNullable").resolve();
         enumType =
@@ -40,11 +41,13 @@ public class SchemaBuilder {
         this.classLoader = classLoader;
     }
 
-    public Schema build() {
+    public @MaybeNull Schema build() {
         handleJsonNullable();
         handleEnum();
 
-        return builder.build().prepare(Schema.class).load();
+        return annotationRequired
+                ? builder.build().prepare(Schema.class).load()
+                : null;
     }
 
     private void handleEnum() {
@@ -58,6 +61,7 @@ public class SchemaBuilder {
                     String[] enumValues = Arrays.stream(enumClass.getEnumConstants())
                             .map(Object::toString)
                             .toArray(String[]::new);
+                    annotationRequired = true;
                     builder = builder.defineArray("allowableValues", enumValues);
                 } catch (Exception e) {
                     logger.error(e.toString());
@@ -70,6 +74,7 @@ public class SchemaBuilder {
         if (field.getType().asErasure().equals(jsonNullableType)) {
             TypeList.Generic generics = field.getType().getTypeArguments();
             if (!generics.isEmpty() && !isWildCard(generics.get(0))) {
+                annotationRequired = true;
                 builder = builder
                         .define("requiredMode", Schema.RequiredMode.NOT_REQUIRED)
                         .define("type", getFieldType(generics.get(0)));

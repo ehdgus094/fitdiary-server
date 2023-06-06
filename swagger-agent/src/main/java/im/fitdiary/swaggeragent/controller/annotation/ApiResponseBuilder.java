@@ -1,4 +1,4 @@
-package im.fitdiary.swaggeragent.controller;
+package im.fitdiary.swaggeragent.controller.annotation;
 
 import im.fitdiary.swaggeragent.logger.Logger;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -25,11 +25,9 @@ public class ApiResponseBuilder {
 
     private final ClassLoader classLoader;
 
-    public ApiResponseBuilder(
-            TypePool typePool,
-            MethodDescription.InDefinedShape method,
-            ClassLoader classLoader
-    ) {
+    public ApiResponseBuilder(MethodDescription.InDefinedShape method, ClassLoader classLoader) {
+        TypePool typePool = TypePool.Default.of(classLoader);
+
         responseStatusType =
                 typePool.describe("org.springframework.web.bind.annotation.ResponseStatus").resolve();
         this.method = method;

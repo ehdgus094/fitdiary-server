@@ -1,19 +1,14 @@
 package im.fitdiary.swaggeragent.controller;
 
+import im.fitdiary.swaggeragent.controller.handler.MethodHandler;
+import im.fitdiary.swaggeragent.controller.handler.ParameterHandler;
 import im.fitdiary.swaggeragent.logger.Logger;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import net.bytebuddy.agent.builder.AgentBuilder;
-import net.bytebuddy.asm.MemberAttributeExtension;
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType.Builder;
-import net.bytebuddy.matcher.ElementMatchers;
-import net.bytebuddy.pool.TypePool;
 import net.bytebuddy.utility.JavaModule;
 
-import java.lang.annotation.Annotation;
 import java.security.ProtectionDomain;
 
 public class ControllerTransformer implements AgentBuilder.Transformer {
@@ -28,32 +23,17 @@ public class ControllerTransformer implements AgentBuilder.Transformer {
             JavaModule module,
             ProtectionDomain protectionDomain
     ) {
-        TypePool typePool = TypePool.Default.of(classLoader);
-
         for (MethodDescription.InDefinedShape method : typeDescription.getDeclaredMethods()) {
             if (!method.isConstructor()) {
-                Parameters parameters = new ParameterBuilder(typePool, method).build();
-                ApiResponses apiResponses = new ApiResponseBuilder(typePool, method, classLoader).build();
-                SecurityRequirements securityRequirements =
-                        new SecurityRequirementBuilder(typePool, method).build();
-                builder = addAnnotations(builder, method, parameters, apiResponses, securityRequirements);
+                builder = new MethodHandler(builder, method, classLoader).execute();
+                builder = new ParameterHandler(builder, method, classLoader).execute();
+
+                logger.log("[IN PROGRESS] - " + typeDescription.getSimpleName() + "." + method.getName() + " executed");
             }
         }
 
-        logger.success(typeDescription);
+        logger.log("[SUCCESS] - " + typeDescription.getSimpleName() + " successfully modified");
         return builder;
-    }
-
-    private Builder<?> addAnnotations(
-            Builder<?> builder,
-            MethodDescription.InDefinedShape method,
-            Annotation... annotations
-    ) {
-        MemberAttributeExtension.ForMethod forMethod = new MemberAttributeExtension.ForMethod();
-        for (Annotation annotation : annotations) {
-            forMethod = forMethod.annotateMethod(annotation);
-        }
-        return builder.visit(forMethod.on(ElementMatchers.named(method.getName())));
     }
 
     // 바이트코드 확인용
