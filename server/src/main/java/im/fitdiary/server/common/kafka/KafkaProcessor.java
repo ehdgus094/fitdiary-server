@@ -1,7 +1,9 @@
 package im.fitdiary.server.common.kafka;
 
 import im.fitdiary.server.common.kafka.annotation.KafkaConsumer;
-import im.fitdiary.server.common.kafka.annotation.KafkaFailStrategyListener;
+import im.fitdiary.server.common.kafka.builder.KafkaFailStrategyListenerBuilder;
+import im.fitdiary.server.common.kafka.builder.KafkaListenerBuilder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.Optional;
 
+@Slf4j
 @Component
 public class KafkaProcessor implements BeanFactoryPostProcessor {
 
@@ -21,9 +24,10 @@ public class KafkaProcessor implements BeanFactoryPostProcessor {
         Arrays.stream(beanFactory.getBeanNamesForAnnotation(KafkaConsumer.class))
                 .forEach(beanName -> {
                     Class<?> consumerClass = getClass(beanFactory.getBeanDefinition(beanName));
-                    generateFailStrategyListener(consumerClass)
-                            .ifPresent(failStrategyListenerClass ->
-                                registerBeanDefinition(beanFactory, failStrategyListenerClass)
+
+                    generateListener(new KafkaFailStrategyListenerBuilder(consumerClass))
+                            .ifPresent(listenerClass ->
+                                    registerBeanDefinition(beanFactory, listenerClass)
                             );
                 });
     }
@@ -32,20 +36,14 @@ public class KafkaProcessor implements BeanFactoryPostProcessor {
         try {
             return Class.forName(beanDefinition.getBeanClassName());
         } catch (ClassNotFoundException e) {
+            log.error("", e);
             throw new RuntimeException(e);
         }
     }
 
-    private Optional<Class<?>> generateFailStrategyListener(Class<?> consumerClass) {
-        KafkaFailStrategyListenerBuilder builder =
-                new KafkaFailStrategyListenerBuilder(consumerClass);
-
-        Arrays.stream(consumerClass.getDeclaredMethods())
-                .filter(method -> method.getAnnotation(KafkaFailStrategyListener.class) != null)
-                .forEach(method -> builder.addListener(
-                        method,
-                        method.getAnnotation(KafkaFailStrategyListener.class)
-                ));
+    private Optional<Class<?>> generateListener(KafkaListenerBuilder builder) {
+        Arrays.stream(builder.getConsumerClass().getDeclaredMethods())
+                .forEach(builder::addListener);
         return builder.isGenerated() ? Optional.of(builder.load()) : Optional.empty();
     }
 

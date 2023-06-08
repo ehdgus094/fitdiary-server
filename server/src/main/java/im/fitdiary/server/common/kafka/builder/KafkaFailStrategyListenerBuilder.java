@@ -1,4 +1,4 @@
-package im.fitdiary.server.common.kafka;
+package im.fitdiary.server.common.kafka.builder;
 
 import im.fitdiary.server.common.kafka.annotation.KafkaFailStrategyListener;
 import lombok.Getter;
@@ -16,7 +16,7 @@ import org.springframework.kafka.annotation.RetryableTopic;
 import java.lang.reflect.Method;
 
 @Slf4j
-public class KafkaFailStrategyListenerBuilder {
+public class KafkaFailStrategyListenerBuilder implements KafkaListenerBuilder {
 
     /**
      * 에러 처리:
@@ -31,7 +31,10 @@ public class KafkaFailStrategyListenerBuilder {
 
     private Builder<?> builder;
 
+    @Getter
     private final Class<?> consumerClass;
+
+    private static final Class<KafkaFailStrategyListener> targetAnnotation = KafkaFailStrategyListener.class;
 
     private static final String FIELD_NAME = "consumer";
 
@@ -54,17 +57,20 @@ public class KafkaFailStrategyListenerBuilder {
                             )
                     );
         } catch (NoSuchMethodException e) {
+            log.error("", e);
             throw new RuntimeException(e);
         }
         this.consumerClass = consumerClass;
     }
 
-    public void addListener(Method method, KafkaFailStrategyListener failStrategyListener) {
-        addInitialListener(method, failStrategyListener);
-        addFailListener(method, failStrategyListener);
-        addFinalListener(method, failStrategyListener);
-        generated = true;
-        log.debug("[{}] FailStrategyListener added", consumerClass.getName());
+    public void addListener(Method method) {
+        KafkaFailStrategyListener annotation = method.getAnnotation(targetAnnotation);
+        if (annotation != null) {
+            addInitialListener(method, annotation);
+            addFailListener(method, annotation);
+            addFinalListener(method, annotation);
+            generated = true;
+        }
     }
 
     private void addInitialListener(Method method, KafkaFailStrategyListener failStrategyListener) {
@@ -149,7 +155,10 @@ public class KafkaFailStrategyListenerBuilder {
 
     public Class<?> load() {
         Class<?> loaded = builder.make().load(getClass().getClassLoader()).getLoaded();
-        log.debug("[{}] FailStrategyListener loaded", consumerClass.getName());
+        log.debug("[{}] ListenerClass for @{} generated",
+                consumerClass.getSimpleName(),
+                targetAnnotation.getSimpleName()
+        );
         return loaded;
     }
 }
