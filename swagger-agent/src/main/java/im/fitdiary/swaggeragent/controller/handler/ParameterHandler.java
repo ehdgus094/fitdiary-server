@@ -32,7 +32,7 @@ public class ParameterHandler {
         this.classLoader = classLoader;
     }
 
-    public Builder<?> execute() {
+    public Builder<?> annotate() {
         Map<Integer, List<AnnotationDescription>> annotationMap = new HashMap<>();
 
         for (ParameterDescription.InDefinedShape parameter : method.getParameters()) {
@@ -56,9 +56,7 @@ public class ParameterHandler {
         MemberAttributeExtension.ForMethod forMethod = new MemberAttributeExtension.ForMethod();
         for (Integer index : annotationMap.keySet()) {
             for (AnnotationDescription annotation : annotationMap.get(index)) {
-                if (annotation != null) {
-                    forMethod = forMethod.annotateParameter(index, annotation);
-                }
+                if (annotation != null) forMethod = forMethod.annotateParameter(index, annotation);
             }
         }
         return builder.visit(forMethod.on(ElementMatchers.named(method.getName())));

@@ -9,13 +9,13 @@ import net.bytebuddy.pool.TypePool;
 
 import java.util.Arrays;
 
-public class SecurityRequirementBuilder {
+public class SecurityRequirementsBuilder {
 
     private final TypeDescription securedType;
 
     private final MethodDescription.InDefinedShape method;
 
-    public SecurityRequirementBuilder(MethodDescription.InDefinedShape method, ClassLoader classLoader) {
+    public SecurityRequirementsBuilder(MethodDescription.InDefinedShape method, ClassLoader classLoader) {
         TypePool typePool = TypePool.Default.of(classLoader);
 
         securedType = typePool.describe("org.springframework.security.access.annotation.Secured").resolve();

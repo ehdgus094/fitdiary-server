@@ -25,8 +25,8 @@ public class ControllerTransformer implements AgentBuilder.Transformer {
     ) {
         for (MethodDescription.InDefinedShape method : typeDescription.getDeclaredMethods()) {
             if (!method.isConstructor()) {
-                builder = new MethodHandler(builder, method, classLoader).execute();
-                builder = new ParameterHandler(builder, method, classLoader).execute();
+                builder = new MethodHandler(builder, method, classLoader).annotate();
+                builder = new ParameterHandler(builder, method, classLoader).annotate();
 
                 logger.log("[IN PROGRESS] - " + typeDescription.getSimpleName() + "." + method.getName() + " executed");
             }

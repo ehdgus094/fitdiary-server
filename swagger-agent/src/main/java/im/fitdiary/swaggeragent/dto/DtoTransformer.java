@@ -23,7 +23,7 @@ public class DtoTransformer implements AgentBuilder.Transformer {
             ProtectionDomain protectionDomain
     ) {
         for (FieldDescription.InDefinedShape field : typeDescription.getDeclaredFields()) {
-            builder = new FieldHandler(builder, field, classLoader).execute();
+            builder = new FieldHandler(builder, field, classLoader).annotate();
 
             logger.log("[IN PROGRESS] - " + typeDescription.getSimpleName() + "." + field.getName() + " executed");
         }

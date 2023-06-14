@@ -1,8 +1,8 @@
 package im.fitdiary.swaggeragent.controller.handler;
 
-import im.fitdiary.swaggeragent.controller.annotation.ApiResponseBuilder;
-import im.fitdiary.swaggeragent.controller.annotation.ParameterBuilder;
-import im.fitdiary.swaggeragent.controller.annotation.SecurityRequirementBuilder;
+import im.fitdiary.swaggeragent.controller.annotation.ApiResponsesBuilder;
+import im.fitdiary.swaggeragent.controller.annotation.ParametersBuilder;
+import im.fitdiary.swaggeragent.controller.annotation.SecurityRequirementsBuilder;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
@@ -32,11 +32,11 @@ public class MethodHandler {
         this.classLoader = classLoader;
     }
 
-    public Builder<?> execute() {
-        Parameters parameters = new ParameterBuilder(method, classLoader).build();
-        ApiResponses apiResponses = new ApiResponseBuilder(method, classLoader).build();
+    public Builder<?> annotate() {
+        Parameters parameters = new ParametersBuilder(method, classLoader).build();
+        ApiResponses apiResponses = new ApiResponsesBuilder(method, classLoader).build();
         SecurityRequirements securityRequirements =
-                new SecurityRequirementBuilder(method, classLoader).build();
+                new SecurityRequirementsBuilder(method, classLoader).build();
 
         return addAnnotations(builder, method, parameters, apiResponses, securityRequirements);
     }
@@ -48,7 +48,7 @@ public class MethodHandler {
     ) {
         MemberAttributeExtension.ForMethod forMethod = new MemberAttributeExtension.ForMethod();
         for (Annotation annotation : annotations) {
-            forMethod = forMethod.annotateMethod(annotation);
+            if (annotation != null) forMethod = forMethod.annotateMethod(annotation);
         }
         return builder.visit(forMethod.on(ElementMatchers.named(method.getName())));
     }

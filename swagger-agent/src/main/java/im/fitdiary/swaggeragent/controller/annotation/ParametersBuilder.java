@@ -12,7 +12,7 @@ import net.bytebuddy.pool.TypePool;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ParameterBuilder {
+public class ParametersBuilder {
 
     private final TypeDescription authType;
 
@@ -20,7 +20,7 @@ public class ParameterBuilder {
 
     private final MethodDescription.InDefinedShape method;
 
-    public ParameterBuilder(MethodDescription.InDefinedShape method, ClassLoader classLoader) {
+    public ParametersBuilder(MethodDescription.InDefinedShape method, ClassLoader classLoader) {
         TypePool typePool = TypePool.Default.of(classLoader);
 
         authType = typePool.describe("im.fitdiary.server.security.argumentresolver.Auth").resolve();

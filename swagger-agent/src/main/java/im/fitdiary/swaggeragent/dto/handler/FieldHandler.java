@@ -28,7 +28,7 @@ public class FieldHandler {
         this.classLoader = classLoader;
     }
 
-    public Builder<?> execute() {
+    public Builder<?> annotate() {
         Schema schema = new SchemaBuilder(field, classLoader).build();
 
         return addAnnotations(builder, field, schema);

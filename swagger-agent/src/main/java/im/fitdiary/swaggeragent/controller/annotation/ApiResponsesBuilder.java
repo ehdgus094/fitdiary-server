@@ -15,7 +15,7 @@ import net.bytebuddy.utility.nullability.MaybeNull;
 
 import java.util.*;
 
-public class ApiResponseBuilder {
+public class ApiResponsesBuilder {
 
     private final Logger logger = new Logger(getClass());
 
@@ -25,7 +25,7 @@ public class ApiResponseBuilder {
 
     private final ClassLoader classLoader;
 
-    public ApiResponseBuilder(MethodDescription.InDefinedShape method, ClassLoader classLoader) {
+    public ApiResponsesBuilder(MethodDescription.InDefinedShape method, ClassLoader classLoader) {
         TypePool typePool = TypePool.Default.of(classLoader);
 
         responseStatusType =
@@ -136,7 +136,8 @@ public class ApiResponseBuilder {
         return generic.getSort().equals(TypeDefinition.Sort.WILDCARD);
     }
 
-    private @MaybeNull String getErrorMessage(TypeDescription.Generic exception) {
+    @MaybeNull
+    private String getErrorMessage(TypeDescription.Generic exception) {
         try {
             Class<?> exceptionClass =
                     Class.forName(exception.getTypeName(), true, classLoader);

@@ -41,16 +41,17 @@ public class SchemaBuilder {
         this.classLoader = classLoader;
     }
 
-    public @MaybeNull Schema build() {
-        handleJsonNullable();
-        handleEnum();
+    @MaybeNull
+    public Schema build() {
+        addPropertiesForJsonNullable();
+        addPropertiesForEnum();
 
         return annotationRequired
                 ? builder.build().prepare(Schema.class).load()
                 : null;
     }
 
-    private void handleEnum() {
+    private void addPropertiesForEnum() {
         for (AnnotationDescription annotation : field.getDeclaredAnnotations()) {
             if (annotation.getAnnotationType().equals(enumType)) {
                 try {
@@ -70,7 +71,7 @@ public class SchemaBuilder {
         }
     }
 
-    private void handleJsonNullable() {
+    private void addPropertiesForJsonNullable() {
         if (field.getType().asErasure().equals(jsonNullableType)) {
             TypeList.Generic generics = field.getType().getTypeArguments();
             if (!generics.isEmpty() && !isWildCard(generics.get(0))) {

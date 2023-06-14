@@ -29,17 +29,14 @@ public class ParameterObjectBuilder {
         annotationDescription = AnnotationDescription.Builder.ofType(parameterObjectType).build();
     }
 
-    public @MaybeNull AnnotationDescription build() {
-        handlePageable();
+    @MaybeNull
+    public AnnotationDescription build() {
+        if (parameter.getType().asErasure().equals(pageableType)) {
+            annotationRequired = true;
+        }
 
         return annotationRequired
                 ? annotationDescription
                 : null;
-    }
-
-    private void handlePageable() {
-        if (parameter.getType().asErasure().equals(pageableType)) {
-            annotationRequired = true;
-        }
     }
 }
