@@ -11,8 +11,4 @@ public class Logger {
     public void log(String message) {
         System.out.println("[SwaggerAgent] [" + clazz.getSimpleName() + "] - " + message);
     }
-
-    public void error(String message) {
-        System.out.println("[SwaggerAgent] [" + clazz.getSimpleName() + "] - " + message);
-    }
 }

@@ -64,7 +64,7 @@ public class SchemaBuilder {
                     annotationRequired = true;
                     builder = builder.defineArray("allowableValues", enumValues);
                 } catch (Exception e) {
-                    logger.error(e.toString());
+                    logger.log(e.toString());
                 }
             }
         }

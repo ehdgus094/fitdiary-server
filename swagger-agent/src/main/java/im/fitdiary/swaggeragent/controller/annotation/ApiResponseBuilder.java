@@ -144,7 +144,7 @@ public class ApiResponseBuilder {
                     (RuntimeException) exceptionClass.getConstructor().newInstance();
             return runtimeException.getMessage();
         } catch (Exception e) {
-            logger.error(e.toString());
+            logger.log(e.toString());
         }
         return null;
     }
